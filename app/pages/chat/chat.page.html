@@ -1,0 +1,46 @@
+<ion-navbar *navbar>
+    <button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-segment [(ngModel)]="type">
+        <ion-segment-button value="rooms">
+            Rooms
+        </ion-segment-button>
+        <ion-segment-button value="private">
+            Private
+        </ion-segment-button>
+    </ion-segment>
+
+    <ion-buttons end>
+        <button (click)="presentFilter()">
+            <ion-icon name="create"></ion-icon>
+        </button>
+    </ion-buttons>
+
+</ion-navbar>
+
+<ion-content class="outer-content events-list" >
+    <div [ngSwitch]="type">
+        <ion-list *ngSwitchWhen="'rooms'">
+            <ion-item-sliding *ngFor="let room of rooms" >
+                <button ion-item (click)="openChatRoom(room.friend.id)">
+                    <ion-avatar item-left>
+                        <img src="build/img/avatar.png">
+                    </ion-avatar>
+                    <h2>{{ room.friend.name }}</h2>
+                    <p>{{ room.message.text }}</p>
+                </button>
+            </ion-item-sliding>
+        </ion-list>
+
+        <ion-list *ngSwitchWhen="'private'">
+            <ion-item *ngFor="let pr of private">
+                <ion-thumbnail item-left>
+                    <img src="img/thumbnail-kitten-1.jpg">
+                </ion-thumbnail>
+                <h2>Luna</h2>
+            </ion-item>
+        </ion-list>
+    </div>
+
+</ion-content>
