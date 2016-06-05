@@ -11,7 +11,7 @@
         </ion-segment-button>
     </ion-segment>
 
-    <ion-buttons end>
+    <ion-buttons end  *ngIf="type=='private'">
         <button (click)="presentFilter()">
             <ion-icon name="create"></ion-icon>
         </button>
@@ -22,10 +22,10 @@
 <ion-content class="outer-content events-list" >
     <div [ngSwitch]="type">
         <ion-list *ngSwitchWhen="'rooms'">
-            <ion-item-sliding *ngFor="let room of rooms" >
-                <button ion-item (click)="openChatRoom(room.friend.id)">
-                    <ion-avatar item-left>
-                        <img src="build/img/avatar.png">
+            <ion-item-sliding *ngFor="let room of rooms">
+                <button ion-item no-border (click)="openChatRoom(room.friend.id)">
+                    <ion-avatar *ngIf="room.img!=null" item-left>
+                        <img src="{{ room.img }}">
                     </ion-avatar>
                     <h2>{{ room.friend.name }}</h2>
                     <p>{{ room.message.text }}</p>
@@ -34,12 +34,15 @@
         </ion-list>
 
         <ion-list *ngSwitchWhen="'private'">
-            <ion-item *ngFor="let pr of private">
-                <ion-thumbnail item-left>
-                    <img src="img/thumbnail-kitten-1.jpg">
-                </ion-thumbnail>
-                <h2>Luna</h2>
-            </ion-item>
+            <ion-item-sliding *ngFor="let pr of privateRooms">
+                <button ion-item no-border (click)="openPrivateRoom(pr.friend.id)">
+                    <ion-avatar *ngIf="pr.img!=null" item-left>
+                        <img src="{{ pr.img }}">
+                    </ion-avatar>
+                    <h2>{{ pr.friend.name }}</h2>
+                    <p>{{ pr.message.text }}</p>
+                </button>
+            </ion-item-sliding>
         </ion-list>
     </div>
 

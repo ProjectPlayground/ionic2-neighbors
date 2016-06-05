@@ -14,7 +14,7 @@ var Page3 = (function () {
     }
     Page3 = __decorate([
         ionic_angular_1.Page({
-            templateUrl: 'build/pages/page3/page3.html'
+            templateUrl: 'build/pages/page3/neighbors.page.html'
         }), 
         __metadata('design:paramtypes', [])
     ], Page3);

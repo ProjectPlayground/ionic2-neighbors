@@ -1,0 +1,34 @@
+<ion-navbar *navbar>
+    <ion-title>
+        {{ neighbor.firstName }} {{ neighbor.lastName }}
+    </ion-title>
+</ion-navbar>
+
+<ion-content>
+    <div class="details">
+        <img src="{{neighbor.img}}" width="100" height="100"/>
+        <h4>{{ neighbor.firstName }} {{ neighbor.lastName }}</h4>
+        <p>
+            {{ neighbor.title }}<br/>
+            {{ neighbor.city }}
+        </p>
+    </div>
+    <ion-list>
+        <ion-item class="item-remove-animate item-avatar item-icon-left" type="item-text-wrap"
+                  href="tel:{{neighbor.officePhone}}">
+            <i class="icon ion-ios-telephone"></i>Call Office<p>{{neighbor.officePhone}}</p>
+        </ion-item>
+        <ion-item class="item-remove-animate item-avatar item-icon-left" type="item-text-wrap"
+                  href="tel:{{neighbor.cellPhone}}">
+            <i class="icon ion-ios-telephone"></i>Call Cell<p>{{neighbor.cellPhone}}</p>
+        </ion-item>
+        <ion-item class="item-remove-animate item-avatar item-icon-left" type="item-text-wrap"
+                  href="sms:{{neighbor.cellPhone}}">
+            <i class="icon ion-chatbox-working"></i>SMS<p>{{neighbor.cellPhone}}</p>
+        </ion-item>
+        <ion-item class="item-remove-animate item-avatar item-icon-left" type="item-text-wrap"
+                  href="mailto:{{neighbor.email}}">
+            <i class="icon ion-ios-email"></i>Email<p>{{neighbor.email}}</p>
+        </ion-item>
+    </ion-list>
+</ion-content>

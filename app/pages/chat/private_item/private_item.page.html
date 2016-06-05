@@ -17,21 +17,21 @@
             <img src="{{ chat.friend.picture }}" />
         </div>
     </div>
-  <!--  <div class="history">
+   <div class="history">
         <div class="wrapper">
-            <div class="msg" ng-repeat="message in chat.messages" ng-class="(message.type == 'in') ? 'in' : 'out'">
+            <div class="msg" *ngFor="let message of chat.messages" [ngClass]="(message.type == 'in') ? 'in' : 'out'">
                 <div class="text">{{ message.text }}</div>
                 <div class="avatar">
-                    <img src="{{ profileImageURL }}" ng-if="(message.type == 'out')" />
-                    <img src="{{ chat.friend.picture }}" ng-if="(message.type == 'in')" />
+                    <img src="{{ profileImageURL }}" *ngIf="(message.type == 'out')" />
+                    <img src="{{ chat.friend.picture }}" *ngIf="(message.type == 'in')" />
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
 </ion-content>
 <ion-toolbar position="bottom" keyboard-attach>
     <ion-item>
-        <input placeholder="Type your message" clearInput [(ngModel)]="message" (click)="sendMessage(); closeKeyboard()"/>
+        <ion-input placeholder="Type your message" clearInput [(ngModel)]="message" (click)="sendMessage(); closeKeyboard()"></ion-input>
         <button outline item-right class="button button-clear" (click)="send(message)">
             Send
         </button>

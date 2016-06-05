@@ -2,7 +2,14 @@
   <button menuToggle>
     <ion-icon name="menu"></ion-icon>
   </button>
+
   <ion-title>Events</ion-title>
+
+  <ion-buttons end>
+    <button (click)="presentFilter()">
+      <ion-icon name="create"></ion-icon>
+    </button>
+  </ion-buttons>
 </ion-navbar>
 
 <ion-content class="outer-content events-list">

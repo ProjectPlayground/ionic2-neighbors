@@ -1,3 +1,7 @@
+.chat {
+  background-color: white;
+}
+
 .chat .header {
   text-align: right;
 }
@@ -59,53 +63,53 @@
   position: absolute;
 }
 
-.history .msg {
+.history .wrapper .msg {
   position: relative;
   margin-bottom: 15px;
 }
 
-.history .msg .text {
+.history .wrapper .msg .text {
   padding: 10px;
   border-radius: 20px;
   font-size: 14px;
   display: inline-block;
 }
 
-.history .msg .avatar {
+.history .wrapper .msg .avatar {
   position: absolute;
   bottom: 0;
 }
 
-.history .msg .avatar img {
+.history .wrapper .msg .avatar img {
   width: 30px;
   border-radius: 30px;
 }
 
-.history .msg.in {
+.history .wrapper .msg.in {
   padding-right: 33px;
   text-align: right;
 }
 
-.history .msg.in .text {
+.history .wrapper .msg.in .text {
   background-color: #ecf0f6;
   padding-right: 31px;
   padding-left: 24px;
   text-align: left;
 }
 
-.history .msg.in .avatar {
+.history .wrapper .msg.in .avatar {
   right: 0;
 }
 
-.history .msg.out {
+.history .wrapper .msg.out {
   padding-left: 33px;
 }
 
-.history .msg.out .avatar {
+.history .wrapper .msg.out .avatar {
   left: 0;
 }
 
-.history .msg.out .text {
+.history .wrapper .msg.out .text {
   background-color: #4d8dfa;
   color: #fff;
   padding-left: 31px;

@@ -1,0 +1,144 @@
+.chat {
+  background-color: white;
+}
+
+.chat .header {
+  text-align: right;
+}
+
+.chat .header .avatar {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  top: 10px;
+  right: 4px;
+}
+
+.chat .header .friend-data {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  top: 13px;
+  right: 19px;
+}
+
+.chat .header .friend-data .last-seen {
+  font-size: 11px;
+  color: #cbced2;
+}
+
+.chat .header .name {
+  font-size: 15px;
+}
+
+.chat .has-header {
+  top: 0;
+}
+
+.history {
+  padding: 77px 0 0 29px;
+  margin-top: -60px;
+}
+
+.history .wrapper {
+  padding: 25px 29px 15px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.history .wrapper .inner {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 45px;
+  padding-right: 29px;
+}
+
+.history .wrapper .scrollbar-y {
+  width: 5px;
+  height: 70px;
+  background: #005cf7;
+  border-radius: 5px;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+.history .wrapper .msg {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.history .wrapper .msg .text {
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.history .wrapper .msg .avatar {
+  position: absolute;
+  bottom: 0;
+}
+
+.history .wrapper .msg .avatar img {
+  width: 30px;
+  border-radius: 30px;
+}
+
+.history .wrapper .msg.in {
+  padding-right: 33px;
+  text-align: right;
+}
+
+.history .wrapper .msg.in .text {
+  background-color: #ecf0f6;
+  padding-right: 31px;
+  padding-left: 24px;
+  text-align: left;
+}
+
+.history .wrapper .msg.in .avatar {
+  right: 0;
+}
+
+.history .wrapper .msg.out {
+  padding-left: 33px;
+}
+
+.history .wrapper .msg.out .avatar {
+  left: 0;
+}
+
+.history .wrapper .msg.out .text {
+  background-color: #4d8dfa;
+  color: #fff;
+  padding-left: 31px;
+  padding-right: 24px;
+}
+
+.send-message {
+  background: #ecf0f6;
+  height: 45px;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+}
+
+.send-message .form-text {
+  border: none;
+  width: 100%;
+  color: #bdbdbd;
+  outline: none;
+  background: #ecf0f6;
+  padding-right: 60px;
+}
+
+.send-message .form-submit {
+  background: none;
+  border: none;
+  color: #005cf7;
+  font-size: 14px;
+  position: absolute;
+  right: 15px;
+  top: 11px;
+}

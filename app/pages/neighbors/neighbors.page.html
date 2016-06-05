@@ -1,0 +1,30 @@
+<ion-navbar *navbar>
+    <button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+        Tab 3
+    </ion-title>
+</ion-navbar>
+
+<ion-content>
+    <ion-searchbar [(ngModel)]="searchQuery" (input)="getItems($event)"></ion-searchbar>
+    <ion-list>
+        <ion-item-sliding *ngFor="let item of neighbors">
+            <button ion-item no-border (click)="openDetail(item.id)">
+                <ion-avatar item-left>
+                    <img src="{{ item.img }}">
+                </ion-avatar>
+                <h3>{{ item.firstName }} {{ item.lastName }} </h3>
+                <p>
+                    <ion-icon name="car"></ion-icon>
+                    {{ item.auto }}
+                </p>
+                <p>
+                    <ion-icon name="home"></ion-icon>
+                    {{ item.flatNumber }}
+                </p>
+            </button>
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>
