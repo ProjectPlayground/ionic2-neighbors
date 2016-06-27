@@ -4,6 +4,9 @@ import {EventsPage} from '../events/events.page';
 import {ChatPage} from '../chat/chat.page';
 import {NeighborsPage} from '../neighbors/neighbors.page';
 
+import {FirebaseService} from '../../services/firebase.service';
+
+
 
 @Component({
     templateUrl: 'build/pages/apptabs/apptabs.html'
@@ -18,7 +21,7 @@ export class TabsPage {
 
     tabIndex;
 
-    constructor (params:NavParams){
+    constructor (params:NavParams, db:FirebaseService){
         this.tabIndex = params.get("tabIndex");
     }
 

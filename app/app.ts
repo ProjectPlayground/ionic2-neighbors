@@ -1,14 +1,17 @@
-import {ViewChild} from '@angular/core';
+import {ViewChild, Component} from '@angular/core';
 import {App, Events, Platform, MenuController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
 import {NeighborsService} from './services/neighbors.service';
 import {ChatService} from './services/chat.service';
+import {FirebaseService} from './services/firebase.service';
+import {UserService} from './services/user.service';
+import {EventsService} from "./services/events.service";
+import {LogService} from "./services/log.service";
 
 import {TabsPage} from './pages/apptabs/apptabs';
 import {LoginPage} from './pages/login/login.page';
-import {SignupPage} from './pages/signup/signup.page';
-import {NeighborsPage} from './pages/neighbors/neighbors.page';
+import {AvatarComponent} from "./component/avatar.component";
 
 @App({
     templateUrl: 'build/app.html',
@@ -19,30 +22,41 @@ import {NeighborsPage} from './pages/neighbors/neighbors.page';
     queries: {
         nav: new ViewChild('content')
     },
-    providers: [NeighborsService, ChatService]
+    directives: [AvatarComponent],
+    providers: [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService]
 })
 export class MyApp {
-    rootPage:any = TabsPage;
-    menu;
+    rootPage:any = LoginPage;
+    menu:MenuController;
+    events:Events;
     loggedInPages;
     loggedOutPages;
     nav;
+    db;
+    userService;
+    currentUser;
 
-    constructor(events:Events, platform:Platform, menu:MenuController) {
+    constructor(events:Events, platform:Platform, menu:MenuController, db:FirebaseService, us:UserService) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
+            if (this.db.isLogged()) {
+                this.rootPage = TabsPage;
+                this.enableMenu(true);
+            } else {
+                this.rootPage = LoginPage;
+                this.enableMenu(false);
+            }
         });
-//        platform.fullScreen();
-
+        this.events = events;
+        this.db = db;
+        this.userService = us;
         this.menu = menu;
-
-        this.loggedInPages = [
-            {title: 'Login', component: LoginPage, icon: 'log-out'}
-        ];
-
         this.loggedOutPages = [
+            {title: 'Login', component: LoginPage, icon: 'log-in'}
+        ];
+        this.loggedInPages = [
             {title: 'Соседи', component: TabsPage, icon: 'md-people', index: 3},
             {title: 'Парковка', component: LoginPage, icon: 'car'},
             {title: 'Двор', component: LoginPage, icon: 'map'},
@@ -50,18 +64,22 @@ export class MyApp {
             {title: 'Коммунальные услуги', component: LoginPage, icon: 'calculator'},
             {title: 'Доска объявлений', component: LoginPage, icon: 'calendar'},
             {title: 'Не забыть', component: LoginPage, icon: 'information-circle'},
-            {title: 'Logout', component: SignupPage, icon: 'log-out'}
+            {title: 'Выход', icon: 'log-out', action: 'logout'}
         ];
-
-        this.enableMenu('true');
+        this.listenToLoginEvents();
     }
 
-    enableMenu(loggedIn) {
+    private enableMenu(loggedIn) {
         this.menu.enable(loggedIn, "loggedInMenu");
         this.menu.enable(!loggedIn, "loggedOutMenu");
     }
 
     openPage(page) {
+        if (page.action === 'logout') {
+            // Give the menu time to close before changing to logged out
+            console.log("logout press in menu");
+            this.db.logout();
+        }
         // find the nav component and set what the root page should be
         // reset the nav to remove previous pages and only have this page
         // we wouldn't want the back button to show in this scenario
@@ -70,12 +88,25 @@ export class MyApp {
         } else {
             this.nav.setRoot(page.component);
         }
+    }
 
-        if (page.title === 'Logout') {
-            // Give the menu time to close before changing to logged out
-            setTimeout(() => {
-                //this.userData.logout();
-            }, 1000);
-        }
+    private listenToLoginEvents() {
+        this.events.subscribe('user:login', () => {
+            this.userService.loadUserData();
+        });
+
+        this.events.subscribe('user:loaded', () => {
+            console.log(" listenToLoginEvents user:loaded");
+            this.enableMenu(true);
+            this.rootPage = TabsPage;
+            this.currentUser = this.userService.getCurrentUser();
+        });
+
+        this.events.subscribe('user:logout', () => {
+            console.log(" listenToLoginEvents user:logout");
+            this.enableMenu(false);
+            this.rootPage = LoginPage;
+            UserService.user = null;
+        });
     }
 }
