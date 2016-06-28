@@ -24,7 +24,7 @@ export class EventsService {
         return Observable.create(function (observer:any) {
             // Looking for how to type this well.
             let arr:any[] = [];
-            const keyFieldName = "$$fbKey";
+            const keyFieldName = "$key";
             // Start out empty, until data arrives
             observer.next(arr.slice()); // Safe copy
 
