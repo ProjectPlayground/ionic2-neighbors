@@ -12,6 +12,8 @@ import {LogService} from "./services/log.service";
 import {TabsPage} from './pages/apptabs/apptabs';
 import {LoginPage} from './pages/login/login.page';
 import {AvatarComponent} from "./component/avatar.component";
+import {GroupsService} from "./services/groups.service";
+import {GroupsPage} from "./pages/groups/groups.page";
 
 @App({
     templateUrl: 'build/app.html',
@@ -23,7 +25,7 @@ import {AvatarComponent} from "./component/avatar.component";
         nav: new ViewChild('content')
     },
     directives: [AvatarComponent],
-    providers: [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService]
+    providers: [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService]
 })
 export class MyApp {
     rootPage:any = LoginPage;
@@ -97,9 +99,15 @@ export class MyApp {
 
         this.events.subscribe('user:loaded', () => {
             console.log(" listenToLoginEvents user:loaded");
-            this.enableMenu(true);
-            this.rootPage = TabsPage;
-            this.currentUser = this.userService.getCurrentUser();
+            this.currentUser = UserService.getCurrentUser();
+            if (typeof this.currentUser.memberOf === 'undefined' || this.currentUser.memberOf == null) {
+                LogService.logMessage("this.currentUser is undefined");
+                this.rootPage = GroupsPage;
+            } else {
+                //if user in group - show interface
+                this.enableMenu(true);
+                this.rootPage = TabsPage;
+            }
         });
 
         this.events.subscribe('user:logout', () => {

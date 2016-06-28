@@ -1,0 +1,30 @@
+<ion-navbar *navbar>
+    <ion-title>
+        Список ЖК/ОСМД
+    </ion-title>
+    <ion-buttons end>
+        <button (click)="logout()">
+            Выход
+        </button>
+    </ion-buttons>
+</ion-navbar>
+
+<ion-content>
+    <ion-searchbar [(ngModel)]="searchQuery" (input)="getItems()"></ion-searchbar>
+    <ion-list>
+        <ion-list-header>
+            ЖК / ОСМД / Кооперативы
+        </ion-list-header>
+        <ion-item-sliding *ngFor="let item of groups">
+            <ion-item [class.group_active]="activeItem!=null && activeItem===item" (click)="doAction(item)">
+                <ion-avatar item-left>
+                    <img *ngIf="item.img==null" src="build/img/group_logo.jpg">
+                    <img *ngIf="item.img!=null" [src]="item.img">
+                </ion-avatar>
+                <h3>{{ item.name }} </h3>
+                <ion-icon *ngIf="activeItem==null || activeItem!==item" item-right name="log-in"></ion-icon>
+                <ion-icon *ngIf="activeItem!=null && activeItem===item" item-right name="log-out"></ion-icon>
+            </ion-item>
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>

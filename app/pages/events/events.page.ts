@@ -1,8 +1,11 @@
-import {Page} from 'ionic-angular';
-import {EventsService} from "../../services/events.service";
-import {LogService} from "../../services/log.service";
-import {UserService} from "../../services/user.service";
-import {Observable} from "rxjs/Observable";
+import {Modal, Page, Platform, NavController, NavParams, ViewController} from 'ionic-angular';
+import {EventsService} from '../../services/events.service';
+import {UserService} from '../../services/user.service';
+import {Observable} from 'rxjs/Observable';
+
+import {IUser} from '../../model/user';
+
+import {AddEventPage} from './add_event/add_event.page'
 
 
 @Page({
@@ -10,8 +13,17 @@ import {Observable} from "rxjs/Observable";
 })
 export class EventsPage {
     private items:Observable<any>;
+    private nav:NavController;
+    private us:IUser;
 
-    constructor(es:EventsService) {
-        this.items = es.getEventsWithout();
+    constructor(es:EventsService, nav:NavController) {
+        this.items = es.getEvents();
+        this.nav = nav;
+        this.us = UserService.user;
+    }
+
+    public createEvent() {
+        let modal = Modal.create(AddEventPage, {charNum: 1});
+        this.nav.present(modal);
     }
 }

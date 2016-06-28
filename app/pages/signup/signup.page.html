@@ -9,30 +9,30 @@
 
     <ion-list>
         <div class="logo">
-            <img src="img/appicon.svg">
+            <img src="build/img/logo.png">
         </div>
 
-        <form #signupForm="ngForm" novalidate>
+        <form [ngFormModel]="form" novalidate>
             <ion-item>
-                <ion-label floating primary>Username</ion-label>
-                <ion-input [(ngModel)]="signup.username" ngControl="username" type="text" #username="ngForm" required>
+                <ion-label floating primary>Логин</ion-label>
+                <ion-input [ngFormControl]="login" type="email" required>
                 </ion-input>
             </ion-item>
-            <p [hidden]="username.valid || submitted == false" danger padding-left>
-                Username is required
+            <p [hidden]="login.valid" danger padding-left>
+                Логин является обязательны
             </p>
 
             <ion-item>
-                <ion-label floating primary>Password</ion-label>
-                <ion-input [(ngModel)]="signup.password" ngControl="password" type="password" #password="ngForm" required>
+                <ion-label floating primary>Пароль</ion-label>
+                <ion-input [ngFormControl]="password" type="password" required>
                 </ion-input>
             </ion-item>
-            <p [hidden]="password.valid || submitted == false" danger padding-left>
-                Password is required
+            <p [hidden]="password.valid" danger padding-left>
+                Пароль является обязательным (мин. 8 символов)
             </p>
 
             <div padding>
-                <button (click)="onSignup(signupForm)" type="submit" primary block>Create</button>
+                <button (click)="onSignup($event)" primary block>Создать аккаунт</button>
             </div>
         </form>
     </ion-list>

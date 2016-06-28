@@ -15,7 +15,7 @@
 
     <form [ngFormModel]="authForm" novalidate>
         <ion-item [class.error]="!login.valid && login.touched">
-            <ion-label floating primary>Пользователь</ion-label>
+            <ion-label floating primary>Пользователь(email)</ion-label>
             <ion-input [ngFormControl]="login" type="text" required></ion-input>
         </ion-item>
 

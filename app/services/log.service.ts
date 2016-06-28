@@ -5,7 +5,7 @@ import {FirebaseService} from './firebase.service'
 @Injectable()
 export class LogService {
 
-    public static logMessage(str, obj) {
+    public static logMessage(str, obj?) {
         var buff = str;
         if (typeof obj !== "undefined") {
             buff = buff + LogService.simpleStringify(obj);

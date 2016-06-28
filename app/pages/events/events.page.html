@@ -5,8 +5,8 @@
 
     <ion-title>Events</ion-title>
 
-    <ion-buttons end>
-        <button (click)="presentFilter()">
+    <ion-buttons *ngIf="us.isAdmin" end>
+        <button (click)="createEvent()">
             <ion-icon name="create"></ion-icon>
         </button>
     </ion-buttons>
@@ -14,21 +14,17 @@
 
 <ion-content class="outer-content events-list">
     <ion-card *ngFor="let item of items | async">
-
         <ion-item>
             <ion-avatar item-left>
-                <img src="{{item.user.img}}">
+                <img src="{{item.user.photoURL}}">
             </ion-avatar>
-            <h2 [(innerHTML)]="item.user.auto"></h2>
+            <h2 [(innerHTML)]="item.user.displayName"></h2>
             <p>30 мая 2016</p>
         </ion-item>
-
         <img *ngIf="item.img!=null" src="{{item.img}}">
-
         <ion-card-content>
             <p>{{item.text}}</p>
         </ion-card-content>
-
     </ion-card>
 
 </ion-content>

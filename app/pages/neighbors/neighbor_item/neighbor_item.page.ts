@@ -8,7 +8,7 @@ export class NeighborItemPage {
     neighbor;
 
     constructor(data:NeighborsService, navParams:NavParams) {
-        this.neighbor = data.getNeighbor(navParams.get("id"));
+        this.neighbor = navParams.get("item");
     }
 
 }

@@ -1,6 +1,9 @@
-import {Page, NavController, Events} from 'ionic-angular';
+import {Page, NavController, Events, Toast} from 'ionic-angular';
 import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, AbstractControl} from '@angular/common';
 import {FirebaseService} from '../../services/firebase.service';
+import {SignupPage} from "../signup/signup.page";
+import {ValidationService} from "../../services/validator.service";
+import {LogService} from "../../services/log.service";
 
 @Page({
     templateUrl: 'build/pages/login/login.page.html',
@@ -20,7 +23,7 @@ export class LoginPage {
         this.events = events;
 
         this.authForm = fb.group({
-            'login': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+            'login': ['', Validators.compose([Validators.required, ValidationService.emailValidator])],
             'password': ['', Validators.compose([Validators.required, Validators.minLength(8)])]
         });
 
@@ -28,20 +31,15 @@ export class LoginPage {
         this.password = this.authForm.controls['password'];
 
         this.login._value = "test@test.com";
-        this.password._value = "123456";}
+        this.password._value = "123456";
+    }
 
     public onLogin(event) {
         this.db.auth.signInWithEmailAndPassword(this.login.value, this.password.value).then((result)=> {
-            // The signed-in user info.
             var user = result.user;
-            // ...
-            console.log("Email user " + user);
+            LogService.logMessage("Email user ", user);
         }).catch((error)=> {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            // ...
-            console.log(error);
+            this.presentToast(error);
             return;
         });
     }
@@ -53,7 +51,7 @@ export class LoginPage {
             var token = result.credential.accessToken;
             var user = result.user;
             // ...
-            console.log("Facebook user " + user);
+            LogService.logMessage("Facebook user ", user);
         }).catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
@@ -64,7 +62,7 @@ export class LoginPage {
             var credential = error.credential;
             // ...
             this.events.publish("user:logout");
-            console.error(error);
+            this.presentToast(error);
         });
 
     }
@@ -77,7 +75,7 @@ export class LoginPage {
             // The signed-in user info.
             var user = result.user;
             // ...
-            console.log("Google user " + user);
+            LogService.logMessage("Google user ", user);
         }).catch((error)=> {
             // Handle Errors here.
             var errorCode = error.code;
@@ -88,8 +86,25 @@ export class LoginPage {
             var credential = error.credential;
             // ...
             this.events.publish("user:logout");
-            console.error(error);
+            this.presentToast(error);
         });
+    }
+
+    private presentToast(message) {
+        let toast = Toast.create({
+            message: message,
+            duration: 3000
+        });
+
+        toast.onDismiss(() => {
+            console.log('Dismissed toast');
+        });
+
+        this.nav.present(toast);
+    }
+
+    public registerUser(event) {
+        this.nav.push(SignupPage);
     }
 
 }

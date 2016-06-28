@@ -18,7 +18,7 @@ export class EventsService {
         this.us = us;
     }
 
-    public getEventsWithout():Observable<any> {
+    public getEvents():Observable<any> {
         var fs = this.fs;
         var us = this.us;
         return Observable.create(function (observer:any) {
@@ -37,16 +37,17 @@ export class EventsService {
                 }
             }
 
-            function child_added(skey:any, snapshot:any) {
-                console.log("add");
+            function child_added(skey:any, snapshot:any, prevChildKey:string) {
+                LogService.logMessage("Events child_added");
                 let child = snapshot;
                 child[keyFieldName] = skey;
-                arr.push(child);
+                let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);
+                arr.splice(arr.indexOf(prevEntry) + 1, 0, child);
                 observer.next(arr.slice()); // Safe copy
             }
 
             function child_changed(skey:any, snapshot:any) {
-                console.log("update");
+                LogService.logMessage("Events child_changed");
                 let key = skey;
                 let child = snapshot;
                 // TODO replace object rather than mutate it?
@@ -58,6 +59,7 @@ export class EventsService {
             }
 
             function child_removed(skey:any, snapshot:any) {
+                LogService.logMessage("Events child_removed");
                 let key = skey;
                 let child = snapshot;
                 let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
@@ -67,31 +69,36 @@ export class EventsService {
                 observer.next(arr.slice()); // Safe copy
             }
 
-            fs.db.ref("events/" + us.getCurrentUser().memberOf).limitToLast(10).on('child_added', snapshot=> {
+            fs.db.ref("events/" + UserService.getCurrentUser().memberOf).limitToLast(10).on('child_added', (snapshot, prevChildKey)=> {
                 fs.db.ref("users/" + snapshot.val().user_id).once("value").then((snapshot2)=> {
                     let event = new Event(snapshot.val().name, snapshot.val().text, snapshot.val().img);
-                    event.user = new User(snapshot2.val().auto, snapshot2.val().memberOf);
-                    if (typeof snapshot2.val().img !== 'undefined')
-                        event.user.img = snapshot2.val().img;
-                    child_added(snapshot.key, event);
+                    event.user_id = snapshot.val().user_id;
+                    event.user = UserService.mapUser(snapshot2.val());
+                    child_added(snapshot.key, event, prevChildKey);
                 });
             });
 
 
-            fs.db.ref("events/" + us.getCurrentUser().memberOf).limitToLast(10).on('child_changed', (snapshot)=> {
+            fs.db.ref("events/" + UserService.getCurrentUser().memberOf).limitToLast(10).on('child_changed', (snapshot)=> {
                 fs.db.ref("users/" + snapshot.val().user_id).once("value").then((snapshot2)=> {
                     let event = new Event(snapshot.val().name, snapshot.val().text, snapshot.val().img);
-                    event.user = new User(snapshot2.val().auto, snapshot2.val().memberOf);
-                    if (typeof snapshot2.val().img !== 'undefined')
-                        event.user.img = snapshot2.val().img;
+                    event.user_id = snapshot.val().user_id;
+                    event.user = UserService.mapUser(snapshot2.val());
                     child_changed(snapshot.key, event);
                 });
             });
 
-            fs.db.ref("events/" + us.getCurrentUser().memberOf).limitToLast(10).on('child_removed', (snapshot)=> {
+            fs.db.ref("events/" + UserService.getCurrentUser().memberOf).limitToLast(10).on('child_removed', (snapshot)=> {
                 child_removed(snapshot.key, event);
             })
         })
+    }
+
+    public addEvent(name:string, text:string, img:string, callback) {
+        let event = new Event(name, text, img);
+        event.user = null;
+        event.user_id = UserService.getCurrentUser().uid;
+        this.fs.db.ref("events/" + UserService.getCurrentUser().memberOf).push().set(event, callback);
     }
 
 }

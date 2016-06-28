@@ -1,31 +1,35 @@
 import {Page, NavController} from 'ionic-angular';
 import {NeighborItemPage} from '../neighbors/neighbor_item/neighbor_item.page';
 import {NeighborsService} from '../../services/neighbors.service';
+import {IUser} from "../../model/user";
 
 @Page({
     templateUrl: 'build/pages/neighbors/neighbors.page.html',
 })
 export class NeighborsPage {
-    data;
-    sourceNeighbors;
-    neighbors;
-    searchQuery;
-    nav;
+    data:NeighborsService;
+    sourceNeighbors:IUser[];
+    neighbors:IUser[];
+    searchQuery:string;
+    nav:NavController;
 
-    constructor(data: NeighborsService, nav: NavController) {
+    constructor(data:NeighborsService, nav:NavController) {
         this.searchQuery = '';
         this.nav = nav;
         this.data = data;
-        this.neighbors = this.sourceNeighbors = this.data.getAllNeighbors();
+        data.getMembersOfCurrentGroup().subscribe(data=> {
+            this.sourceNeighbors = this.neighbors = data;
+            //render if filter is active
+            this.getItems();
+        });
+
     }
 
-    getItems(event) {
-        let q = event.value;
+    getItems() {
+        let q = this.searchQuery;
         this.neighbors = this.sourceNeighbors.filter((v) => {
             if (
-                (v.firstName.toLowerCase().indexOf(q.toLowerCase()) > -1) ||
-                (v.lastName.toLowerCase().indexOf(q.toLowerCase()) > -1) ||
-                (v.flatNumber.toLowerCase().indexOf(q.toLowerCase()) > -1) ||
+                (v.displayName.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1) ||
                 // John Resig said:
                 // If you're searching and replacing through a string with a static search and a static
                 // replace it's faster to perform the action with .split("match").join("replace") -
@@ -40,7 +44,7 @@ export class NeighborsPage {
         })
     }
 
-    openDetail(id) {
-        this.nav.push(NeighborItemPage, {"id": id})
+    openDetail(item) {
+        this.nav.push(NeighborItemPage, {"item": item})
     }
 }
