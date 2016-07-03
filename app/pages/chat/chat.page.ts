@@ -1,53 +1,30 @@
 import {Page, Platform, NavController} from 'ionic-angular';
 import {RoomItemPage} from  '../chat/room_item/room_item.page';
 import {PrivateItemPage} from  '../chat/private_item/private_item.page';
+import {ChatService} from "../../services/chat.service";
+import {IRoom} from "../../model/room";
+import {Observable} from "rxjs/Observable";
+import {UserService} from "../../services/user.service";
+import {LogService} from "../../services/log.service";
+import {IUser} from "../../model/user";
 
 @Page({
     templateUrl: 'build/pages/chat/chat.page.html',
 })
 export class ChatPage {
+    user:IUser;
     type:string = "rooms";
     isAndroid:boolean = false;
-    nav;
-    rooms;
-    privateRooms;
+    nav:NavController;
+    rooms:Observable<IRoom[]>;
+    privateRooms:Observable<IRoom[]>;
 
-    constructor(platform:Platform, nav:NavController) {
+    constructor(platform:Platform, nav:NavController, cs:ChatService) {
         this.isAndroid = platform.is('android');
         this.nav = nav;
-        this.rooms = [
-            {
-                img: "build\\img\\avatar.png",
-                friend: {
-                    id: 123,
-                    name: "Friend name"
-                },
-                message: {
-                    text: "Text message"
-                }
-            },
-            {
-                friend: {
-                    id: 1254,
-                    name: "Friend name 2"
-                }
-                ,
-                message: {
-                    text: "Text message 2"
-                }
-            }
-        ];
-        this.privateRooms = [
-            {
-                img: "build\\img\\avatar.png",
-                friend: {
-                    id: 123,
-                    name: "Private room of friends"
-                },
-                message: {
-                    text: "Text message"
-                }
-            }];
+        this.user = UserService.getCurrentUser();
+        this.rooms = cs.getRooms("public_rooms/", "public_messages/");
+        this.privateRooms = cs.getRooms("private_rooms/", "private_messages/");
     }
 
     openChatRoom(id) {
@@ -56,6 +33,14 @@ export class ChatPage {
 
     openPrivateRoom(id) {
         this.nav.push(PrivateItemPage, {chatId: id});
+    }
+
+    createPrivateTopic() {
+        LogService.logMessage("createPrivateTopic");
+    }
+
+    createPublicTopic() {
+        LogService.logMessage("createPublicTopic");
     }
 
 }
