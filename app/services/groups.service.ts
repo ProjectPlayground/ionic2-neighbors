@@ -6,7 +6,7 @@ import {UserService} from './user.service';
 import {observableFirebaseObject, observableFirebaseArray} from './firebase.func'
 import {Observable} from 'rxjs/Observable';
 import {Event} from '../model/event'
-import {User} from '../model/user'
+import {User, IUser} from '../model/user'
 import {IGroup, Group} from "../model/group";
 
 @Injectable()
@@ -38,8 +38,8 @@ export class GroupsService {
         );
     }
 
-    public removeInvite(group:IGroup, callback) {
-        let ref = this.fs.db.ref("invite/" + group.$key + "/" + this.fs.auth.currentUser.uid);
+    public removeInvite(group:IGroup, user:IUser, callback) {
+        let ref = this.fs.db.ref("invite/" + group.$key + "/" + user.$key);
         ref.on('value', function (snapshot) {
             //http://stackoverflow.com/questions/11633008/firebase-child-removed-not-being-called
             if (snapshot.val() == null) {

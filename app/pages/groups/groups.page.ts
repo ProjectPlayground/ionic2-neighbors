@@ -2,8 +2,8 @@ import {Page, NavController, Toast} from 'ionic-angular';
 import {GroupsService} from '../../services/groups.service';
 import {LogService} from "../../services/log.service";
 import {IGroup} from "../../model/group";
-import {Observable} from 'rxjs/Observable';
 import {FirebaseService} from "../../services/firebase.service";
+import {UserService} from "../../services/user.service";
 
 
 @Page({
@@ -41,7 +41,7 @@ export class GroupsPage {
     doAction(item) {
         LogService.logMessage("doAction in GroupPage");
         if (this.activeItem === item) {
-            this.data.removeInvite(item, ()=> {
+            this.data.removeInvite(item, UserService.getCurrentUser(), ()=> {
                 this.presentToast("Заявка на вступление в группу отменена");
                 this.activeItem = null;
             });
@@ -53,7 +53,7 @@ export class GroupsPage {
         }
     }
 
-    logout(){
+    logout() {
         this.fs.logout();
     }
 

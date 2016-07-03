@@ -22,6 +22,7 @@ export class UserService {
         this.fs.db.ref("users/" + this.fs.auth.currentUser.uid).once('value').then((snapshot)=> {
                 if (snapshot.exists()) {
                     UserService.user = UserService.mapUser(snapshot.val());
+                    UserService.user.$key = snapshot.key;
                     for (var key in this.fs.auth.currentUser) {
                         if (this.fs.auth.currentUser[key] != null) {
                             UserService.user[key] = this.fs.auth.currentUser[key];
@@ -34,6 +35,8 @@ export class UserService {
                         }
                     });
                     this.events.publish("user:loaded");
+                } else {
+                    this.events.publish("user:new");
                 }
             }
         )
@@ -65,5 +68,150 @@ export class UserService {
         return user;
     }
 
+    public updateUser(user:IUser, callback) {
+        LogService.logMessage("updateUser " + user.$key);
+        this.fs.db.ref("users/" + this.fs.auth.currentUser.uid).update({
+                'displayName': user.displayName,
+                'auto': user.auto,
+                'flatNumber': user.flatNumber,
+                'houseNumber': user.houseNumber,
+                'mail': user.mail,
+                'mobile1': user.mobile1,
+                'photoURL' : user.photoURL,
+                'mobile2': user.mobile2
+            },
+            callback);
+    }
+
+    getInvites():Observable<IUser[]> {
+        var fs = this.fs;
+        /*  return Observable.create(function (observer:any) {
+         // Looking for how to type this well.
+         let arr:any[] = [];
+         const keyFieldName = "$key";
+         // Start out empty, until data arrives
+         observer.next(arr.slice()); // Safe copy
+
+         function findInArray<T>(list:T[], predicate:Function) {
+         for (var i = 0; i < list.length; i++) {
+         const value:T = list[i];
+         if (predicate.call(this, value, i, list)) {
+         return value;
+         }
+         }
+         }
+
+         function child_added(skey:any, snapshot:any, prevChildKey:string) {
+         LogService.logMessage("Events child_added");
+         let child = snapshot;
+         child[keyFieldName] = skey;
+         let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);
+         arr.splice(arr.indexOf(prevEntry) + 1, 0, child);
+         observer.next(arr.slice()); // Safe copy
+         }
+
+         function child_changed(skey:any, snapshot:any) {
+         LogService.logMessage("Events child_changed");
+         let key = skey;
+         let child = snapshot;
+         // TODO replace object rather than mutate it?
+         let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
+         if (x) {
+         for (var k in child) x[k] = child[k];
+         }
+         observer.next(arr.slice()); // Safe copy
+         }
+
+         function child_removed(skey:any, snapshot:any) {
+         LogService.logMessage("Events child_removed");
+         let key = skey;
+         let child = snapshot;
+         let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
+         if (x) {
+         arr.splice(arr.indexOf(x), 1);
+         }
+         observer.next(arr.slice()); // Safe copy
+         }
+
+         LogService.logMessage("getInvites");
+
+         fs.db.ref("invite/" + UserService.getCurrentUser().memberOf).on('child_added', (snapshot, prevChildKey)=> {
+         LogService.logMessage("child_added", snapshot.val());
+         fs.db.ref("users/" + snapshot.val()).once("value").then((snapshot2)=> {
+         let user = UserService.mapUser(snapshot2.val());
+         child_added(snapshot.key, user, prevChildKey);
+         });
+         });
+
+
+         fs.db.ref("invite/" + UserService.getCurrentUser().memberOf).on('child_changed', (snapshot)=> {
+         LogService.logMessage("child_changed", snapshot.val());
+         fs.db.ref("users/" + snapshot.val()).once("value").then((snapshot2)=> {
+         let user = UserService.mapUser(snapshot2.val());
+         child_changed(snapshot.key, user);
+         });
+         });
+
+         fs.db.ref("invite/" + UserService.getCurrentUser().memberOf).on('child_removed', (snapshot)=> {
+         LogService.logMessage("child_removed", snapshot.val());
+         fs.db.ref("users/" + snapshot.val()).once("value").then((snapshot2)=> {
+         let user = UserService.mapUser(snapshot2.val());
+         child_removed(snapshot.key, user);
+         });
+         })
+         })
+         */
+        return Observable.create(function (observer:any) {
+            // Looking for how to type this well.
+            let arr:any[] = [];
+            const keyFieldName = "$key";
+            // Start out empty, until data arrives
+            observer.next(arr.slice()); // Safe copy
+
+            function findInArray<T>(list:T[], predicate:Function) {
+                for (var i = 0; i < list.length; i++) {
+                    const value:T = list[i];
+                    if (predicate.call(this, value, i, list)) {
+                        return value;
+                    }
+                }
+            }
+
+            function child_added(skey:any, snapshot:any) {
+                LogService.logMessage("Events child_added");
+                let child = snapshot;
+                child[keyFieldName] = skey;
+                arr.push(child);
+                observer.next(arr.slice());
+            }
+
+
+            fs.db.ref("invite/" + UserService.getCurrentUser().memberOf).on('value', (snapshot)=> {
+                LogService.logMessage("value", snapshot.val());
+                arr = [];
+                if (snapshot.exists()) {
+                    Object.keys(snapshot.val()).forEach(function (userSnap) {
+                        let userId = userSnap;
+                        LogService.logMessage("getInvites ", userId);
+                        fs.db.ref("users/" + userId).once("value").then((snapshot2)=> {
+                            let user = UserService.mapUser(snapshot2.val());
+                            LogService.logMessage("getInvites loadedUser ", user);
+                            child_added(userId, user);
+                        });
+                    });
+                } else {
+                    observer.next(arr.slice());
+                }
+            });
+        });
+    }
+
+    public updateUserGroup(user:IUser, group:string, callback) {
+        LogService.logMessage("updateUserGroup " + user.$key);
+        this.fs.db.ref("users/" + user.$key).update({
+                'member_of': group
+            },
+            callback);
+    }
 
 }

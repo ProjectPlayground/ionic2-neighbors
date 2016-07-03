@@ -1,35 +1,24 @@
 <ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>
-        Соседи
+        Вступление в группу
     </ion-title>
-    <ion-buttons *ngIf="us.isAdmin" end>
-        <button (click)="showInvites()">
-            <ion-icon name="add"></ion-icon>
-        </button>
-    </ion-buttons>
-
 </ion-navbar>
 
 <ion-content>
     <ion-searchbar [(ngModel)]="searchQuery" (input)="getItems()"></ion-searchbar>
     <ion-list>
-        <ion-item-sliding *ngFor="let item of neighbors">
-            <ion-item (click)="openDetail(item)">
+        <ion-item-sliding *ngFor="let item of users">
+            <ion-item (click)="acceptInvite(item)">
                 <ion-avatar item-left>
                     <img src="{{ item.photoURL }}">
                 </ion-avatar>
                 <h3>{{ item.displayName }} </h3>
-                <p *ngIf="item.auto!=null">
-                    <ion-icon name="car"></ion-icon>
-                    {{ item.auto }}
-                </p>
                 <p *ngIf="item.houseNumber!=='' || item.flatNumber!==''">
-                    <ion-icon name="home"></ion-icon>&nbsp;
+                    <ion-icon name="home"></ion-icon>
+                    &nbsp;
                     <span *ngIf="item.houseNumber!==''">{{ item.houseNumber }} / </span> {{ item.flatNumber }}
                 </p>
+                <ion-icon name="add" primary item-right></ion-icon>
             </ion-item>
         </ion-item-sliding>
     </ion-list>

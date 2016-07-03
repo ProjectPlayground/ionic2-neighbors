@@ -1,0 +1,54 @@
+#profileBanner {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  height: 180px;
+}
+
+.bgImageContainer {
+  width: 100%;
+  height: 180px;
+  -webkit-filter: blur(5px);
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+}
+
+.avatar {
+  z-index: 10;
+  height: 100%;
+  position: relative;
+}
+
+.profileAvatar {
+  top: 120px;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  position: absolute;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #fff;
+
+}
+
+.profileAvatar img {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.editAvatar {
+  position: absolute;
+  bottom: 0;
+  left: 35px;
+  font-size: 2.6rem;
+
+}
+
+#changePicture {
+  color: white !important;
+}
+

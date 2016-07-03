@@ -19,7 +19,7 @@ export class EventsPage {
     constructor(es:EventsService, nav:NavController) {
         this.items = es.getEvents();
         this.nav = nav;
-        this.us = UserService.user;
+        this.us = UserService.getCurrentUser();
     }
 
     public createEvent() {

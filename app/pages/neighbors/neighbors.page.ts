@@ -2,12 +2,15 @@ import {Page, NavController} from 'ionic-angular';
 import {NeighborItemPage} from '../neighbors/neighbor_item/neighbor_item.page';
 import {NeighborsService} from '../../services/neighbors.service';
 import {IUser} from "../../model/user";
+import {UserService} from "../../services/user.service";
+import {InvitesPage} from "./invites/invites.page";
 
 @Page({
     templateUrl: 'build/pages/neighbors/neighbors.page.html',
 })
 export class NeighborsPage {
     data:NeighborsService;
+    us:IUser;
     sourceNeighbors:IUser[];
     neighbors:IUser[];
     searchQuery:string;
@@ -15,6 +18,7 @@ export class NeighborsPage {
 
     constructor(data:NeighborsService, nav:NavController) {
         this.searchQuery = '';
+        this.us = UserService.getCurrentUser();
         this.nav = nav;
         this.data = data;
         data.getMembersOfCurrentGroup().subscribe(data=> {
@@ -25,7 +29,7 @@ export class NeighborsPage {
 
     }
 
-    getItems() {
+    private getItems() {
         let q = this.searchQuery;
         this.neighbors = this.sourceNeighbors.filter((v) => {
             if (
@@ -44,7 +48,11 @@ export class NeighborsPage {
         })
     }
 
-    openDetail(item) {
+    private openDetail(item) {
         this.nav.push(NeighborItemPage, {"item": item})
+    }
+
+    private showInvites() {
+        this.nav.push(InvitesPage);
     }
 }

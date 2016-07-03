@@ -10,7 +10,7 @@
         <div>
             <h4>{{ neighbor.displayName }} </h4>
             <p *ngIf="neighbor.houseNumber!=='' || neighbor.flatNumber!==''">
-                <ion-icon name="car"></ion-icon>{{ neighbor.auto }}<br/>
+                <ion-icon name="car"></ion-icon>&nbsp;{{ neighbor.auto }}<br/>
                 <ion-icon name="home"></ion-icon>&nbsp;<span *ngIf="neighbor.houseNumber!==''">{{ neighbor.houseNumber }} / </span>{{ neighbor.flatNumber }}<br/>
             </p>
         </div>
@@ -18,11 +18,11 @@
     <ion-list>
         <ion-item class="item-remove-animate item-avatar item-icon-left" type="item-text-wrap"
                   href="tel:{{neighbor.mobile1}}">
-            <ion-icon item-left name="phone-portrait"></ion-icon>Call Mobile1<p>{{neighbor.mobile1}}</p>
+            <ion-icon item-left name="phone-portrait"></ion-icon>Основной телефон<p>{{neighbor.mobile1}}</p>
         </ion-item>
         <ion-item class="item-remove-animate item-avatar item-icon-left" type="item-text-wrap"
                   href="tel:{{neighbor.mobile2}}">
-            <ion-icon item-left name="phone-portrait"></ion-icon>Call Mobile2<p>{{neighbor.mobile2}}</p>
+            <ion-icon item-left name="phone-portrait"></ion-icon>Дополнительный телефон<p>{{neighbor.mobile2}}</p>
         </ion-item>
         <ion-item class="item-remove-animate item-avatar item-icon-left" type="item-text-wrap"
                   href="mailto:{{neighbor.email}}">
