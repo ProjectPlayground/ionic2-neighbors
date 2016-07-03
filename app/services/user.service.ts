@@ -208,10 +208,9 @@ export class UserService {
 
     public updateUserGroup(user:IUser, group:string, callback) {
         LogService.logMessage("updateUserGroup " + user.$key);
-        this.fs.db.ref("users/" + user.$key).update({
-                'member_of': group
-            },
-            callback);
+        this.fs.db.ref("users/" + user.$key).update({'member_of': group}, callback);
+        this.fs.db.ref("groups/" + group+"/members/"+user.$key).set('true', callback);
+
     }
 
 }
