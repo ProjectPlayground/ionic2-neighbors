@@ -4,7 +4,8 @@ import {Observable} from "rxjs/Observable";
 import {IRoom, Room} from "../model/room";
 import {LogService} from "./log.service";
 import {UserService} from "./user.service";
-import {Message} from "../model/message";
+import {Message, IMessage} from "../model/message";
+import {IUser} from "../model/user";
 
 @Injectable()
 export class ChatService {
@@ -66,7 +67,7 @@ export class ChatService {
                 observer.next(arr.slice()); // Safe copy
             }
 
-            fs.db.ref(rooms_name + UserService.getCurrentUser().memberOf).on('child_added', (snapshot, prevChildKey)=> {
+            fs.db.ref(rooms_name).on('child_added', (snapshot, prevChildKey)=> {
                 //Remove message not support
                 let room = new Room(snapshot.val().name);
                 room.user_id = snapshot.val().user_id;
@@ -75,7 +76,7 @@ export class ChatService {
                     LogService.logMessage("room.user_id!=null");
                     fs.db.ref("users/" + room.user_id).once("value").then((snapshot2)=> {
                         room.user = UserService.mapUser(snapshot2.val());
-                        LogService.logMessage("room.user "+snapshot.key+" :", room.user);
+                        LogService.logMessage("room.user " + snapshot.key + " :", room.user);
                         if (findInArray(arr, (y:any) => y[keyFieldName] === snapshot.key) == null) {
                             LogService.logMessage("room.user add");
                             child_added(snapshot.key, room, prevChildKey);
@@ -97,7 +98,7 @@ export class ChatService {
             });
 
 
-            fs.db.ref(rooms_name + UserService.getCurrentUser().memberOf).on('child_changed', (snapshot)=> {
+            fs.db.ref(rooms_name).on('child_changed', (snapshot)=> {
                 //Remove message not support
                 let room = new Room(snapshot.val().name);
                 room.user_id = snapshot.val().user_id;
@@ -106,7 +107,7 @@ export class ChatService {
                     LogService.logMessage("room.user_id!=null");
                     fs.db.ref("users/" + room.user_id).once("value").then((snapshot2)=> {
                         room.user = UserService.mapUser(snapshot2.val());
-                        LogService.logMessage("room.user "+snapshot.key+" :", room.user);
+                        LogService.logMessage("room.user " + snapshot.key + " :", room.user);
                         LogService.logMessage("room.user changed");
                         child_changed(snapshot.key, room);
                     });
@@ -119,68 +120,152 @@ export class ChatService {
                 });
             });
 
-            fs.db.ref(rooms_name + UserService.getCurrentUser().memberOf).on('child_removed', (snapshot, prevChildKey)=> {
+            fs.db.ref(rooms_name).on('child_removed', (snapshot, prevChildKey)=> {
                 child_removed(snapshot.key, snapshot.val());
             });
         })
     }
 
-    getChat(chatId) {
-        var chat = {};
-        chat.friend = {
-            2: 2,
-            3: 3,
-            4: 4,
-            5: 5
-        };
-        chat.friend = this.getFriend(null);
-        chat.messages = [
-            {
-                text: "Firebase has an excellent feature with out of the box authentication providers. It enables your app to use providers like simple login (email & password) or any other OAuth API of Facebook, Twitter, Google, LinkedIn etc. We will be choosing the simple email & password based authentication provider for our app.",
-                type: "in",
-                time: 1452169475360
-            },
-            {
-                text: "hi",
-                type: "in",
-                time: 1452169485905,
-                unread: true
-            },
-            {
-                text: "hi!",
-                type: "out",
-                time: 1452169485905,
-                unread: true
+    getMessages(rooms_name:string, key:string):Observable<IMessage[]> {
+        LogService.logMessage("!!!! getMessages " + rooms_name);
+        var fs = this.fs;
+        return Observable.create(function (observer:any) {
+            // Looking for how to type this well.
+            let arr:any[] = [];
+            const keyFieldName = "$key";
+            // Start out empty, until data arrives
+            observer.next(arr.slice()); // Safe copy
+
+            function findInArray<T>(list:T[], predicate:Function) {
+                for (var i = 0; i < list.length; i++) {
+                    const value:T = list[i];
+                    if (predicate.call(this, value, i, list)) {
+                        return value;
+                    }
+                }
             }
-        ];
 
-        // Последняя активность
-        //ref.child(chatId).once('value', function (friend) {
-        //    chat.lastSeen = moment(friend.val().lastSeen).fromNow();
-        //});
-        chat.lastSeen = "12/03/2015";
-        //// Сделать прочитанными
-        //lastMessageRef.on("child_added", function (message) {
-        //    var msg = message.val();
+            function child_added(skey:any, snapshot:any, prevChildKey:string) {
+                LogService.logMessage("[Messages] Events child_added");
+                let child = snapshot;
+                child[keyFieldName] = skey;
+                let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);
+                arr.splice(arr.indexOf(prevEntry) + 1, 0, child);
+                observer.next(arr.slice()); // Safe copy
+            }
 
-        //    if (msg.unread) {
-        //        msg.unread = false;
-        //        message.ref().remove();
-        //        userRef.child('chats/' + chatId).push(msg);
-        //    }
-        //});
-        //return chat;
+            function child_changed(skey:any, snapshot:any) {
+                LogService.logMessage("[Messages] Events child_changed");
+                let key = skey;
+                let child = snapshot;
+                // TODO replace object rather than mutate it?
+                let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
+                if (x) {
+                    for (var k in child) x[k] = child[k];
+                }
+                observer.next(arr.slice()); // Safe copy
+            }
 
-        return chat;
-    };
+            function child_removed(skey:any, snapshot:any) {
+                LogService.logMessage("[Messages] Events child_removed");
+                let key = skey;
+                let child = snapshot;
+                let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
+                if (x) {
+                    arr.splice(arr.indexOf(x), 1);
+                }
+                observer.next(arr.slice()); // Safe copy
+            }
 
-    getFriend(ref) {
-        var friend = {
-            name: "Max Lynx",
-            picture: "build/img/avatar.png",
-            lastSeen: 1452169351966
-        };
+            fs.db.ref(rooms_name + '/' + key).on('child_added', (snapshot, prevChildKey)=> {
+                //Remove message not support
+                let message = new Message(snapshot.val().text);
+                message.user_id = snapshot.val().user_id;
+                child_added(snapshot.key, message, prevChildKey);
+                if (message.user_id != null) {
+                    LogService.logMessage("message.user_id!=null");
+                    fs.db.ref("users/" + message.user_id).once("value").then((snapshot2)=> {
+                        message.user = UserService.mapUser(snapshot2.val());
+                        message.user.$key = snapshot2.key;
+                        message.type = message.user.$key === UserService.getCurrentUser().$key ? "in" : "out";
+                        LogService.logMessage("message.user " + snapshot.key + " :", message.user);
+                        if (findInArray(arr, (y:any) => y[keyFieldName] === snapshot.key) == null) {
+                            LogService.logMessage("message.user add");
+                            child_added(snapshot.key, message, prevChildKey);
+                        } else {
+                            LogService.logMessage("message.user changed");
+                            child_changed(snapshot.key, message);
+                        }
+                    });
+                }
+            });
 
-        return friend;
+
+            fs.db.ref(rooms_name + '/' + key).on('child_changed', (snapshot)=> {
+                //Remove message not support
+                let message = new Message(snapshot.val().text);
+                message.user_id = snapshot.val().user_id;
+                child_changed(snapshot.key, message);
+                if (message.user_id != null) {
+                    LogService.logMessage("message.user_id!=null");
+                    fs.db.ref("users/" + message.user_id).once("value").then((snapshot2)=> {
+                        message.user = UserService.mapUser(snapshot2.val());
+                        message.user.$key = snapshot2.key;
+                        message.type = (message.user.$key === UserService.getCurrentUser().$key) ? "in" : "out";
+                        LogService.logMessage("message.user " + snapshot.key + " :", message.user);
+                        LogService.logMessage("message.user changed");
+                        child_changed(snapshot.key, message);
+                    });
+                }
+            });
+
+            fs.db.ref(rooms_name + '/' + key).on('child_removed', (snapshot, prevChildKey)=> {
+                child_removed(snapshot.key, snapshot.val());
+            });
+        })
     }
+
+    saveMessage(rooms_name:string, key:string, text:string, callback) {
+        let message = new Message(text);
+        message.user_id = UserService.getCurrentUser().uid;
+        this.fs.db.ref(rooms_name + "/" + key).push().set(message, callback);
+
+    }
+
+    addPublicRoom(room_name:string, callback) {
+        let room = new Room(room_name);
+        room.user = null;
+        room.user_id = UserService.getCurrentUser().uid;
+        this.fs.db.ref("public_rooms/" + UserService.getCurrentUser().memberOf).push().set(room, callback);
+
+    }
+
+    addPrivateRoom(user:IUser, callback) {
+        let room = new Room(user.displayName);
+        room.user = null;
+        room.user_id = UserService.getCurrentUser().uid;
+        let error = null;
+        this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + room.user_id + "/" + user.$key).set(room, callback);
+        let ref = this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + user.$key + "/" + room.user_id).set(room, callback);
+    }
+
+    getRoom(room_name:string,callback) {
+        LogService.logMessage("getRoom: "+room_name);
+        return this.fs.db.ref(room_name).once("value").then((snapshot)=> {
+            let room = new Room(snapshot.val().name);
+            room.user_id = snapshot.val().user_id;
+            room.$key = snapshot.key;
+            if (room.user_id != null) {
+                LogService.logMessage("room.user_id!=null");
+                this.fs.db.ref("users/" + room.user_id).once("value").then((snapshot2)=> {
+                    room.user = UserService.mapUser(snapshot2.val());
+                    callback(room);
+                });
+            } else{
+                callback(room);
+            }
+
+        });
+    }
+
 }

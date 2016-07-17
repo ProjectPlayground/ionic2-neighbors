@@ -18,6 +18,7 @@ export class InvitesPage extends BasePage {
     nav:NavController;
 
     constructor(nav:NavController, us:UserService, gs:GroupsService) {
+        super();
         this.searchQuery = '';
         this.us = us;
         this.gs = gs;

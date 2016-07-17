@@ -16,7 +16,6 @@ import {GroupsService} from "./services/groups.service";
 import {GroupsPage} from "./pages/groups/groups.page";
 import {ProfilePage} from "./pages/profile/profile.page";
 import {IUser} from "./model/user";
-import {ChatPage} from "./pages/chat/chat.page";
 
 @App({
     templateUrl: 'build/app.html',
@@ -109,7 +108,7 @@ export class MyApp {
             } else {
                 //if user in group - show interface
                 this.enableMenu(true);
-                this.rootPage = ChatPage;
+                this.rootPage = TabsPage;
             }
         });
 

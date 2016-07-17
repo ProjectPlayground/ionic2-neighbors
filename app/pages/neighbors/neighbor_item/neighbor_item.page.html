@@ -28,5 +28,8 @@
                   href="mailto:{{neighbor.email}}">
             <ion-icon item-left name="mail"></ion-icon>Email<p>{{neighbor.mail}}</p>
         </ion-item>
+        <div padding>
+            <button *ngIf="user.$key!==neighbor.$key" (click)="addPrivateChat()" primary block> <ion-icon name="mail"></ion-icon>&nbsp;Отправить сообщение</button>
+        </div>
     </ion-list>
 </ion-content>

@@ -34,7 +34,7 @@ export class GroupsPage {
     getItems() {
         let q = this.searchQuery;
         this.groups = this.sourceGroups.filter((v) => {
-            return (v.name.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1);
+            return (v.name != null && v.name.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1);
         })
     }
 

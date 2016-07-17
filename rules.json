@@ -3,8 +3,44 @@
     ".read":"false",
     ".write": "false",
     "admins": {
-      ".read":"true",
+      ".read":"auth != null",
       ".write":"false"
+    },
+    "public_rooms":{
+      ".read":"false",
+      ".write":"false",
+      "$groupId":{
+        ".read":"(auth != null) && (root.child('groups/'+$groupId+'/members/'+auth.uid).exists())",
+        ".write":"(auth != null) && (root.child('admins/'+$groupId+'/'+auth.uid).exists())",
+      }
+    },
+    "public_messages":{
+      ".read":"false",
+      ".write":"false",
+      "$groupId":{
+        ".read":"root.child('public_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+$groupId).exists()",
+        ".write":"root.child('public_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+$groupId).exists()"
+      }
+    },
+    "private_rooms":{
+      ".read":"false",
+      ".write":"false",
+      "$groupId":{
+        ".read":"false",
+        ".write":"false",
+        "$userId":{
+          ".read":"(auth != null) && ($userId===auth.uid)",
+          ".write":"(auth != null) && (root.child('groups/'+$groupId+'/members/'+auth.uid).exists())",
+        }
+      }
+    },
+    "private_messages":{
+      ".read":"false",
+      ".write":"false",
+      "$groupId":{
+        ".read":"root.child('private_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+auth.uid+'/'+$groupId).exists()",
+        ".write":"root.child('private_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+auth.uid+'/'+$groupId).exists()"
+      }
     },
     "users": {
       ".read": "auth != null",
@@ -22,9 +58,7 @@
       "$groupId":{
         "members":{
           ".read":"auth != null",
-          ".write":"(auth != null) && (root.child('admins/'+$groupId+'/'+auth.uid).exists())",
-          ".validate":"root.child('users').child(data.val()).exists()"
-        }
+          ".write":"(auth != null) && (root.child('admins/'+$groupId+'/'+auth.uid).exists())"          }
       }
     },
     "events":{

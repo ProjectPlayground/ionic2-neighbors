@@ -10,6 +10,7 @@ export interface IRoom {
 }
 
 export class Room implements IRoom {
+    $key:string;
     name:string = "";
     user_id:string;
     user:IUser;

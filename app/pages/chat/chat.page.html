@@ -25,7 +25,7 @@
 
 </ion-navbar>
 
-<ion-content class="outer-content events-list">
+<ion-content class="outer-content">
     <div [ngSwitch]="type">
         <ion-list *ngSwitchWhen="'rooms'">
             <ion-item-sliding *ngFor="let room of rooms | async">

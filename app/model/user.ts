@@ -1,5 +1,6 @@
 export interface IUser {
     $key?:string;
+    uid:string;
     auto:string;
     flatNumber:string;
     houseNumber?:string;
@@ -14,6 +15,7 @@ export interface IUser {
 
 export class User implements IUser {
     auto:string = "";
+    uid:string="";
     flatNumber = "";
     mobile1 = "";
     mobile2 = "";

@@ -52,7 +52,7 @@ export class UserService {
 
     public static mapUser(snapshot:any):IUser {
         let user = new User(snapshot.auto, snapshot.member_of, snapshot.displayName);
-        if (typeof snapshot.photoURL !== 'undefined')
+        if (typeof snapshot.photoURL !== 'undefined') 
             user.photoURL = snapshot.photoURL;
         if (typeof snapshot.flatNumber !== 'undefined')
             user.flatNumber = snapshot.flatNumber;
@@ -77,7 +77,7 @@ export class UserService {
                 'houseNumber': user.houseNumber,
                 'mail': user.mail,
                 'mobile1': user.mobile1,
-                'photoURL' : user.photoURL,
+                'photoURL': user.photoURL,
                 'mobile2': user.mobile2
             },
             callback);
@@ -133,7 +133,7 @@ export class UserService {
     public updateUserGroup(user:IUser, group:string, callback) {
         LogService.logMessage("updateUserGroup " + user.$key);
         this.fs.db.ref("users/" + user.$key).update({'member_of': group}, callback);
-        this.fs.db.ref("groups/" + group+"/members/"+user.$key).set('true', callback);
+        this.fs.db.ref("groups/" + group + "/members/" + user.$key).set('true', callback);
 
     }
 

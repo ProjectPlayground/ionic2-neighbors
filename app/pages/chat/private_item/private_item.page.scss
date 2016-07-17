@@ -6,12 +6,16 @@
   text-align: right;
 }
 
-.chat .header .avatar {
+.chat .header .privateItemAvatar {
   display: inline-block;
   vertical-align: top;
   position: relative;
+  width:80px;
   top: 10px;
   right: 4px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #fff;
 }
 
 .chat .header .friend-data {

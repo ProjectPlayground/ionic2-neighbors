@@ -14,7 +14,7 @@ export class Event implements IEvent {
     text:string;
     img:string;
     user_id:string;
-    user:IUser = new User("", "");
+    user:IUser = new User("","","");
 
     constructor(name:string, text:string, img:string) {
         this.name = name;

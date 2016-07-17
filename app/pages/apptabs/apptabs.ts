@@ -6,6 +6,7 @@ import {NeighborsPage} from '../neighbors/neighbors.page';
 import {GroupsPage} from '../groups/groups.page';
 
 import {FirebaseService} from '../../services/firebase.service';
+import {StartPage} from "../start/start.page";
 
 
 
@@ -15,7 +16,7 @@ import {FirebaseService} from '../../services/firebase.service';
 export class TabsPage {
     // this tells the tabs component which Pages
     // should be each tab's root Page
-    tab0Root:any = GroupsPage;
+    tab0Root:any = StartPage;
     tab1Root:any = EventsPage;
     tab2Root:any = ChatPage;
     tab3Root:any = NeighborsPage;
