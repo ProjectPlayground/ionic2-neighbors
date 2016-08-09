@@ -2,7 +2,7 @@
 <widget id="com.ionicframework.neighbors699410" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>neighbors</name>
   <description>An Ionic Framework and Cordova project.</description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+  <author email="mail@balynsky.su" href="http://balynsky.su/">Neighbors app</author>
   <content src="index.html" />
   <access origin="*" />
   <allow-intent href="http://*/*" />
