@@ -1,6 +1,6 @@
 import {ViewChild, Component} from '@angular/core';
 import {App, Events, Platform, MenuController} from 'ionic-angular';
-import {StatusBar} from 'ionic-native';
+import {StatusBar,InAppBrowser} from 'ionic-native';
 
 import {NeighborsService} from './services/neighbors.service';
 import {ChatService} from './services/chat.service';

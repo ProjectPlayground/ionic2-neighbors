@@ -49,4 +49,29 @@ export class FirebaseService {
     public getGoogleProvider() {
         return new firebase.auth.GoogleAuthProvider();
     }
+
+    public loginWithFacebookAccessToken(token) {
+        var credential = firebase.auth.FacebookAuthProvider.credential(token.access_token);
+        // Sign in with the credential from the Facebook user.
+        firebase.auth().signInWithCredential(credential).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+        });
+
+/*
+        this.auth.authWithOAuthToken("facebook", token.access_token, function (error, authData) {
+            if (error) {
+                LogService.logMessage("Login Failed!", error);
+            } else {
+                LogService.logMessage("Authenticated successfully with payload:", authData);
+            }
+        });
+*/
+    }
 }

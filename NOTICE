@@ -1,11 +1,9 @@
-Adobe PhoneGap
-Copyright 2012-2014 Adobe Systems Incorporated.
+openssl genrsa -out neigh.key 2048
 
-This product includes software developed by
-Apache Cordova (http://cordova.apache.org)
+openssl req -new -key neigh.key -out CertificateSigningRequest.certSigningRequest -subj "/emailAddress=mail@balynsky.su, CN=Sergiy Balynsky, C=RU"
 
-This product includes software developed by
-Apache Cordova Hello World (https://github.com/apache/cordova-app-hello-world)
+openssl x509 -in ios_development.cer -inform DER -out ios_development.pem -outform PEM
 
-This product includes software developed by
-Jasmine (https://github.com/pivotal/jasmine)
+openssl pkcs12 -export -inkey neigh.key -in ios_development.pem -out ios_development.p12
+
+
