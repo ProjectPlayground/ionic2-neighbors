@@ -1,9 +1,0 @@
-openssl genrsa -out neigh.key 2048
-
-openssl req -new -key neigh.key -out CertificateSigningRequest.certSigningRequest -subj "/emailAddress=mail@balynsky.su, CN=Sergiy Balynsky, C=RU"
-
-openssl x509 -in ios_development.cer -inform DER -out ios_development.pem -outform PEM
-
-openssl pkcs12 -export -inkey neigh.key -in ios_development.pem -out ios_development.p12
-
-
