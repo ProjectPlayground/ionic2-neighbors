@@ -36,17 +36,14 @@ import {IUser} from "./model/user";
 })
 export class MyApp {
     rootPage:any = LoginPage;
-    menu:MenuController;
     events:Events;
     loggedInPages;
     loggedOutPages;
     nav;
-    db:FirebaseService;
-    userService:UserService;
     currentUser:IUser;
     loading:Loading;
 
-    constructor(events:Events, platform:Platform, menu:MenuController, db:FirebaseService, us:UserService) {
+    constructor(events:Events, platform:Platform, public menu:MenuController, public db:FirebaseService, public userService:UserService) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -59,10 +56,6 @@ export class MyApp {
                 this.enableMenu(false);
             }
         });
-        this.events = events;
-        this.db = db;
-        this.userService = us;
-        this.menu = menu;
         this.loading = null;
         this.loggedOutPages = [
             {title: 'Login', component: LoginPage, icon: 'log-in'}
