@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import {Events} from 'ionic-angular';
 import {FirebaseService} from "./firebase.service";
 import {Observable} from "rxjs/Observable";
 import {IRoom, Room} from "../model/room";
@@ -6,19 +7,23 @@ import {LogService} from "./log.service";
 import {UserService} from "./user.service";
 import {Message, IMessage} from "../model/message";
 import {IUser} from "../model/user";
+import {BaseService} from "./base.service";
 
 @Injectable()
-export class ChatService {
+export class ChatService extends BaseService {
     fs:FirebaseService;
 
-    constructor(fs:FirebaseService) {
+    constructor(fs:FirebaseService, public events:Events) {
+        super(events);
         this.fs = fs;
     }
 
 
     getRooms(rooms_name:string, message_name:string):Observable<IRoom[]> {
+        this.showLoading("Загрузка комнат");
         LogService.logMessage("!!!! getRooms " + rooms_name);
         var fs = this.fs;
+        let clazz = this;
         return Observable.create(function (observer:any) {
             // Looking for how to type this well.
             let arr:any[] = [];
@@ -37,6 +42,7 @@ export class ChatService {
 
             function child_added(skey:any, snapshot:any, prevChildKey:string) {
                 LogService.logMessage("Events child_added");
+                clazz.hideLoading();
                 let child = snapshot;
                 child[keyFieldName] = skey;
                 let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);
@@ -96,7 +102,6 @@ export class ChatService {
                     }
                 });
             });
-
 
             fs.db.ref(rooms_name).on('child_changed', (snapshot)=> {
                 //Remove message not support

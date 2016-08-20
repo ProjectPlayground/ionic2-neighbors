@@ -1,6 +1,6 @@
-import {ViewChild, Component} from '@angular/core';
-import {App, Events, Platform, MenuController} from 'ionic-angular';
-import {StatusBar,InAppBrowser} from 'ionic-native';
+import {ViewChild} from '@angular/core';
+import {App, Events, Platform, MenuController, Loading} from 'ionic-angular';
+import {StatusBar} from 'ionic-native';
 
 import {NeighborsService} from './services/neighbors.service';
 import {ChatService} from './services/chat.service';
@@ -39,6 +39,7 @@ export class MyApp {
     db:FirebaseService;
     userService:UserService;
     currentUser:IUser;
+    loading:Loading;
 
     constructor(events:Events, platform:Platform, menu:MenuController, db:FirebaseService, us:UserService) {
         platform.ready().then(() => {
@@ -57,6 +58,7 @@ export class MyApp {
         this.db = db;
         this.userService = us;
         this.menu = menu;
+        this.loading = null;
         this.loggedOutPages = [
             {title: 'Login', component: LoginPage, icon: 'log-in'}
         ];
@@ -94,8 +96,28 @@ export class MyApp {
         }
     }
 
+    private showLoading(content) {
+        if (this.loading == null) {
+            this.loading = Loading.create({
+                content: content
+            });
+
+            this.nav.present(this.loading);
+        } else {
+            this.loading.setContent(content);
+        }
+    }
+
+    private hideLoading() {
+        if (this.loading != null) {
+            this.loading.dismiss();
+            this.loading = null;
+        }
+    }
+
     private listenToLoginEvents() {
         this.events.subscribe('user:login', () => {
+            this.showLoading("Загрузка данных о пользователе");
             this.userService.loadUserData();
         });
 
@@ -109,6 +131,7 @@ export class MyApp {
                 //if user in group - show interface
                 this.enableMenu(true);
                 this.rootPage = TabsPage;
+                this.hideLoading();
             }
         });
 
@@ -124,6 +147,14 @@ export class MyApp {
             this.enableMenu(false);
             this.rootPage = LoginPage;
             UserService.user = null;
+        });
+
+        this.events.subscribe('loader:start', (content) => {
+            this.showLoading(content);
+        });
+
+        this.events.subscribe('loader:stop', () => {
+            this.hideLoading();
         });
     }
 }

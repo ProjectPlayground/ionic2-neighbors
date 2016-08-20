@@ -49,12 +49,34 @@ export class LoginPage extends BasePage {
     }
 
     registerUserWithFacebook() {
-        this.facebookLogin().then((success) => {
-            LogService.logMessage(success.access_token);
-            this.db.loginWithFacebookAccessToken(success);
-        }, (error) => {
-            this.presentToast(this.nav, error);
-        });
+        if (window.cordova) {
+            this.facebookLogin().then((success) => {
+                LogService.logMessage(success.access_token);
+                this.db.loginWithFacebookAccessToken(success);
+            }, (error) => {
+                this.presentToast(this.nav, error);
+            });
+        } else {
+            var provider = this.db.getFacebookProvider();
+            this.db.auth.signInWithPopup(provider).then((result) => {
+                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+                var token = result.credential.accessToken;
+                var user = result.user;
+                // ...
+                LogService.logMessage("Facebook user ", user);
+            }).catch((error) => {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+                this.events.publish("user:logout");
+                this.presentToast(this.nav, error);
+            });
+        }
     }
 
     facebookLogin() {
@@ -82,7 +104,7 @@ export class LoginPage extends BasePage {
             });
         });
     }
-    
+
     public registerUser(event) {
         this.nav.push(SignupPage);
     }

@@ -1,8 +1,9 @@
 import {NavController, Toast} from 'ionic-angular';
 
+
 export class BasePage {
     protected presentToast(nav:NavController, message:string, duration:number = 3000) {
-        let toast = Toast.create({ 
+        let toast = Toast.create({
             message: message,
             duration: duration
         });
@@ -13,5 +14,6 @@ export class BasePage {
 
         nav.present(toast);
     }
+    
 
 }

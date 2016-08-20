@@ -8,11 +8,12 @@ import {UserService} from "../../services/user.service";
 import {LogService} from "../../services/log.service";
 import {IUser} from "../../model/user";
 import {AddRoomPage} from "./room_item/add_room/add_room.page";
+import {BasePage} from "../base.page";
 
 @Page({
     templateUrl: 'build/pages/chat/chat.page.html',
 })
-export class ChatPage {
+export class ChatPage extends BasePage{
     user:IUser;
     type:string = "rooms";
     isAndroid:boolean = false;
@@ -38,6 +39,7 @@ export class ChatPage {
 
     createPrivateTopic() {
         LogService.logMessage("createPrivateTopic");
+        this.presentToast(this.nav, "Кнопка будет активна в след. версии приложения. Написать сообщение можно через список соседей")
     }
 
     createPublicTopic() {
