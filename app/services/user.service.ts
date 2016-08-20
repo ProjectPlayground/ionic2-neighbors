@@ -2,16 +2,17 @@ import {Injectable} from "@angular/core";
 import {Events} from 'ionic-angular';
 import {FirebaseService} from './firebase.service'
 import {LogService} from "../services/log.service";
-import {observableFirebaseObject, observableFirebaseArray} from './firebase.func'
 import {Observable} from 'rxjs/Observable';
 import {IUser, User} from '../model/user'
+import {BaseService} from "./base.service";
 
 //https://webcake.co/using-firebase-3-in-angular-2-and-ionic-2/
 @Injectable()
-export class UserService {
+export class UserService extends BaseService{
     public static user:IUser = null;
 
     constructor(public events:Events, public fs:FirebaseService) {
+        super(events);
     }
 
     public loadUserData():void {
@@ -43,7 +44,7 @@ export class UserService {
     }
 
     public getUser(user_id):Observable < any > {
-        return observableFirebaseObject(this.fs.db.ref("users/" + user_id));
+        return this.observableFirebaseObject(this.fs.db.ref("users/" + user_id));
     }
 
     public static mapUser(snapshot:any):IUser {

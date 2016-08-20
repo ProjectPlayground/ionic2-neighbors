@@ -1,21 +1,22 @@
 import {Injectable} from "@angular/core";
 
 import {FirebaseService} from './firebase.service';
+import {Events} from 'ionic-angular';
 import {LogService} from "./log.service";
 import {UserService} from './user.service';
-import {observableFirebaseArray} from './firebase.func'
 import {Observable} from 'rxjs/Observable';
-import {Event} from '../model/event'
-import {User, IUser} from '../model/user'
+import {IUser} from '../model/user'
 import {IGroup, Group} from "../model/group";
+import {BaseService} from "./base.service";
 
 @Injectable()
-export class GroupsService {
-    constructor(public fs:FirebaseService, public us:UserService) {
+export class GroupsService extends BaseService{
+    constructor(public fs:FirebaseService, public us:UserService, events:Events) {
+        super(events);
     }
 
     public getGroups():Observable<IGroup[]> {
-        return observableFirebaseArray<IGroup>(this.fs.db.ref("groups"), (data)=> {
+        return this.observableFirebaseArray<IGroup>(this.fs.db.ref("groups"), (data)=> {
             let group = new Group(data.name);
             group.img = data.img;
             return group;
