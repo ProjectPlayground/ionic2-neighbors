@@ -240,17 +240,21 @@ export class ChatService {
 
     }
 
-    addPrivateRoom(user:IUser, callback) {
+    addPrivateRoom(user:IUser, callback, success) {
         let room = new Room(user.displayName);
         room.user = null;
+        room.user_id = user.$key;
+
+        let db = this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + UserService.getCurrentUser().uid).push();
+        db.set(room, callback);
+        room.name = UserService.getCurrentUser().displayName;
         room.user_id = UserService.getCurrentUser().uid;
-        let error = null;
-        this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + room.user_id + "/" + user.$key).set(room, callback);
-        let ref = this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + user.$key + "/" + room.user_id).set(room, callback);
+        this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + user.$key + "/" + db.key).set(room, callback);
+        success(db.key);
     }
 
-    getRoom(room_name:string,callback) {
-        LogService.logMessage("getRoom: "+room_name);
+    getRoom(room_name:string, callback) {
+        LogService.logMessage("getRoom: " + room_name);
         return this.fs.db.ref(room_name).once("value").then((snapshot)=> {
             let room = new Room(snapshot.val().name);
             room.user_id = snapshot.val().user_id;
@@ -261,7 +265,7 @@ export class ChatService {
                     room.user = UserService.mapUser(snapshot2.val());
                     callback(room);
                 });
-            } else{
+            } else {
                 callback(room);
             }
 

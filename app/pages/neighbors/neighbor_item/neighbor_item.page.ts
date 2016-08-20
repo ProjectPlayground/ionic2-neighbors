@@ -27,11 +27,11 @@ export class NeighborItemPage extends BasePage {
         this.data.addPrivateRoom(this.neighbor, (error)=> {
             if (error) {
                 this.presentToast(this.nav, "Error: " + error);
-            } else {
-                this.data.getRoom("private_rooms/" + this.user.memberOf + "/" + this.user.uid + "/" + this.neighbor.$key, (room)=> {
-                    this.nav.push(PrivateItemPage, {chatId: room});
-                });
             }
+        }, (chat_key)=> {
+            this.data.getRoom("private_rooms/" + this.user.memberOf + "/" + UserService.getCurrentUser().uid + "/" + chat_key, (room)=> {
+                this.nav.push(PrivateItemPage, {chatId: room});
+            });
         })
     }
 }
