@@ -21,7 +21,12 @@ import {IUser} from "./model/user";
     templateUrl: 'build/app.html',
     config: {
         //Whether to hide the tabs on child pages or not. If true it will not show the tabs on child pages.
-        tabSubPages: true
+        tabSubPages: true,
+        platforms: {
+            ios: {
+                statusbarPadding: true
+            }
+        }
     }, // http://ionicframework.com/docs/v2/api/config/Config/
     queries: {
         nav: new ViewChild('content')
