@@ -13,12 +13,10 @@ import {AddEventPage} from './add_event/add_event.page'
 })
 export class EventsPage {
     private items:Observable<any>;
-    private nav:NavController;
     private us:IUser;
 
-    constructor(es:EventsService, nav:NavController) {
+    constructor( es:EventsService, public nav:NavController) {
         this.items = es.getEvents();
-        this.nav = nav;
         this.us = UserService.getCurrentUser();
     }
 

@@ -10,18 +10,14 @@ import {LogService} from "../../services/log.service";
     templateUrl: 'build/pages/neighbors/neighbors.page.html',
 })
 export class NeighborsPage {
-    data:NeighborsService;
     us:IUser;
     sourceNeighbors:IUser[];
     neighbors:IUser[];
     searchQuery:string;
-    nav:NavController;
 
-    constructor(data:NeighborsService, nav:NavController) {
+    constructor(public data:NeighborsService, public nav:NavController) {
         this.searchQuery = '';
         this.us = UserService.getCurrentUser();
-        this.nav = nav;
-        this.data = data;
         data.getMembersOfCurrentGroup().subscribe(data=> {
             this.sourceNeighbors = this.neighbors = data;
             //render if filter is active

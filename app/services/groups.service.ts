@@ -3,7 +3,7 @@ import {Injectable} from "@angular/core";
 import {FirebaseService} from './firebase.service';
 import {LogService} from "./log.service";
 import {UserService} from './user.service';
-import {observableFirebaseObject, observableFirebaseArray} from './firebase.func'
+import {observableFirebaseArray} from './firebase.func'
 import {Observable} from 'rxjs/Observable';
 import {Event} from '../model/event'
 import {User, IUser} from '../model/user'
@@ -11,12 +11,7 @@ import {IGroup, Group} from "../model/group";
 
 @Injectable()
 export class GroupsService {
-    private fs;
-    private us;
-
-    constructor(fs:FirebaseService, us:UserService) {
-        this.fs = fs;
-        this.us = us;
+    constructor(public fs:FirebaseService, public us:UserService) {
     }
 
     public getGroups():Observable<IGroup[]> {

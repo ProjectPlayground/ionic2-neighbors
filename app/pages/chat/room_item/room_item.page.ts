@@ -15,13 +15,11 @@ export class RoomItemPage {
     private chat:IRoom;
     private messages:Observable<IMessage[]>;
     private user:IUser;
-    private data:ChatService
 
-    constructor(platform:Platform, data:ChatService, params:NavParams) {
+    constructor(public data:ChatService, params:NavParams) {
         this.chat = params.get("chatId");
         this.user = UserService.getCurrentUser();
         this.messages = data.getMessages("public_messages", this.chat.$key);
-        this.data = data;
     }
 
     public sendMessage(message:string) {

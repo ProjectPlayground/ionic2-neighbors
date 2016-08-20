@@ -23,19 +23,11 @@ export class ProfilePage extends BasePage {
     mobile1:AbstractControl;
     mobile2:AbstractControl;
     photoURL:AbstractControl;
-
-    nav:NavController;
-    us:UserService;
-    events:Events;
-
+    
     user:IUser;
-
-
-    constructor(nav:NavController, fb:FormBuilder, us:UserService, events:Events, fs:FirebaseService) {
+    
+    constructor(public nav:NavController, fb:FormBuilder, public us:UserService, public events:Events, public fs:FirebaseService) {
         super();
-        this.nav = nav;
-        this.us = us;
-        this.events = events;
         this.user = UserService.getCurrentUser();
         if (this.user == null) {
             this.user = new User(null, null, null);

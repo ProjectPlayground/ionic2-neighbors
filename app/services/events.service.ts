@@ -1,26 +1,26 @@
 import {Injectable} from "@angular/core";
+import {Events} from 'ionic-angular';
 
 import {FirebaseService} from './firebase.service';
 import {LogService} from "./log.service";
 import {UserService} from './user.service';
-import {observableFirebaseObject, observableFirebaseArray} from './firebase.func'
 import {Observable} from 'rxjs/Observable';
 import {Event} from '../model/event'
-import {User} from '../model/user'
+import {BaseService} from "./base.service";
 
 @Injectable()
-export class EventsService {
-    private fs;
-    private us;
+export class EventsService extends BaseService {
 
-    constructor(fs:FirebaseService, us:UserService) {
-        this.fs = fs;
-        this.us = us;
+    constructor(public fs:FirebaseService, public us:UserService, events:Events) {
+        super(events);
     }
 
     public getEvents():Observable<any> {
-        var fs = this.fs;
-        var us = this.us;
+        this.showLoading("Загрузка объявлений");
+        let flag = true;
+        let fs = this.fs;
+        let us = this.us;
+        let clazz = this;
         return Observable.create(function (observer:any) {
             // Looking for how to type this well.
             let arr:any[] = [];
@@ -38,6 +38,10 @@ export class EventsService {
             }
 
             function child_added(skey:any, snapshot:any, prevChildKey:string) {
+                if (flag) {
+                    flag = false;
+                    clazz.hideLoading();
+                }
                 LogService.logMessage("Events child_added");
                 let child = snapshot;
                 child[keyFieldName] = skey;

@@ -23,7 +23,7 @@ export class TabsPage {
 
     tabIndex;
 
-    constructor (params:NavParams, db:FirebaseService){
+    constructor (params:NavParams){
         this.tabIndex = params.get("tabIndex");
     }
 

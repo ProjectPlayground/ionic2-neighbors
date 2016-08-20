@@ -17,13 +17,11 @@ export class ChatPage extends BasePage{
     user:IUser;
     type:string = "rooms";
     isAndroid:boolean = false;
-    nav:NavController;
     rooms:Observable<IRoom[]>;
     privateRooms:Observable<IRoom[]>;
 
-    constructor(platform:Platform, nav:NavController, cs:ChatService) {
+    constructor(platform:Platform, public nav:NavController, cs:ChatService) {
         this.isAndroid = platform.is('android');
-        this.nav = nav;
         this.user = UserService.getCurrentUser();
         this.rooms = cs.getRooms("public_rooms/" + this.user.memberOf, "public_messages/");
         this.privateRooms = cs.getRooms("private_rooms/" + this.user.memberOf + "/" + this.user.uid + "/", "private_messages/");

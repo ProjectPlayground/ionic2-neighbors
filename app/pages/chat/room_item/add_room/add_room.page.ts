@@ -12,22 +12,16 @@ import {LogService} from "../../../../services/log.service";
     directives: [FORM_DIRECTIVES]
 })
 export class AddRoomPage extends BasePage {
-    private data:ChatService;
-    private nav:NavController;
     form:ControlGroup;
     name:AbstractControl;
     imgSrc:AbstractControl;
     text:AbstractControl;
 
-    constructor(data:ChatService, public viewCtrl:ViewController, fb:FormBuilder, nav:NavController) {
+    constructor(public data:ChatService, public viewCtrl:ViewController, fb:FormBuilder, public nav:NavController) {
         super();
-        this.data = data;
-        this.nav = nav;
-
         this.form = fb.group({
             'name': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
         });
-
         this.name = this.form.controls['name'];
     }
 

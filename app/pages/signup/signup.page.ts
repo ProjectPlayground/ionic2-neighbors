@@ -13,14 +13,8 @@ export class SignupPage {
     form:ControlGroup;
     login:AbstractControl;
     password:AbstractControl;
-    nav:NavController;
-    db:any;
 
-
-    constructor(nav:NavController, fb:FormBuilder, db:FirebaseService) {
-        this.nav = nav;
-        this.db = db;
-
+    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService) {
         this.form = fb.group({
             'login': ['', Validators.compose([Validators.required, ValidationService.emailValidator])],
             'password': ['', Validators.compose([Validators.required, Validators.minLength(8)])]

@@ -9,13 +9,9 @@ import {IUser, User} from '../model/user'
 //https://webcake.co/using-firebase-3-in-angular-2-and-ionic-2/
 @Injectable()
 export class UserService {
-    private fs:any;
-    private events;
     public static user:IUser = null;
 
-    constructor(events:Events, db:FirebaseService) {
-        this.events = events;
-        this.fs = db;
+    constructor(public events:Events, public fs:FirebaseService) {
     }
 
     public loadUserData():void {

@@ -15,12 +15,10 @@ import {ProfilePage} from "../pages/profile/profile.page";
 })
 //@Injectable()
 export class AvatarComponent {
-    app:IonicApp;
     @Input()
     user:any;
 
-    constructor(app:IonicApp) {
-        this.app = app;
+    constructor(public app:IonicApp) {
     }
 
     editProfile(user) {

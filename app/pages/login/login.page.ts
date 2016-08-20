@@ -17,14 +17,8 @@ export class LoginPage extends BasePage {
     authForm:ControlGroup;
     login:AbstractControl;
     password:AbstractControl;
-    nav:NavController;
-    events:Events;
-    db:any;
 
-    constructor(nav:NavController, fb:FormBuilder, db:FirebaseService, events:Events) {
-        this.nav = nav;
-        this.db = db;
-        this.events = events;
+    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, public events:Events) {
 
         this.authForm = fb.group({
             'login': ['', Validators.compose([Validators.required, ValidationService.emailValidator])],

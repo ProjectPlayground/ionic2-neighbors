@@ -11,18 +11,16 @@ import {BaseService} from "./base.service";
 
 @Injectable()
 export class ChatService extends BaseService {
-    fs:FirebaseService;
-
-    constructor(fs:FirebaseService, public events:Events) {
+    constructor(public fs:FirebaseService, public events:Events) {
         super(events);
-        this.fs = fs;
     }
 
 
     getRooms(rooms_name:string, message_name:string):Observable<IRoom[]> {
         this.showLoading("Загрузка комнат");
+        let flag = true;
         LogService.logMessage("!!!! getRooms " + rooms_name);
-        var fs = this.fs;
+        let fs = this.fs;
         let clazz = this;
         return Observable.create(function (observer:any) {
             // Looking for how to type this well.
@@ -42,7 +40,10 @@ export class ChatService extends BaseService {
 
             function child_added(skey:any, snapshot:any, prevChildKey:string) {
                 LogService.logMessage("Events child_added");
-                clazz.hideLoading();
+                if (flag) {
+                    clazz.hideLoading();
+                    flag = false;
+                }
                 let child = snapshot;
                 child[keyFieldName] = skey;
                 let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);

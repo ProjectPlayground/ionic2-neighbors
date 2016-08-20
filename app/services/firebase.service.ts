@@ -63,15 +63,5 @@ export class FirebaseService {
             var credential = error.credential;
             // ...
         });
-
-/*
-        this.auth.authWithOAuthToken("facebook", token.access_token, function (error, authData) {
-            if (error) {
-                LogService.logMessage("Login Failed!", error);
-            } else {
-                LogService.logMessage("Authenticated successfully with payload:", authData);
-            }
-        });
-*/
     }
 }

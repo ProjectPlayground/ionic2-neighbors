@@ -7,10 +7,8 @@ import {FirebaseService} from "./firebase.service";
 
 @Injectable()
 export class NeighborsService {
-    private fs:FirebaseService;
 
-    constructor(fs:FirebaseService) {
-        this.fs = fs;
+    constructor(public fs:FirebaseService) {
     }
 
     public getMembersOfCurrentGroup():Observable<IUser[]> {

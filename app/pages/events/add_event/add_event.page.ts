@@ -11,17 +11,13 @@ import {BasePage} from "../../base.page";
     directives: [FORM_DIRECTIVES]
 })
 export class AddEventPage extends BasePage {
-    private es:EventsService;
-    private nav:NavController;
     form:ControlGroup;
     name:AbstractControl;
     imgSrc:AbstractControl;
     text:AbstractControl;
 
-    constructor(es:EventsService, public viewCtrl:ViewController, fb:FormBuilder, nav:NavController) {
+    constructor(public es:EventsService, public viewCtrl:ViewController, fb:FormBuilder, public nav:NavController) {
         super();
-        this.es = es;
-        this.nav = nav;
 
         this.form = fb.group({
             'name': ['', Validators.compose([Validators.required, Validators.minLength(8)])],

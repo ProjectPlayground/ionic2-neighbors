@@ -10,19 +10,13 @@ import {Group} from "../../../model/group";
     templateUrl: 'build/pages/neighbors/invites/invites.page.html',
 })
 export class InvitesPage extends BasePage {
-    us:UserService;
-    gs:GroupsService;
     sourceUsers:IUser[];
     users:IUser[];
     searchQuery:string;
-    nav:NavController;
 
-    constructor(nav:NavController, us:UserService, gs:GroupsService) {
+    constructor(public nav:NavController,public us:UserService,public gs:GroupsService) {
         super();
         this.searchQuery = '';
-        this.us = us;
-        this.gs = gs;
-        this.nav = nav;
         us.getInvites().subscribe(data=> {
             LogService.logMessage("InvitesPage getInvites", data);
             this.sourceUsers = this.users = data;

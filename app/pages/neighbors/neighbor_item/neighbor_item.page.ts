@@ -11,15 +11,11 @@ import {PrivateItemPage} from "../../chat/private_item/private_item.page";
 })
 export class NeighborItemPage extends BasePage {
     private neighbor:IUser;
-    private data:ChatService;
-    private nav:NavController;
     private user:IUser;
 
-    constructor(nav:NavController, navParams:NavParams, data:ChatService) {
+    constructor(public nav:NavController, navParams:NavParams, public data:ChatService) {
         super();
         this.neighbor = navParams.get("item");
-        this.data = data;
-        this.nav = nav;
         this.user = UserService.getCurrentUser();
     }
 

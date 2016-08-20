@@ -10,19 +10,13 @@ import {UserService} from "../../services/user.service";
     templateUrl: 'build/pages/groups/groups.page.html',
 })
 export class GroupsPage {
-    data:GroupsService;
-    fs:FirebaseService;
     sourceGroups:IGroup[];
     groups:IGroup[];
     searchQuery:string;
-    nav:NavController;
     activeItem:IGroup = null;
 
-    constructor(data:GroupsService, nav:NavController, fs:FirebaseService) {
+    constructor(public data:GroupsService, public nav:NavController,public fs:FirebaseService) {
         this.searchQuery = '';
-        this.data = data;
-        this.nav = nav;
-        this.fs = fs;
         //async implement in new version
         data.getGroups().subscribe(data=> {
             this.sourceGroups = this.groups = data;
