@@ -1,10 +1,11 @@
-<ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Signup</ion-title>
-</ion-navbar>
-
+<ion-header>
+    <ion-navbar>
+        <button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Signup</ion-title>
+    </ion-navbar>
+</ion-header>
 <ion-content class="login-page">
 
     <ion-list>
@@ -12,10 +13,10 @@
             <img src="build/img/logo.png">
         </div>
 
-        <form [ngFormModel]="form" novalidate>
+        <form [formGroup]="FORM" novalidate>
             <ion-item>
                 <ion-label floating primary>Логин</ion-label>
-                <ion-input [ngFormControl]="login" type="email" required>
+                <ion-input formControlName="login" type="email" required>
                 </ion-input>
             </ion-item>
             <p [hidden]="login.valid" danger padding-left>
@@ -24,7 +25,7 @@
 
             <ion-item>
                 <ion-label floating primary>Пароль</ion-label>
-                <ion-input [ngFormControl]="password" type="password" required>
+                <ion-input formControlName="password" type="password" required>
                 </ion-input>
             </ion-item>
             <p [hidden]="password.valid" danger padding-left>

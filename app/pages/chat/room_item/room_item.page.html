@@ -1,11 +1,13 @@
-<ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>
-        Test
-    </ion-title>
-</ion-navbar>
+<ion-header>
+    <ion-navbar>
+        <button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            Test
+        </ion-title>
+    </ion-navbar>
+</ion-header>
 
 <ion-content class="outer-content chat">
     <div class="history">
@@ -14,17 +16,20 @@
                 <div class="text">{{ message.text }}</div>
                 <div class="avatar">
                     <img src="{{ user.photoURL }}" *ngIf="(message.type === 'in') && user?.photoURL!=null"/>
-                    <img src="{{ message.user.photoURL }}" *ngIf="(message.type === 'out') && message.user?.photoURL!=null"/>
+                    <img src="{{ message.user.photoURL }}"
+                         *ngIf="(message.type === 'out') && message.user?.photoURL!=null"/>
                 </div>
             </div>
         </div>
     </div>
 </ion-content>
-<ion-toolbar position="bottom" keyboard-attach>
-    <ion-item>
-        <ion-input placeholder="Введите сообщение" clearInput [(ngModel)]="message"></ion-input>
-        <button outline item-right class="button button-clear" (click)="sendMessage(message); closeKeyboard()">
-            Отправить
-        </button>
-    </ion-item>
-</ion-toolbar>
+<ion-footer>
+    <ion-toolbar position="bottom" keyboard-attach>
+        <ion-item>
+            <ion-input placeholder="Введите сообщение" clearInput [(ngModel)]="message"></ion-input>
+            <button outline item-right class="button button-clear" (click)="sendMessage(message); closeKeyboard()">
+                Отправить
+            </button>
+        </ion-item>
+    </ion-toolbar>
+</ion-footer>

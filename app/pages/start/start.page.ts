@@ -1,6 +1,6 @@
-import {Page} from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
 
-@Page({
+@Component({
     templateUrl: 'build/pages/start/start.page.html',
 })
 export class StartPage {

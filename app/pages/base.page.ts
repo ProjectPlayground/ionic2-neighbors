@@ -1,19 +1,20 @@
-import {NavController, Toast} from 'ionic-angular';
+import {NavController, ToastController} from 'ionic-angular';
+import {LogService} from "../services/log.service";
 
 
 export class BasePage {
-    protected presentToast(nav:NavController, message:string, duration:number = 3000) {
-        let toast = Toast.create({
+
+    constructor(private toastCtrl:ToastController) {
+
+    };
+
+    protected presentToast(message:string, duration:number = 3000) {
+        let toast = this.toastCtrl.create({
             message: message,
             duration: duration
         });
 
-        toast.onDismiss(() => {
-            console.log('Dismissed toast');
-        });
-
-        nav.present(toast);
+        toast.present();
     }
-    
 
 }

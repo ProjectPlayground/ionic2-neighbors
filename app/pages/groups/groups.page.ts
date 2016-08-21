@@ -1,21 +1,24 @@
-import {Page, NavController, Toast} from 'ionic-angular';
+import {Page, NavController, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
 import {GroupsService} from '../../services/groups.service';
 import {LogService} from "../../services/log.service";
 import {IGroup} from "../../model/group";
 import {FirebaseService} from "../../services/firebase.service";
 import {UserService} from "../../services/user.service";
+import {BasePage} from "../base.page";
 
 
-@Page({
+@Component({
     templateUrl: 'build/pages/groups/groups.page.html',
 })
-export class GroupsPage {
+export class GroupsPage extends BasePage {
     sourceGroups:IGroup[];
     groups:IGroup[];
     searchQuery:string;
     activeItem:IGroup = null;
 
-    constructor(public data:GroupsService, public nav:NavController,public fs:FirebaseService) {
+    constructor(public data:GroupsService, public nav:NavController, public fs:FirebaseService, private toastCtrl:ToastController) {
+        super(toastCtrl);
         this.searchQuery = '';
         //async implement in new version
         data.getGroups().subscribe(data=> {
@@ -49,19 +52,6 @@ export class GroupsPage {
 
     logout() {
         this.fs.logout();
-    }
-
-    private presentToast(message) {
-        let toast = Toast.create({
-            message: message,
-            duration: 3000
-        });
-
-        toast.onDismiss(() => {
-            console.log('Dismissed toast');
-        });
-
-        this.nav.present(toast);
     }
 
 }

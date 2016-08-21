@@ -1,4 +1,5 @@
-import {Page, NavController} from 'ionic-angular';
+import {NavController, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
 import {IUser} from "../../../model/user";
 import {UserService} from "../../../services/user.service";
 import {LogService} from "../../../services/log.service";
@@ -6,7 +7,7 @@ import {GroupsService} from "../../../services/groups.service";
 import {BasePage} from "../../base.page";
 import {Group} from "../../../model/group";
 
-@Page({
+@Component({
     templateUrl: 'build/pages/neighbors/invites/invites.page.html',
 })
 export class InvitesPage extends BasePage {
@@ -14,8 +15,8 @@ export class InvitesPage extends BasePage {
     users:IUser[];
     searchQuery:string;
 
-    constructor(public nav:NavController,public us:UserService,public gs:GroupsService) {
-        super();
+    constructor(public nav:NavController, public us:UserService, public gs:GroupsService, private toastCtrl:ToastController) {
+        super(toastCtrl);
         this.searchQuery = '';
         us.getInvites().subscribe(data=> {
             LogService.logMessage("InvitesPage getInvites", data);
@@ -37,7 +38,7 @@ export class InvitesPage extends BasePage {
         LogService.logMessage("acceptInvite user: ", user);
         this.us.updateUserGroup(user, UserService.getCurrentUser().memberOf, (error)=> {
             if (error) {
-                this.presentToast(this.nav, error);
+                this.presentToast(error);
             } else {
                 let gr = new Group(null);
                 gr.$key = UserService.getCurrentUser().memberOf;

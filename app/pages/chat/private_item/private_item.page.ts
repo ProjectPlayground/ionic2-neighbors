@@ -1,4 +1,5 @@
-import {Page, Platform, NavParams} from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import {NavParams} from 'ionic-angular';
 import {ChatService} from '../../../services/chat.service';
 import {UserService} from "../../../services/user.service";
 import {IRoom} from "../../../model/room";
@@ -8,7 +9,7 @@ import {IMessage} from "../../../model/message";
 import {LogService} from "../../../services/log.service";
 import {Keyboard} from "ionic-native/dist/index";
 
-@Page({
+@Component({
     templateUrl: 'build/pages/chat/private_item/private_item.page.html',
 })
 export class PrivateItemPage {

@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {ViewController, Toast, NavController} from 'ionic-angular';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, AbstractControl} from '@angular/common';
+import {ViewController, ToastController} from 'ionic-angular';
+import {REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup,Validators,FormBuilder,AbstractControl} from '@angular/forms';
+
 
 import {EventsService} from "../../../services/events.service";
 import {BasePage} from "../../base.page";
@@ -8,26 +9,27 @@ import {BasePage} from "../../base.page";
 
 @Component({
     templateUrl: './build/pages/events/add_event/add_event.page.html',
-    directives: [FORM_DIRECTIVES]
+    directives: [REACTIVE_FORM_DIRECTIVES]
 })
 export class AddEventPage extends BasePage {
-    form:ControlGroup;
     name:AbstractControl;
-    imgSrc:AbstractControl;
     text:AbstractControl;
+    imgSrc:AbstractControl;
 
-    constructor(public es:EventsService, public viewCtrl:ViewController, fb:FormBuilder, public nav:NavController) {
-        super();
+    eventForm = new FormGroup({
+        name: new FormControl('', Validators.compose([Validators.required, Validators.minLength(8)])),
+        text: new FormControl('', Validators.compose([Validators.required, Validators.minLength(8)])),
+        imgSrc: new FormControl('', Validators.compose([Validators.required, Validators.minLength(8)]))
 
-        this.form = fb.group({
-            'name': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-            'text': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-            'imgSrc': ['', Validators.compose([Validators.required, Validators.minLength(8)])]
-        });
+    });
 
-        this.name = this.form.controls['name'];
-        this.text = this.form.controls['text'];
-        this.imgSrc = this.form.controls['imgSrc'];
+
+    constructor(public es:EventsService, public viewCtrl:ViewController, public toastCtrl:ToastController) {
+        super(toastCtrl);
+
+        this.name = this.eventForm.controls['name'];
+        this.text = this.eventForm.controls['text'];
+        this.imgSrc = this.eventForm.controls['imgSrc'];
     }
 
     private dismiss() {
@@ -37,7 +39,7 @@ export class AddEventPage extends BasePage {
     private addEvent($event) {
         this.es.addEvent(this.name.value, this.text.value, this.imgSrc.value === '' ? null : this.imgSrc.value, (error)=> {
             if (error) {
-                this.presentToast(this.nav, "Error: " + error);
+                this.presentToast("Error: " + error);
             } else {
                 this.dismiss();
             }

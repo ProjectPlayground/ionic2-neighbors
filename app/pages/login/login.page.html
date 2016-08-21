@@ -1,28 +1,28 @@
-<ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>
-        Окно входа
-    </ion-title>
-</ion-navbar>
-
+<ion-header>
+    <ion-navbar>
+        <button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            Окно входа
+        </ion-title>
+    </ion-navbar>
+</ion-header>
 <ion-content>
     <div class="center"></div>
     <div class="logo">
         <img src="build/img/logo.png"/>
     </div>
 
-    <form [ngFormModel]="authForm" novalidate>
+    <form [formGroup]="loginForm" novalidate>
         <ion-item [class.error]="!login.valid && login.touched">
             <ion-label floating primary>Пользователь(email)</ion-label>
-            <ion-input [ngFormControl]="login" type="text" required></ion-input>
+            <ion-input formControlName="login" type="text"></ion-input>
         </ion-item>
 
         <ion-item [class.error]="!password.valid && password.touched">
             <ion-label floating primary>Пароль</ion-label>
-            <ion-input [ngFormControl]="password" type="password" required>
-            </ion-input>
+            <ion-input formControlName="password" type="password"></ion-input>
         </ion-item>
         <!--<p [hidden]="password.valid || submitted == false" danger padding-left>
             Password is required

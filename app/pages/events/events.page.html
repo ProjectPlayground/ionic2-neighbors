@@ -1,16 +1,18 @@
-<ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-    </button>
-
-    <ion-title>Объявления / События</ion-title>
-
-    <ion-buttons *ngIf="us.isAdmin" end>
-        <button (click)="createEvent()">
-            <ion-icon name="create"></ion-icon>
+<ion-header>
+    <ion-navbar>
+        <button menuToggle>
+            <ion-icon name="menu"></ion-icon>
         </button>
-    </ion-buttons>
-</ion-navbar>
+
+        <ion-title>Объявления / События</ion-title>
+
+        <ion-buttons *ngIf="us.isAdmin" end>
+            <button (click)="createEvent()">
+                <ion-icon name="create"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
 
 <ion-content class="outer-content events-list">
     <ion-card *ngFor="let item of items | async">

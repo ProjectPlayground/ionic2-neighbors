@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {NavController, IonicApp} from "ionic-angular/index";
+import {NavController, App} from "ionic-angular/index";
 import {ProfilePage} from "../pages/profile/profile.page";
 
 @Component({
@@ -18,7 +18,7 @@ export class AvatarComponent {
     @Input()
     user:any;
 
-    constructor(public app:IonicApp) {
+    constructor(public app:App) {
     }
 
     editProfile(user) {

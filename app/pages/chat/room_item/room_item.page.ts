@@ -1,4 +1,5 @@
 import {Page, Platform, NavParams} from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
 import {ChatService} from '../../../services/chat.service';
 import {IRoom} from "../../../model/room";
 import {Observable} from "rxjs/Observable";
@@ -8,7 +9,7 @@ import {IUser} from "../../../model/user";
 import {LogService} from "../../../services/log.service";
 import {Keyboard} from "ionic-native/dist/index";
 
-@Page({
+@Component({
     templateUrl: 'build/pages/chat/room_item/room_item.page.html',
 })
 export class RoomItemPage {

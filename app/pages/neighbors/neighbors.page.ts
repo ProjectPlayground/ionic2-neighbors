@@ -1,29 +1,35 @@
-import {Page, NavController} from 'ionic-angular';
+import {ToastController, NavController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
 import {NeighborItemPage} from '../neighbors/neighbor_item/neighbor_item.page';
 import {NeighborsService} from '../../services/neighbors.service';
 import {IUser} from "../../model/user";
 import {UserService} from "../../services/user.service";
 import {InvitesPage} from "./invites/invites.page";
 import {LogService} from "../../services/log.service";
+import {BasePage} from "../base.page";
 
-@Page({
+@Component({
     templateUrl: 'build/pages/neighbors/neighbors.page.html',
 })
-export class NeighborsPage {
+export class NeighborsPage extends BasePage {
     us:IUser;
     sourceNeighbors:IUser[];
     neighbors:IUser[];
     searchQuery:string;
 
-    constructor(public data:NeighborsService, public nav:NavController) {
-        this.searchQuery = '';
+    constructor(public data:NeighborsService, public nav:NavController, private toastCtrl:ToastController) {
+        super(toastCtrl);
         this.us = UserService.getCurrentUser();
-        data.getMembersOfCurrentGroup().subscribe(data=> {
+        this.searchQuery = '';
+
+
+    }
+
+    ionViewDidEnter() {
+        this.data.getMembersOfCurrentGroup().subscribe(data=> {
             this.sourceNeighbors = this.neighbors = data;
-            //render if filter is active
             this.getItems();
         });
-
     }
 
     private getItems() {

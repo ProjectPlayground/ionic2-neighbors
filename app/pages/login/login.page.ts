@@ -1,35 +1,38 @@
-import {Page, NavController, Events, Toast} from 'ionic-angular';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, AbstractControl} from '@angular/common';
+import {NavController, Events, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {
+    REACTIVE_FORM_DIRECTIVES,
+    FormControl,
+    FormGroup,
+    Validators,
+    FormBuilder,
+    AbstractControl
+} from '@angular/forms';
 import {FirebaseService} from '../../services/firebase.service';
 import {SignupPage} from "../signup/signup.page";
 import {ValidationService} from "../../services/validator.service";
 import {LogService} from "../../services/log.service";
-import {AuthProviders, AuthMethods} from "angularfire2/angularfire2";
 import {InAppBrowser} from 'ionic-native';
 import {BasePage} from "../base.page";
 
 
-@Page({
+@Component({
     templateUrl: 'build/pages/login/login.page.html',
-    directives: [FORM_DIRECTIVES]
+    directives: [REACTIVE_FORM_DIRECTIVES]
 })
 export class LoginPage extends BasePage {
-    authForm:ControlGroup;
     login:AbstractControl;
     password:AbstractControl;
 
-    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, public events:Events) {
+    loginForm = new FormGroup({
+        login: new FormControl('test@test.com', Validators.compose([Validators.required, ValidationService.emailValidator])),
+        password: new FormControl('123456', Validators.compose([Validators.required, Validators.minLength(8)]))
+    });
 
-        this.authForm = fb.group({
-            'login': ['', Validators.compose([Validators.required, ValidationService.emailValidator])],
-            'password': ['', Validators.compose([Validators.required, Validators.minLength(8)])]
-        });
-
-        this.login = this.authForm.controls['login'];
-        this.password = this.authForm.controls['password'];
-
-        this.login._value = "test@test.com";
-        this.password._value = "123456";
+    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, public events:Events, private toastCtrl:ToastController) {
+        super(toastCtrl);
+        this.login = this.loginForm.controls['login'];
+        this.password = this.loginForm.controls['password'];
     }
 
     public onLogin(event) {
@@ -37,7 +40,7 @@ export class LoginPage extends BasePage {
             var user = result.user;
             LogService.logMessage("Email user ", user);
         }).catch((error)=> {
-            this.presentToast(this.nav, error);
+            this.presentToast(error);
             return;
         });
     }
@@ -48,7 +51,7 @@ export class LoginPage extends BasePage {
                 LogService.logMessage(success.access_token);
                 this.db.loginWithFacebookAccessToken(success);
             }, (error) => {
-                this.presentToast(this.nav, error);
+                this.presentToast(error);
             });
         } else {
             var provider = this.db.getFacebookProvider();
@@ -68,7 +71,7 @@ export class LoginPage extends BasePage {
                 var credential = error.credential;
                 // ...
                 this.events.publish("user:logout");
-                this.presentToast(this.nav, error);
+                this.presentToast(error);
             });
         }
     }

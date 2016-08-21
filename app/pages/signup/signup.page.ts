@@ -1,23 +1,34 @@
-import {Page, NavController, Toast} from 'ionic-angular';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, AbstractControl} from '@angular/common';
+import {Page, NavController, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {
+    REACTIVE_FORM_DIRECTIVES,
+    FormControl,
+    FormGroup,
+    Validators,
+    FormBuilder,
+    AbstractControl
+} from '@angular/forms';
 import {TabsPage} from '../apptabs/apptabs';
 import {FirebaseService} from "../../services/firebase.service";
 import {ValidationService} from "../../services/validator.service";
+import {BasePage} from "../base.page";
 
 
-@Page({
+@Component({
     templateUrl: 'build/pages/signup/signup.page.html',
-    directives: [FORM_DIRECTIVES]
+    directives: [REACTIVE_FORM_DIRECTIVES]
 })
-export class SignupPage {
-    form:ControlGroup;
+export class SignupPage extends BasePage {
+    form:FormGroup;
     login:AbstractControl;
     password:AbstractControl;
 
-    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService) {
-        this.form = fb.group({
-            'login': ['', Validators.compose([Validators.required, ValidationService.emailValidator])],
-            'password': ['', Validators.compose([Validators.required, Validators.minLength(8)])]
+    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, private toastCtrl:ToastController) {
+        super(toastCtrl);
+
+        this.form = new FormGroup({
+            login: new FormControl('', Validators.compose([Validators.required, ValidationService.emailValidator])),
+            password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(8)]))
         });
 
         this.login = this.form.controls['login'];
@@ -41,19 +52,6 @@ export class SignupPage {
                 this.presentToast("Successfully created user account");
             }
         });
-    }
-
-    private presentToast(message) {
-        let toast = Toast.create({
-            message: message,
-            duration: 3000
-        });
-
-        toast.onDismiss(() => {
-            console.log('Dismissed toast');
-        });
-
-        this.nav.present(toast);
     }
 
 }

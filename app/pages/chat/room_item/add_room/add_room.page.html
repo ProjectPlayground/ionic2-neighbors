@@ -1,21 +1,22 @@
-<ion-toolbar>
-    <ion-title>
-        Добавить новую комнату
-    </ion-title>
-    <ion-buttons start>
-        <button (click)="dismiss()">
-            <span primary showWhen="ios">Отмена</span>
-            <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-        </button>
-    </ion-buttons>
-</ion-toolbar>
-
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Добавить новую комнату
+        </ion-title>
+        <ion-buttons start>
+            <button (click)="dismiss()">
+                <span primary showWhen="ios">Отмена</span>
+                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
 <ion-content>
     <ion-list>
-        <form [ngFormModel]="form" novalidate>
+        <form [formGroup]="form" novalidate>
             <ion-item class="no-border" [class.error]="!name.valid && name.touched">
                 <ion-label floating>Наименование</ion-label>
-                <ion-input [ngFormControl]="name" type="text"></ion-input>
+                <ion-input formControlName="name" type="text"></ion-input>
             </ion-item>
         </form>
     </ion-list>

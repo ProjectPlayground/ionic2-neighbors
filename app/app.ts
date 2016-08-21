@@ -1,5 +1,5 @@
-import {ViewChild} from '@angular/core';
-import {App, Events, Platform, MenuController, Loading} from 'ionic-angular';
+import {ViewChild, Component} from '@angular/core';
+import {Page, ionicBootstrap, Nav, Events, Platform, MenuController, LoadingController, Loading} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
 import {NeighborsService} from './services/neighbors.service';
@@ -17,33 +17,22 @@ import {GroupsPage} from "./pages/groups/groups.page";
 import {ProfilePage} from "./pages/profile/profile.page";
 import {IUser} from "./model/user";
 
-@App({
+@Component({
     templateUrl: 'build/app.html',
-    config: {
-        //Whether to hide the tabs on child pages or not. If true it will not show the tabs on child pages.
-        tabSubPages: true,
-        platforms: {
-            ios: {
-                statusbarPadding: true
-            }
-        }
-    }, // http://ionicframework.com/docs/v2/api/config/Config/
-    queries: {
-        nav: new ViewChild('content')
-    },
-    directives: [AvatarComponent],
-    providers: [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService]
+    directives: [AvatarComponent]
 })
 export class MyApp {
+    @ViewChild(Nav) nav: Nav;
+
     rootPage:any = LoginPage;
-    events:Events;
     loggedInPages;
     loggedOutPages;
-    nav;
     currentUser:IUser;
+    tabs:TabsPage;
     loading:Loading;
 
-    constructor(events:Events, platform:Platform, public menu:MenuController, public db:FirebaseService, public userService:UserService) {
+    constructor(public events:Events, platform:Platform, public menu:MenuController, public db:FirebaseService, public userService:UserService, private loadingController:LoadingController) {
+        this.tabs = TabsPage;
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -66,7 +55,7 @@ export class MyApp {
             {title: 'Двор', component: LoginPage, icon: 'map'},
             {title: 'Дети', component: LoginPage, icon: 'ios-people'},
             {title: 'Коммунальные услуги', component: LoginPage, icon: 'calculator'},
-            {title: 'Доска объявлений', component: LoginPage, icon: 'calendar'},
+            {title: 'Доска объявлений', component: TabsPage, icon: 'calendar', index: 1},
             {title: 'Не забыть', component: LoginPage, icon: 'information-circle'},
             {title: 'Выход', icon: 'log-out', action: 'logout'}
         ];
@@ -87,6 +76,7 @@ export class MyApp {
         // find the nav component and set what the root page should be
         // reset the nav to remove previous pages and only have this page
         // we wouldn't want the back button to show in this scenario
+        LogService.logMessage("openPage", page);
         if (page.index) {
             this.nav.setRoot(page.component, {tabIndex: page.index});
         } else {
@@ -95,18 +85,21 @@ export class MyApp {
     }
 
     private showLoading(content) {
+        LogService.logMessage("showLoading " + content);
         if (this.loading == null) {
-            this.loading = Loading.create({
-                content: content
+            this.loading = this.loadingController.create({
+                content: content,
+                dismissOnPageChange: true,
+                duration: 7000
             });
-
-            this.nav.present(this.loading);
+            this.loading.present();
         } else {
             this.loading.setContent(content);
         }
     }
 
     private hideLoading() {
+        LogService.logMessage("hideLoading");
         if (this.loading != null) {
             this.loading.dismiss();
             this.loading = null;
@@ -156,3 +149,23 @@ export class MyApp {
         });
     }
 }
+
+// Pass the main App component as the first argument
+// Pass any providers for your app in the second argument
+// Set any config for your app as the third argument, see the docs for
+// more ways to configure your app:
+// http://ionicframework.com/docs/v2/api/config/Config/
+// Place the tabs on the bottom for all platforms
+// See the theming docs for the default values:
+// http://ionicframework.com/docs/v2/theming/platform-specific-styles/
+
+ionicBootstrap(MyApp, [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService],
+    {
+        //Whether to hide the tabs on child pages or not. If true it will not show the tabs on child pages.
+        tabsHideOnSubPages: false,
+        platforms: {
+            ios: {
+                statusbarPadding: true
+            }
+        }
+    });

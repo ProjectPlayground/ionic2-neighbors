@@ -8,8 +8,6 @@ import {GroupsPage} from '../groups/groups.page';
 import {FirebaseService} from '../../services/firebase.service';
 import {StartPage} from "../start/start.page";
 
-
-
 @Component({
     templateUrl: 'build/pages/apptabs/apptabs.html'
 })
@@ -23,8 +21,8 @@ export class TabsPage {
 
     tabIndex;
 
-    constructor (params:NavParams){
-        this.tabIndex = params.get("tabIndex");
+    constructor(params:NavParams) {
+        this.tabIndex = params.data.tabIndex || 0;
     }
 
 }

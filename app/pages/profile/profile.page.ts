@@ -1,5 +1,13 @@
-import {Page, NavController, Events} from 'ionic-angular';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Validators, AbstractControl} from '@angular/common';
+import {ToastController, NavController, Events} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {
+    REACTIVE_FORM_DIRECTIVES,
+    FormControl,
+    FormGroup,
+    Validators,
+    FormBuilder,
+    AbstractControl
+} from '@angular/forms';
 import {ValidationService} from "../../services/validator.service";
 import {BasePage} from "../base.page";
 import {UserService} from "../../services/user.service";
@@ -8,12 +16,12 @@ import {LogService} from "../../services/log.service";
 import {FirebaseService} from "../../services/firebase.service";
 
 
-@Page({
+@Component({
     templateUrl: 'build/pages/profile/profile.page.html',
-    directives: [FORM_DIRECTIVES]
+    directives: [REACTIVE_FORM_DIRECTIVES]
 })
 export class ProfilePage extends BasePage {
-    form:ControlGroup;
+    form:FormGroup;
 
     displayName:AbstractControl;
     auto:AbstractControl;
@@ -23,11 +31,11 @@ export class ProfilePage extends BasePage {
     mobile1:AbstractControl;
     mobile2:AbstractControl;
     photoURL:AbstractControl;
-    
+
     user:IUser;
-    
-    constructor(public nav:NavController, fb:FormBuilder, public us:UserService, public events:Events, public fs:FirebaseService) {
-        super();
+
+    constructor(public nav:NavController, fb:FormBuilder, public us:UserService, public events:Events, public fs:FirebaseService, private toastCtrl:ToastController) {
+        super(toastCtrl);
         this.user = UserService.getCurrentUser();
         if (this.user == null) {
             this.user = new User(null, null, null);
@@ -37,15 +45,15 @@ export class ProfilePage extends BasePage {
         }
 
         LogService.logMessage("ProfilePage constructor ", this.user);
-        this.form = fb.group({
-            'mail': [this.user.mail, Validators.compose([Validators.required, ValidationService.emailValidator])],
-            'displayName': [this.user.displayName, Validators.compose([Validators.required, Validators.minLength(8)])],
-            'auto': [this.user.auto],
-            'houseNumber': [this.user.houseNumber],
-            'flatNumber': [this.user.flatNumber, Validators.compose([Validators.required])],
-            'mobile1': [this.user.mobile1, Validators.compose([Validators.required, Validators.minLength(8)])],
-            'mobile2': [this.user.mobile2],
-            'photoURL': [this.user.photoURL]
+        this.form = new FormGroup({
+            mail: new FormControl(this.user.mail, Validators.compose([Validators.required, ValidationService.emailValidator])),
+            displayName: new FormControl(this.user.displayName, Validators.compose([Validators.required, Validators.minLength(8)])),
+            auto: new FormControl(this.user.auto),
+            houseNumber: new FormControl(this.user.houseNumber),
+            flatNumber: new FormControl(this.user.flatNumber, Validators.compose([Validators.required])),
+            mobile1: new FormControl(this.user.mobile1, Validators.compose([Validators.required, Validators.minLength(8)])),
+            mobile2: new FormControl(this.user.mobile2),
+            photoURL: new FormControl(this.user.photoURL)
         });
 
         this.displayName = this.form.controls['displayName'];
@@ -60,18 +68,18 @@ export class ProfilePage extends BasePage {
     }
 
     private updateProfile() {
-        this.user.displayName = this.displayName._value;
-        this.user.auto = this.auto._value;
-        this.user.houseNumber = this.houseNumber._value;
-        this.user.flatNumber = this.flatNumber._value;
-        this.user.mail = this.mail._value;
-        this.user.mobile1 = this.mobile1._value;
-        this.user.mobile2 = this.mobile2._value;
-        this.user.photoURL = this.photoURL._value;
+        this.user.displayName = this.displayName.value;
+        this.user.auto = this.auto.value;
+        this.user.houseNumber = this.houseNumber.value;
+        this.user.flatNumber = this.flatNumber.value;
+        this.user.mail = this.mail.value;
+        this.user.mobile1 = this.mobile1.value;
+        this.user.mobile2 = this.mobile2.value;
+        this.user.photoURL = this.photoURL.value;
 
         this.us.updateUser(this.user, (error)=> {
             if (error) {
-                this.presentToast(this.nav, error);
+                this.presentToast(error);
             } else {
                 this.events.publish("user:login");
             }
@@ -79,7 +87,7 @@ export class ProfilePage extends BasePage {
     }
 
     private changePhoto() {
-        this.presentToast(this.nav, "changePhoto ");
+        this.presentToast("changePhoto ");
     }
 
 }

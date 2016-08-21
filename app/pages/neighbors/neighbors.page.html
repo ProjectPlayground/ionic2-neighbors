@@ -1,18 +1,19 @@
-<ion-navbar *navbar>
-    <button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>
-        Соседи
-    </ion-title>
-    <ion-buttons *ngIf="us.isAdmin" end>
-        <button (click)="showInvites()">
-            <ion-icon name="add"></ion-icon>
+<ion-header>
+    <ion-navbar>
+        <button menuToggle>
+            <ion-icon name="menu"></ion-icon>
         </button>
-    </ion-buttons>
+        <ion-title>
+            Соседи
+        </ion-title>
+        <ion-buttons *ngIf="us.isAdmin" end>
+            <button (click)="showInvites()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
 
-</ion-navbar>
-
+    </ion-navbar>
+</ion-header>
 <ion-content>
     <ion-searchbar [(ngModel)]="searchQuery" (input)="getItems()"></ion-searchbar>
     <ion-list>
@@ -27,7 +28,8 @@
                     {{ item.auto }}
                 </p>
                 <p *ngIf="item.houseNumber!=='' || item.flatNumber!==''">
-                    <ion-icon name="home"></ion-icon>&nbsp;
+                    <ion-icon name="home"></ion-icon>
+                    &nbsp;
                     <span *ngIf="item.houseNumber!==''">{{ item.houseNumber }} / </span> {{ item.flatNumber }}
                 </p>
             </ion-item>

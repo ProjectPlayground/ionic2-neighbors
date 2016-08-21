@@ -1,4 +1,5 @@
-import {Page, Platform, NavController, Modal} from 'ionic-angular';
+import {Page, Platform, NavController, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
 import {RoomItemPage} from  '../chat/room_item/room_item.page';
 import {PrivateItemPage} from  '../chat/private_item/private_item.page';
 import {ChatService} from "../../services/chat.service";
@@ -10,17 +11,18 @@ import {IUser} from "../../model/user";
 import {AddRoomPage} from "./room_item/add_room/add_room.page";
 import {BasePage} from "../base.page";
 
-@Page({
+@Component({
     templateUrl: 'build/pages/chat/chat.page.html',
 })
-export class ChatPage extends BasePage{
+export class ChatPage extends BasePage {
     user:IUser;
     type:string = "rooms";
     isAndroid:boolean = false;
     rooms:Observable<IRoom[]>;
     privateRooms:Observable<IRoom[]>;
 
-    constructor(platform:Platform, public nav:NavController, cs:ChatService) {
+    constructor(platform:Platform, public nav:NavController, cs:ChatService, private toastCtrl:ToastController) {
+        super(toastCtrl);
         this.isAndroid = platform.is('android');
         this.user = UserService.getCurrentUser();
         this.rooms = cs.getRooms("public_rooms/" + this.user.memberOf, "public_messages/");
@@ -37,12 +39,11 @@ export class ChatPage extends BasePage{
 
     createPrivateTopic() {
         LogService.logMessage("createPrivateTopic");
-        this.presentToast(this.nav, "Кнопка будет активна в след. версии приложения. Написать сообщение можно через список соседей")
+        this.presentToast("Кнопка будет активна в след. версии приложения. Написать сообщение можно через список соседей")
     }
 
     createPublicTopic() {
-        let modal = Modal.create(AddRoomPage);
-        this.nav.present(modal);
+        this.nav.push(AddRoomPage);
     }
 
 }

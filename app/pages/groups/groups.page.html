@@ -1,14 +1,15 @@
-<ion-navbar *navbar>
-    <ion-title>
-        Список ЖК/ОСМД
-    </ion-title>
-    <ion-buttons end>
-        <button (click)="logout()">
-            Выход
-        </button>
-    </ion-buttons>
-</ion-navbar>
-
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Список ЖК/ОСМД
+        </ion-title>
+        <ion-buttons end>
+            <button (click)="logout()">
+                Выход
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
 <ion-content>
     <ion-searchbar [(ngModel)]="searchQuery" (input)="getItems()"></ion-searchbar>
     <ion-list>
