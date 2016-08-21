@@ -21,7 +21,7 @@ export class ChatPage extends BasePage {
     rooms:Observable<IRoom[]>;
     privateRooms:Observable<IRoom[]>;
 
-    constructor(platform:Platform, public nav:NavController, cs:ChatService, private toastCtrl:ToastController) {
+    constructor(platform:Platform, public nav:NavController, cs:ChatService, toastCtrl:ToastController) {
         super(toastCtrl);
         this.isAndroid = platform.is('android');
         this.user = UserService.getCurrentUser();

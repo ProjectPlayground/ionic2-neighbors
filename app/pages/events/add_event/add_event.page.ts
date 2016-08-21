@@ -24,7 +24,7 @@ export class AddEventPage extends BasePage {
     });
 
 
-    constructor(public es:EventsService, public viewCtrl:ViewController, public toastCtrl:ToastController) {
+    constructor(public es:EventsService, public viewCtrl:ViewController, toastCtrl:ToastController) {
         super(toastCtrl);
 
         this.name = this.eventForm.controls['name'];

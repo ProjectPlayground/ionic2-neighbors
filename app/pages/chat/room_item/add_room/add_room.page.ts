@@ -18,7 +18,7 @@ export class AddRoomPage extends BasePage {
         name: new FormControl('', Validators.compose([Validators.required, Validators.minLength(8)]))
     });
 
-    constructor(public data:ChatService, public viewCtrl:ViewController, fb:FormBuilder, public toastCtrl:ToastController) {
+    constructor(public data:ChatService, public viewCtrl:ViewController, toastCtrl:ToastController) {
         super(toastCtrl);
         this.name = this.form.controls['name'];
     }

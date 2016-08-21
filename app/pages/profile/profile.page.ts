@@ -34,7 +34,7 @@ export class ProfilePage extends BasePage {
 
     user:IUser;
 
-    constructor(public nav:NavController, fb:FormBuilder, public us:UserService, public events:Events, public fs:FirebaseService, private toastCtrl:ToastController) {
+    constructor(public nav:NavController, fb:FormBuilder, public us:UserService, public events:Events, public fs:FirebaseService, toastCtrl:ToastController) {
         super(toastCtrl);
         this.user = UserService.getCurrentUser();
         if (this.user == null) {

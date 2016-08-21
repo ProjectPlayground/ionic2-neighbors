@@ -29,7 +29,7 @@ export class LoginPage extends BasePage {
         password: new FormControl('123456', Validators.compose([Validators.required, Validators.minLength(8)]))
     });
 
-    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, public events:Events, private toastCtrl:ToastController) {
+    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, public events:Events, toastCtrl:ToastController) {
         super(toastCtrl);
         this.login = this.loginForm.controls['login'];
         this.password = this.loginForm.controls['password'];

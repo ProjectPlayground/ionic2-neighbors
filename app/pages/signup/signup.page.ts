@@ -23,7 +23,7 @@ export class SignupPage extends BasePage {
     login:AbstractControl;
     password:AbstractControl;
 
-    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, private toastCtrl:ToastController) {
+    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, toastCtrl:ToastController) {
         super(toastCtrl);
 
         this.form = new FormGroup({

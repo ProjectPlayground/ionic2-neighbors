@@ -14,10 +14,12 @@ export class FirebaseService {
         this.events = events;
         // still pointing to the base,
         // so that I can access other parts of my tree
+        //noinspection TypeScriptUnresolvedVariable
         this.db = firebase.database();
 
         // as well as adding a reference to the Firebase
         // authentication method
+        //noinspection TypeScriptUnresolvedVariable
         this.auth = firebase.auth();
 
         this.auth.onAuthStateChanged((user)=> {
@@ -43,16 +45,20 @@ export class FirebaseService {
     }
 
     public getFacebookProvider() {
+        //noinspection TypeScriptUnresolvedVariable
         return new firebase.auth.FacebookAuthProvider();
     }
 
     public getGoogleProvider() {
+        //noinspection TypeScriptUnresolvedVariable
         return new firebase.auth.GoogleAuthProvider();
     }
 
     public loginWithFacebookAccessToken(token) {
+        //noinspection TypeScriptUnresolvedVariable
         var credential = firebase.auth.FacebookAuthProvider.credential(token.access_token);
         // Sign in with the credential from the Facebook user.
+        //noinspection TypeScriptUnresolvedVariable
         firebase.auth().signInWithCredential(credential).catch(function (error) {
             // Handle Errors here.
             var errorCode = error.code;

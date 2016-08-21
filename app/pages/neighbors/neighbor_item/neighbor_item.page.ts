@@ -14,7 +14,7 @@ export class NeighborItemPage extends BasePage {
     private neighbor:IUser;
     private user:IUser;
 
-    constructor(public nav:NavController, navParams:NavParams, public data:ChatService, private toastCtrl:ToastController) {
+    constructor(public nav:NavController, navParams:NavParams, public data:ChatService, toastCtrl:ToastController) {
         super(toastCtrl);
         this.neighbor = navParams.get("item");
         this.user = UserService.getCurrentUser();

@@ -17,7 +17,7 @@ export class GroupsPage extends BasePage {
     searchQuery:string;
     activeItem:IGroup = null;
 
-    constructor(public data:GroupsService, public nav:NavController, public fs:FirebaseService, private toastCtrl:ToastController) {
+    constructor(public data:GroupsService, public nav:NavController, public fs:FirebaseService, toastCtrl:ToastController) {
         super(toastCtrl);
         this.searchQuery = '';
         //async implement in new version

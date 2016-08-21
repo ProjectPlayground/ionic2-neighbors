@@ -15,7 +15,7 @@ export class InvitesPage extends BasePage {
     users:IUser[];
     searchQuery:string;
 
-    constructor(public nav:NavController, public us:UserService, public gs:GroupsService, private toastCtrl:ToastController) {
+    constructor(public nav:NavController, public us:UserService, public gs:GroupsService, toastCtrl:ToastController) {
         super(toastCtrl);
         this.searchQuery = '';
         us.getInvites().subscribe(data=> {
