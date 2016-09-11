@@ -39,7 +39,7 @@ export class UserService extends BaseService{
         )
     }
 
-    public static getCurrentUser():any {
+    public static getCurrentUser():IUser {
         return UserService.user;
     }
 

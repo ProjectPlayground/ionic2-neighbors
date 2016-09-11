@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="su.balynsky.neighbors" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>neighbors</name>
+  <name>Neighbors</name>
   <description>Neighbors app</description>
   <author email="mail@balynsky.su" href="http://balynsky.su/">Neighbors app</author>
+  <hook src="hooks/after_prepare/010_add_platform_class.js" type="after_prepare"/>
+  <hook src="hooks/after_prepare/011_add_fcm_to_platform.js" type="after_prepare"/>
   <content src="index.html"/>
+  <allow-havigation href="*://*.appspot.com/*"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
@@ -12,6 +15,7 @@
   <allow-intent href="mailto:*"/>
   <allow-intent href="geo:*"/>
   <allow-intent href="*.firebaseio.com"/>
+  <allow-intent href="*.appspot.com"/>
   <allow-intent href="auth.firebase.com"/>
   <platform name="android">
     <allow-intent href="market:*"/>
@@ -37,6 +41,7 @@
   <platform name="ios">
     <allow-intent href="itms:*"/>
     <allow-intent href="itms-apps:*"/>
+    <resource-file src="GoogleService-Info.plist"/>
     <icon src="resources\ios\icon\icon.png" width="57" height="57"/>
     <icon src="resources\ios\icon\icon@2x.png" width="114" height="114"/>
     <icon src="resources\ios\icon\icon-40.png" width="40" height="40"/>
@@ -97,6 +102,9 @@
   <plugin name="cordova-plugin-facebook4" spec="~1.7.1">
     <variable name="APP_ID" value="245599175811882"/>
     <variable name="APP_NAME" value="neighbors"/>
+  </plugin>
+  <plugin name="phonegap-plugin-push" spec="https://github.com/phonegap/phonegap-plugin-push">
+    <variable name="SENDER_ID" value="182008884806"/>
   </plugin>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>

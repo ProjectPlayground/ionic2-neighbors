@@ -17,7 +17,7 @@ export class NeighborsPage extends BasePage {
     neighbors:IUser[];
     searchQuery:string;
 
-    constructor(public data:NeighborsService, public nav:NavController, toastCtrl:ToastController) {
+    constructor(private data:NeighborsService, private nav:NavController, toastCtrl:ToastController) {
         super(toastCtrl);
         this.us = UserService.getCurrentUser();
         this.searchQuery = '';

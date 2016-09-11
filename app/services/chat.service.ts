@@ -8,10 +8,11 @@ import {UserService} from "./user.service";
 import {Message, IMessage} from "../model/message";
 import {IUser} from "../model/user";
 import {BaseService} from "./base.service";
+import {PushService} from "./push.service";
 
 @Injectable()
 export class ChatService extends BaseService {
-    constructor(public fs:FirebaseService, public events:Events) {
+    constructor(public fs:FirebaseService, public events:Events, public push:PushService) {
         super(events);
     }
 
@@ -231,11 +232,15 @@ export class ChatService extends BaseService {
         })
     }
 
-    saveMessage(rooms_name:string, key:string, text:string, callback) {
+    saveMessage(rooms_name:string, key:string, text:string, user_id:string, callback) {
         let message = new Message(text);
         message.user_id = UserService.getCurrentUser().uid;
         this.fs.db.ref(rooms_name + "/" + key).push().set(message, callback);
-
+        if (user_id == null) {
+            this.push.sendMessageToGroup(text, UserService.getCurrentUser().memberOf);
+        } else {
+            this.push.sendMessageToUser(text, user_id);
+        }
     }
 
     addPublicRoom(room_name:string, callback) {

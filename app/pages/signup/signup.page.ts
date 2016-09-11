@@ -1,14 +1,6 @@
-import {Page, NavController, ToastController} from 'ionic-angular';
-import {Component, ViewChild} from '@angular/core';
-import {
-    REACTIVE_FORM_DIRECTIVES,
-    FormControl,
-    FormGroup,
-    Validators,
-    FormBuilder,
-    AbstractControl
-} from '@angular/forms';
-import {TabsPage} from '../apptabs/apptabs';
+import {NavController, ToastController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {REACTIVE_FORM_DIRECTIVES, FormControl, FormGroup, Validators, AbstractControl} from "@angular/forms";
 import {FirebaseService} from "../../services/firebase.service";
 import {ValidationService} from "../../services/validator.service";
 import {BasePage} from "../base.page";
@@ -23,7 +15,7 @@ export class SignupPage extends BasePage {
     login:AbstractControl;
     password:AbstractControl;
 
-    constructor(public nav:NavController, fb:FormBuilder, public db:FirebaseService, toastCtrl:ToastController) {
+    constructor(private nav:NavController, private db:FirebaseService, toastCtrl:ToastController) {
         super(toastCtrl);
 
         this.form = new FormGroup({

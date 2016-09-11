@@ -1,5 +1,5 @@
 import {Page, Platform, NavParams} from 'ionic-angular';
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ChatService} from '../../../services/chat.service';
 import {IRoom} from "../../../model/room";
 import {Observable} from "rxjs/Observable";
@@ -17,7 +17,7 @@ export class RoomItemPage {
     private messages:Observable<IMessage[]>;
     private user:IUser;
 
-    constructor(public data:ChatService, params:NavParams) {
+    constructor(private data:ChatService, params:NavParams) {
         this.chat = params.get("chatId");
         this.user = UserService.getCurrentUser();
         this.messages = data.getMessages("public_messages", this.chat.$key);
@@ -25,8 +25,9 @@ export class RoomItemPage {
 
     public sendMessage(message:string) {
         LogService.logMessage("RoomItemPage sendMessage ", message);
-        this.data.saveMessage("public_messages", this.chat.$key, message, ()=> {
+        this.data.saveMessage("public_messages", this.chat.$key, message, null, ()=> {
             LogService.logMessage("RoomItemPage sendMessage success saved");
+            message = '';
         });
     }
 

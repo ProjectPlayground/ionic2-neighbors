@@ -17,7 +17,7 @@ export class EventsPage {
     private items:Observable<any>;
     private us:IUser;
 
-    constructor( es:EventsService, public nav:NavController, private modalCtrl:ModalController) {
+    constructor(es:EventsService, private nav:NavController, private modalCtrl:ModalController) {
         this.items = es.getEvents();
         this.us = UserService.getCurrentUser();
     }

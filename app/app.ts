@@ -1,6 +1,16 @@
 import {ViewChild, Component} from '@angular/core';
-import {Page, ionicBootstrap, Nav, Events, Platform, MenuController, LoadingController, Loading} from 'ionic-angular';
-import {StatusBar} from 'ionic-native';
+import {
+    ionicBootstrap,
+    Nav,
+    Events,
+    Platform,
+    MenuController,
+    LoadingController,
+    Loading,
+    ToastController
+} from 'ionic-angular';
+import {StatusBar, Push} from 'ionic-native';
+
 
 import {NeighborsService} from './services/neighbors.service';
 import {ChatService} from './services/chat.service';
@@ -16,22 +26,27 @@ import {GroupsService} from "./services/groups.service";
 import {GroupsPage} from "./pages/groups/groups.page";
 import {ProfilePage} from "./pages/profile/profile.page";
 import {IUser} from "./model/user";
+import {BasePage} from "./pages/base.page";
+import {PushService} from "./services/push.service";
+
 
 @Component({
     templateUrl: 'build/app.html',
     directives: [AvatarComponent]
 })
-export class MyApp {
-    @ViewChild(Nav) nav: Nav;
-
+export class MyApp extends BasePage {
+    @ViewChild(Nav) nav:Nav;
     rootPage:any = LoginPage;
     loggedInPages;
     loggedOutPages;
     currentUser:IUser;
     tabs:TabsPage;
     loading:Loading;
+    static token;
 
-    constructor(public events:Events, platform:Platform, public menu:MenuController, public db:FirebaseService, public userService:UserService, private loadingController:LoadingController) {
+    constructor(public events:Events, platform:Platform, public menu:MenuController, public db:FirebaseService, public userService:UserService,
+                private loadingController:LoadingController, private toastCtrl:ToastController, private push:PushService) {
+        super(toastCtrl);
         this.tabs = TabsPage;
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
@@ -44,6 +59,10 @@ export class MyApp {
                 this.rootPage = LoginPage;
                 this.enableMenu(false);
             }
+            //cordova.plugins.Keyboard.disableScroll(true);
+            window.addEventListener('native.keyboardshow', MyApp.onShowKeyboard);
+            window.addEventListener('native.keyboardhide', MyApp.onHideKeyboard);
+
         });
         this.loading = null;
         this.loggedOutPages = [
@@ -60,7 +79,22 @@ export class MyApp {
             {title: 'Выход', icon: 'log-out', action: 'logout'}
         ];
         this.listenToLoginEvents();
+
+
     }
+
+    static onShowKeyboard(e) {
+        var event = new CustomEvent('keyboardShown');
+        event['keyboardHeight'] = e.keyboardHeight;
+        document.dispatchEvent(event);
+    }
+
+    static onHideKeyboard() {
+        var event = new CustomEvent('keyboardShown');
+        event['closed'] = true;
+        document.dispatchEvent(event);
+    }
+
 
     private enableMenu(loggedIn) {
         this.menu.enable(loggedIn, "loggedInMenu");
@@ -99,11 +133,13 @@ export class MyApp {
     }
 
     private hideLoading() {
-        LogService.logMessage("hideLoading");
-        if (this.loading != null) {
-            this.loading.dismiss();
-            this.loading = null;
-        }
+        setTimeout(()=> {
+            LogService.logMessage("hideLoading");
+            if (this.loading != null) {
+                this.loading.dismiss();
+                this.loading = null;
+            }
+        });
     }
 
     private listenToLoginEvents() {
@@ -127,14 +163,14 @@ export class MyApp {
         });
 
         this.events.subscribe('user:new', () => {
-            console.log(" listenToLoginEvents user:new");
+            LogService.logMessage(" listenToLoginEvents user:new");
             this.enableMenu(true);
             this.rootPage = ProfilePage;
         });
 
 
         this.events.subscribe('user:logout', () => {
-            console.log(" listenToLoginEvents user:logout");
+            LogService.logMessage(" listenToLoginEvents user:logout");
             this.enableMenu(false);
             this.rootPage = LoginPage;
             UserService.user = null;
@@ -159,10 +195,10 @@ export class MyApp {
 // See the theming docs for the default values:
 // http://ionicframework.com/docs/v2/theming/platform-specific-styles/
 
-ionicBootstrap(MyApp, [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService],
+ionicBootstrap(MyApp, [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService, PushService],
     {
         //Whether to hide the tabs on child pages or not. If true it will not show the tabs on child pages.
-        tabsHideOnSubPages: false,
+        tabsHideOnSubPages: true,
         platforms: {
             ios: {
                 statusbarPadding: true
