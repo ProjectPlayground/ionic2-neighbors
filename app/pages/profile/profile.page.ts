@@ -25,6 +25,7 @@ export class ProfilePage extends BasePage {
 
     displayName:AbstractControl;
     auto:AbstractControl;
+    auto2:AbstractControl;
     houseNumber:AbstractControl;
     flatNumber:AbstractControl;
     mail:AbstractControl;
@@ -49,6 +50,7 @@ export class ProfilePage extends BasePage {
             mail: new FormControl(this.user.mail, Validators.compose([Validators.required, ValidationService.emailValidator])),
             displayName: new FormControl(this.user.displayName, Validators.compose([Validators.required, Validators.minLength(8)])),
             auto: new FormControl(this.user.auto),
+            auto2: new FormControl(this.user.auto2),
             houseNumber: new FormControl(this.user.houseNumber),
             flatNumber: new FormControl(this.user.flatNumber, Validators.compose([Validators.required])),
             mobile1: new FormControl(this.user.mobile1, Validators.compose([Validators.required, Validators.minLength(8)])),
@@ -58,6 +60,7 @@ export class ProfilePage extends BasePage {
 
         this.displayName = this.form.controls['displayName'];
         this.auto = this.form.controls['auto'];
+        this.auto2 = this.form.controls['auto2'];
         this.houseNumber = this.form.controls['houseNumber'];
         this.flatNumber = this.form.controls['flatNumber'];
         this.mail = this.form.controls['mail'];
@@ -70,6 +73,7 @@ export class ProfilePage extends BasePage {
     private updateProfile() {
         this.user.displayName = this.displayName.value;
         this.user.auto = this.auto.value;
+        this.user.auto2 = this.auto2.value;
         this.user.houseNumber = this.houseNumber.value;
         this.user.flatNumber = this.flatNumber.value;
         this.user.mail = this.mail.value;

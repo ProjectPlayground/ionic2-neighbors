@@ -45,6 +45,18 @@
 
             <ion-item>
                 <ion-label primary>
+                    <ion-icon name="car"></ion-icon>
+                    &nbsp;Номер автомобиля 2
+                </ion-label>
+                <ion-input formControlName="auto2" type="text">
+                </ion-input>
+            </ion-item>
+            <p [hidden]="auto.valid" danger padding-left>
+                Номер автомобиля указан неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
                     <ion-icon name="home"></ion-icon>
                     &nbsp;Номер дома
                 </ion-label>

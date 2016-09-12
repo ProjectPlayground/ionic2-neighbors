@@ -24,9 +24,9 @@
     </div>
 </ion-content>
 <ion-footer>
-    <ion-toolbar position="bottom" keyboard-attach>
+    <ion-toolbar>
         <ion-item>
-            <ion-input placeholder="Введите сообщение" clearInput [(ngModel)]="message"></ion-input>
+            <input placeholder="Введите сообщение" clearInput [(ngModel)]="message">
             <button outline item-right class="button button-clear" (click)="sendMessage(message); closeKeyboard()">
                 Отправить
             </button>

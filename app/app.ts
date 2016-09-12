@@ -49,6 +49,9 @@ export class MyApp extends BasePage {
         super(toastCtrl);
         this.tabs = TabsPage;
         platform.ready().then(() => {
+            if(window.cordova && window.cordova.plugins.Keyboard) {
+                window.cordova.plugins.Keyboard.disableScroll(false);
+            }
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();

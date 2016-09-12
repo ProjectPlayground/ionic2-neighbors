@@ -8,7 +8,7 @@ import {BaseService} from "./base.service";
 
 //https://webcake.co/using-firebase-3-in-angular-2-and-ionic-2/
 @Injectable()
-export class UserService extends BaseService{
+export class UserService extends BaseService {
     public static user:IUser = null;
 
     constructor(public events:Events, public fs:FirebaseService) {
@@ -49,7 +49,9 @@ export class UserService extends BaseService{
 
     public static mapUser(snapshot:any):IUser {
         let user = new User(snapshot.auto, snapshot.member_of, snapshot.displayName);
-        if (typeof snapshot.photoURL !== 'undefined') 
+        if (typeof snapshot.auto2 !== 'undefined')
+            user.auto2 = snapshot.auto2;
+        if (typeof snapshot.photoURL !== 'undefined')
             user.photoURL = snapshot.photoURL;
         if (typeof snapshot.flatNumber !== 'undefined')
             user.flatNumber = snapshot.flatNumber;
@@ -70,6 +72,7 @@ export class UserService extends BaseService{
         this.fs.db.ref("users/" + this.fs.auth.currentUser.uid).update({
                 'displayName': user.displayName,
                 'auto': user.auto,
+                'auto2':user.auto2,
                 'flatNumber': user.flatNumber,
                 'houseNumber': user.houseNumber,
                 'mail': user.mail,
