@@ -20,6 +20,7 @@ export class PrivateItemPage {
     private chat:IRoom;
     private messages:Observable<IMessage[]>;
     private user:IUser;
+    private message;
     //private keyboardObservable = Observable.fromEvent(document, 'keyboardShown');
 
     constructor(private data:ChatService, params:NavParams) {
@@ -40,11 +41,10 @@ export class PrivateItemPage {
         LogService.logMessage("PrivateItemPage chat ", this.chat);
         this.data.saveMessage("private_messages", this.chat.$key, message, this.chat.user_id, ()=> {
             LogService.logMessage("PrivateItemPage sendMessage success saved");
-            message = '';
+            this.message = '';
         });
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            window.cordova.plugins.Keyboard.close();
     }
-
-    public closeKeyboard() {
-        Keyboard.close();
     }
 }

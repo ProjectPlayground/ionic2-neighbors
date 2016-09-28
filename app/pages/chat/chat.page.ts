@@ -30,10 +30,12 @@ export class ChatPage extends BasePage {
     }
 
     openChatRoom(id) {
+        LogService.logMessage("openChatRoom id=",id);
         this.nav.push(RoomItemPage, {chatId: id});
     }
 
     openPrivateRoom(id) {
+        LogService.logMessage("openPrivateRoom id=",id);
         this.nav.push(PrivateItemPage, {chatId: id});
     }
 

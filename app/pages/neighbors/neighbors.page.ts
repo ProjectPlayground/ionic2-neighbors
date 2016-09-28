@@ -44,7 +44,8 @@ export class NeighborsPage extends BasePage {
                 // which seems counter-intuitive but it manages to work that way in most modern browsers.
                 // (There are changes going in place to grossly improve the performance of .replace(/match/g, "replace")
                 // in the next version of Firefox - so the previous statement won't be the case for long.)
-                (v.auto != null && v.auto.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1)
+                (v.auto != null && v.auto.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1) ||
+                (v.auto2 != null && v.auto2.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1)
             ) {
                 return true;
             }

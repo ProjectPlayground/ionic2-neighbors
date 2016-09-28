@@ -1,4 +1,4 @@
-import {ViewChild, Component} from '@angular/core';
+import {ViewChild, Component} from "@angular/core";
 import {
     ionicBootstrap,
     Nav,
@@ -8,19 +8,16 @@ import {
     LoadingController,
     Loading,
     ToastController
-} from 'ionic-angular';
-import {StatusBar, Push} from 'ionic-native';
-
-
-import {NeighborsService} from './services/neighbors.service';
-import {ChatService} from './services/chat.service';
-import {FirebaseService} from './services/firebase.service';
-import {UserService} from './services/user.service';
+} from "ionic-angular";
+import {StatusBar} from "ionic-native";
+import {NeighborsService} from "./services/neighbors.service";
+import {ChatService} from "./services/chat.service";
+import {FirebaseService} from "./services/firebase.service";
+import {UserService} from "./services/user.service";
 import {EventsService} from "./services/events.service";
 import {LogService} from "./services/log.service";
-
-import {TabsPage} from './pages/apptabs/apptabs';
-import {LoginPage} from './pages/login/login.page';
+import {TabsPage} from "./pages/apptabs/apptabs";
+import {LoginPage} from "./pages/login/login.page";
 import {AvatarComponent} from "./component/avatar.component";
 import {GroupsService} from "./services/groups.service";
 import {GroupsPage} from "./pages/groups/groups.page";
@@ -28,28 +25,29 @@ import {ProfilePage} from "./pages/profile/profile.page";
 import {IUser} from "./model/user";
 import {BasePage} from "./pages/base.page";
 import {PushService} from "./services/push.service";
+import {LoadingModal} from "./component/loading.component";
 
 
 @Component({
     templateUrl: 'build/app.html',
-    directives: [AvatarComponent]
+    directives: [AvatarComponent, LoadingModal]
 })
 export class MyApp extends BasePage {
     @ViewChild(Nav) nav:Nav;
+    @ViewChild(LoadingModal) loadingModal:LoadingModal;
     rootPage:any = LoginPage;
     loggedInPages;
     loggedOutPages;
     currentUser:IUser;
     tabs:TabsPage;
-    loading:Loading;
     static token;
 
     constructor(public events:Events, platform:Platform, public menu:MenuController, public db:FirebaseService, public userService:UserService,
-                private loadingController:LoadingController, private toastCtrl:ToastController, private push:PushService) {
+                private toastCtrl:ToastController, private push:PushService) {
         super(toastCtrl);
         this.tabs = TabsPage;
         platform.ready().then(() => {
-            if(window.cordova && window.cordova.plugins.Keyboard) {
+            if (window.cordova && window.cordova.plugins.Keyboard) {
                 window.cordova.plugins.Keyboard.disableScroll(false);
             }
             // Okay, so the platform is ready and our plugins are available.
@@ -67,7 +65,6 @@ export class MyApp extends BasePage {
             window.addEventListener('native.keyboardhide', MyApp.onHideKeyboard);
 
         });
-        this.loading = null;
         this.loggedOutPages = [
             {title: 'Login', component: LoginPage, icon: 'log-in'}
         ];
@@ -121,33 +118,18 @@ export class MyApp extends BasePage {
         }
     }
 
-    private showLoading(content) {
-        LogService.logMessage("showLoading " + content);
-        if (this.loading == null) {
-            this.loading = this.loadingController.create({
-                content: content,
-                dismissOnPageChange: true,
-                duration: 7000
-            });
-            this.loading.present();
-        } else {
-            this.loading.setContent(content);
-        }
+    private showCustomLoading(content) {
+        this.loadingModal.show(content);
     }
 
-    private hideLoading() {
-        setTimeout(()=> {
-            LogService.logMessage("hideLoading");
-            if (this.loading != null) {
-                this.loading.dismiss();
-                this.loading = null;
-            }
-        });
+    private hideCustomLoading() {
+        this.loadingModal.hide();
     }
+
 
     private listenToLoginEvents() {
         this.events.subscribe('user:login', () => {
-            this.showLoading("Загрузка данных о пользователе");
+            this.showCustomLoading("Загрузка данных о пользователе");
             this.userService.loadUserData();
         });
 
@@ -161,7 +143,7 @@ export class MyApp extends BasePage {
                 //if user in group - show interface
                 this.enableMenu(true);
                 this.rootPage = TabsPage;
-                this.hideLoading();
+                this.hideCustomLoading();
             }
         });
 
@@ -180,11 +162,15 @@ export class MyApp extends BasePage {
         });
 
         this.events.subscribe('loader:start', (content) => {
-            this.showLoading(content);
+            this.showCustomLoading(content);
         });
 
         this.events.subscribe('loader:stop', () => {
-            this.hideLoading();
+            this.hideCustomLoading();
+        });
+
+        this.events.subscribe('toast:show', (text) => {
+            this.presentToast(text);
         });
     }
 }

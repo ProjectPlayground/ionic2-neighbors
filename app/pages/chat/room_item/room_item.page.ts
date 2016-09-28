@@ -16,6 +16,7 @@ export class RoomItemPage {
     private chat:IRoom;
     private messages:Observable<IMessage[]>;
     private user:IUser;
+    private message;
 
     constructor(private data:ChatService, params:NavParams) {
         this.chat = params.get("chatId");
@@ -27,13 +28,11 @@ export class RoomItemPage {
         LogService.logMessage("RoomItemPage sendMessage ", message);
         this.data.saveMessage("public_messages", this.chat.$key, message, null, ()=> {
             LogService.logMessage("RoomItemPage sendMessage success saved");
-            message = '';
+            this.message = '';
         });
+        if (window.cordova && window.cordova.plugins.Keyboard) {
+            window.cordova.plugins.Keyboard.close();
+        }
     }
-
-    public closeKeyboard() {
-        Keyboard.close();
-    }
-
-
+    
 }
