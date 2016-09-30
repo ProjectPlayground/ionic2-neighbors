@@ -28,12 +28,6 @@ export class PrivateItemPage {
         LogService.logMessage("PrivateItemPage chat: ", this.chat);
         this.user = UserService.getCurrentUser();
         this.messages = data.getMessages("private_messages", this.chat.$key);
-
-        /*this.keyboardObservable
-         .subscribe(data => {
-         this.content.scrollToBottom(300);//300ms animation speed
-         });*/
-
     }
 
     public sendMessage(message:string) {
@@ -45,6 +39,6 @@ export class PrivateItemPage {
         });
         if (window.cordova && window.cordova.plugins.Keyboard) {
             window.cordova.plugins.Keyboard.close();
-    }
+        }
     }
 }

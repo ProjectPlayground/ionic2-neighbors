@@ -48,7 +48,10 @@ export class MyApp extends BasePage {
         this.tabs = TabsPage;
         platform.ready().then(() => {
             if (window.cordova && window.cordova.plugins.Keyboard) {
-                window.cordova.plugins.Keyboard.disableScroll(false);
+                window.cordova.plugins.Keyboard.disableScroll(true);
+                window.cordova.plugins.Keyboard.shrinkView(true);
+                window.cordova.plugins.Keyboard.disableScrollingInShrinkView(true);
+
             }
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -61,8 +64,8 @@ export class MyApp extends BasePage {
                 this.enableMenu(false);
             }
             //cordova.plugins.Keyboard.disableScroll(true);
-            window.addEventListener('native.keyboardshow', MyApp.onShowKeyboard);
-            window.addEventListener('native.keyboardhide', MyApp.onHideKeyboard);
+            window.addEventListener('keyboardDidShow', MyApp.onShowKeyboard);
+            window.addEventListener('keyboardDidHide', MyApp.onHideKeyboard);
 
         });
         this.loggedOutPages = [

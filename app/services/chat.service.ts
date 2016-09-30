@@ -253,15 +253,14 @@ export class ChatService extends BaseService {
 
     addPrivateRoom(user:IUser, callback, success) {
         let room = new Room(user.displayName);
+        let key = this.generateKey(UserService.getCurrentUser().uid, user.$key);
         room.user = null;
         room.user_id = user.$key;
-
-        let db = this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + UserService.getCurrentUser().uid).push();
-        db.set(room, callback);
+        this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + UserService.getCurrentUser().uid + "/" + key).set(room, callback);
         room.name = UserService.getCurrentUser().displayName;
         room.user_id = UserService.getCurrentUser().uid;
-        this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + user.$key + "/" + db.key).set(room, callback);
-        success(db.key);
+        this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + user.$key + "/" + key).set(room, callback);
+        success(key);
     }
 
     getRoom(room_name:string, callback) {
@@ -281,6 +280,21 @@ export class ChatService extends BaseService {
             }
 
         });
+    }
+
+    private generateKey(uid1:string, uid2:string) {
+        if (this.strcmp(uid1, uid2) === 1) {
+            return uid1.concat(uid2);
+        } else {
+            return uid2.concat(uid1);
+        }
+    }
+
+    private strcmp(a:string, b:string) {
+        a = a.toString(), b = b.toString();
+        for (var i = 0, n = Math.max(a.length, b.length); i < n && a.charAt(i) === b.charAt(i); ++i);
+        if (i === n) return 0;
+        return a.charAt(i) > b.charAt(i) ? -1 : 1;
     }
 
 }
