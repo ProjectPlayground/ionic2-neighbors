@@ -15,7 +15,7 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
-    <ion-searchbar [(ngModel)]="searchQuery" (input)="getItems()"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="getItems()" (ionCancel)="clearFilter()" [showCancelButton]="true"></ion-searchbar>
     <ion-list>
         <ion-item-sliding *ngFor="let item of neighbors">
             <ion-item (click)="openDetail(item)">

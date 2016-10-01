@@ -7,7 +7,7 @@ import {IONIC_DIRECTIVES} from 'ionic-angular';
         <div class="container" [ngClass]="{'busy': isBusy}">
             <div class="backdrop"></div>
             <ion-spinner></ion-spinner>
-            <div class="content">{{content}}</div>
+            <div class="content" style="visibility: hidden">{{content}}</div>
         </div>
 `,
     directives: [IONIC_DIRECTIVES]

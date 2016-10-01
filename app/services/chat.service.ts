@@ -232,14 +232,16 @@ export class ChatService extends BaseService {
         })
     }
 
-    saveMessage(rooms_name:string, key:string, text:string, user_id:string, callback) {
+    saveMessage(rooms_name:string, key:string, text:string, user_id:string, callback, push:boolean = true) {
         let message = new Message(text);
         message.user_id = UserService.getCurrentUser().uid;
         this.fs.db.ref(rooms_name + "/" + key).push().set(message, callback);
-        if (user_id == null) {
-            this.push.sendMessageToGroup(text, UserService.getCurrentUser().memberOf);
-        } else {
-            this.push.sendMessageToUser(text, user_id);
+        if (push) {
+            if (user_id == null) {
+                this.push.sendMessageToGroup(text, UserService.getCurrentUser().memberOf);
+            } else {
+                this.push.sendMessageToUser(text, user_id);
+            }
         }
     }
 
@@ -248,6 +250,14 @@ export class ChatService extends BaseService {
         room.user = null;
         room.user_id = UserService.getCurrentUser().uid;
         this.fs.db.ref("public_rooms/" + UserService.getCurrentUser().memberOf).push().set(room, callback);
+
+    }
+
+    addBoardRoom(room_name:string, callback) {
+        let room = new Room(room_name);
+        room.user = null;
+        room.user_id = UserService.getCurrentUser().uid;
+        this.fs.db.ref("board_rooms/" + UserService.getCurrentUser().memberOf).push().set(room, callback);
 
     }
 

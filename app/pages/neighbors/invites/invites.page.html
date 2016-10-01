@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-searchbar [(ngModel)]="searchQuery" (input)="getItems()"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="getItems()" (ionCancel)="getItems()" [showCancelButton]="true"></ion-searchbar>
     <ion-list>
         <ion-item-sliding *ngFor="let item of users">
             <ion-item (click)="acceptInvite(item)">

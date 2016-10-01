@@ -26,6 +26,9 @@ import {IUser} from "./model/user";
 import {BasePage} from "./pages/base.page";
 import {PushService} from "./services/push.service";
 import {LoadingModal} from "./component/loading.component";
+import {UtilitiesPage} from "./pages/utilities/utilities.page";
+import {UtilitiesService} from "./services/utilities.service";
+import {BoardPage} from "./pages/board/board.page";
 
 
 @Component({
@@ -73,12 +76,12 @@ export class MyApp extends BasePage {
         ];
         this.loggedInPages = [
             {title: 'Соседи', component: TabsPage, icon: 'md-people', index: 3},
-            {title: 'Парковка', component: LoginPage, icon: 'car'},
-            {title: 'Двор', component: LoginPage, icon: 'map'},
-            {title: 'Дети', component: LoginPage, icon: 'ios-people'},
-            {title: 'Коммунальные услуги', component: LoginPage, icon: 'calculator'},
-            {title: 'Доска объявлений', component: TabsPage, icon: 'calendar', index: 1},
-            {title: 'Не забыть', component: LoginPage, icon: 'information-circle'},
+            //{title: 'Парковка', component: LoginPage, icon: 'car'},
+            //{title: 'Двор', component: LoginPage, icon: 'map'},
+            //{title: 'Дети', component: LoginPage, icon: 'ios-people'},
+            {title: 'Коммунальные услуги', component: UtilitiesPage, icon: 'calculator'},
+            {title: 'Доска объявлений', component: BoardPage, icon: 'calendar', index: 1},
+            //{title: 'Не забыть', component: LoginPage, icon: 'information-circle'},
             {title: 'Выход', icon: 'log-out', action: 'logout'}
         ];
         this.listenToLoginEvents();
@@ -187,7 +190,7 @@ export class MyApp extends BasePage {
 // See the theming docs for the default values:
 // http://ionicframework.com/docs/v2/theming/platform-specific-styles/
 
-ionicBootstrap(MyApp, [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService, PushService],
+ionicBootstrap(MyApp, [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService, PushService, UtilitiesService],
     {
         //Whether to hide the tabs on child pages or not. If true it will not show the tabs on child pages.
         tabsHideOnSubPages: true,

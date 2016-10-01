@@ -4,13 +4,10 @@
             <ion-icon name="menu"></ion-icon>
         </button>
         <ion-title>
-            Добро пожаловать
+            Коммунальные услуги
         </ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content>
-
-    <button (click)="test()">Test</button>
-    <br/>
-    <a href="tel:+380630000000"> URL </a>
+    <div [innerHTML]="content"></div>
 </ion-content>

@@ -21,8 +21,6 @@ export class NeighborsPage extends BasePage {
         super(toastCtrl);
         this.us = UserService.getCurrentUser();
         this.searchQuery = '';
-
-
     }
 
     ionViewDidEnter() {
@@ -32,8 +30,13 @@ export class NeighborsPage extends BasePage {
         });
     }
 
+    private clearFilter(){
+        this.neighbors = this.sourceNeighbors;
+    }
+
     private getItems() {
         let q = this.searchQuery;
+        LogService.logMessage("NeighborsPage getItems ",q);
         this.neighbors = this.sourceNeighbors.filter((v) => {
             LogService.logMessage("sourceNeighbors.filter ", v);
             if (

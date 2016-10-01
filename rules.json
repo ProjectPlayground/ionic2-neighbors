@@ -14,12 +14,28 @@
         ".write":"(auth != null) && (root.child('admins/'+$groupId+'/'+auth.uid).exists())",
       }
     },
+    "board_rooms":{
+      ".read":"false",
+      ".write":"false",
+      "$groupId":{
+        ".read":"(auth != null) && (root.child('groups/'+$groupId+'/members/'+auth.uid).exists())",
+        ".write":"(auth != null) && (root.child('admins/'+$groupId+'/'+auth.uid).exists())",
+      }
+    },
     "public_messages":{
       ".read":"false",
       ".write":"false",
       "$groupId":{
         ".read":"root.child('public_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+$groupId).exists()",
         ".write":"root.child('public_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+$groupId).exists()"
+      }
+    },
+    "board_messages":{
+      ".read":"false",
+      ".write":"false",
+      "$groupId":{
+        ".read":"root.child('board_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+$groupId).exists()",
+        ".write":"root.child('board_rooms/'+root.child('users/'+auth.uid+'/member_of').val()+'/'+$groupId).exists()"
       }
     },
     "private_rooms":{
@@ -80,6 +96,12 @@
           ".write":"(auth != null) && ($userId===auth.uid)",
           ".validate":"root.child('groups/'+$groupId).exists() && root.child('users/'+$userId).exists()"
         }
+      }
+    },
+    "utilities":{
+      "$groupId": {
+        ".read":"(auth != null) && (root.child('groups/'+$groupId+'/members/'+auth.uid).exists())",
+        ".write":"(auth != null) && (root.child('admins/'+$groupId+'/'+auth.uid).exists())"
       }
     }
   }
