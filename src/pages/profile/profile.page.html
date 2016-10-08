@@ -1,0 +1,131 @@
+<ion-header>
+    <ion-navbar>
+        <button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Изменение данных профайла</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <section id="profileBanner">
+        <div class="bgImageContainer" [ngStyle]="(user!=null && user.photoURL != null) && {'background-image': 'url(' + user.photoURL + ')'} ||
+                                                 (user==null || user.photoURL ==null) && {'background-image': 'url(assets/img/background.jpg)'}"></div>
+        <div class="profileAvatar">
+            <div class="editAvatar" (click)="changePhoto();"><a id="changePicture">
+                <ion-icon name="camera"></ion-icon>
+            </a></div>
+            <img width="200px" [src]="user == null || user.photoURL==null? 'assets/img/avatar.png' : user.photoURL"/>
+        </div>
+    </section>
+    <ion-list>
+        <form [formGroup]="form">
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="contact"></ion-icon>
+                    &nbsp;ФИО
+                </ion-label>
+                <ion-input formControlName="displayName" type="text" required>
+                </ion-input>
+            </ion-item>
+            <p [hidden]="displayName.valid" danger padding-left>
+                ФИО является обязательны или указано неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="car"></ion-icon>
+                    &nbsp;Номер автомобиля
+                </ion-label>
+                <ion-input formControlName="auto" type="text">
+                </ion-input>
+            </ion-item>
+            <p [hidden]="auto.valid" danger padding-left>
+                Номер автомобиля указан неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="car"></ion-icon>
+                    &nbsp;Номер автомобиля 2
+                </ion-label>
+                <ion-input formControlName="auto2" type="text">
+                </ion-input>
+            </ion-item>
+            <p [hidden]="auto.valid" danger padding-left>
+                Номер автомобиля указан неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="home"></ion-icon>
+                    &nbsp;Номер дома
+                </ion-label>
+                <ion-input formControlName="houseNumber" type="text">
+                </ion-input>
+            </ion-item>
+            <p [hidden]="houseNumber.valid" danger padding-left>
+                Номер дома указан неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="home"></ion-icon>
+                    &nbsp;Номер квартиры
+                </ion-label>
+                <ion-input formControlName="flatNumber" type="number" required>
+                </ion-input>
+            </ion-item>
+            <p [hidden]="flatNumber.valid" danger padding-left>
+                Номер квартиры указан неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="mail"></ion-icon>
+                    &nbsp;Эл. почта
+                </ion-label>
+                <ion-input formControlName="mail" type="email">
+                </ion-input>
+            </ion-item>
+            <p [hidden]="mail.valid" danger padding-left>
+                Электронная почта указана неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="phone-portrait"></ion-icon>
+                    &nbsp;Телефон(1)
+                </ion-label>
+                <ion-input formControlName="mobile1" type="text" required>
+                </ion-input>
+            </ion-item>
+            <p [hidden]="mobile1.valid" danger padding-left>
+                Основной телефон указан неверно
+            </p>
+
+            <ion-item>
+                <ion-label primary>
+                    <ion-icon name="phone-portrait"></ion-icon>
+                    &nbsp;Телефон(2)
+                </ion-label>
+                <ion-input formControlName="mobile2" type="text">
+                </ion-input>
+            </ion-item>
+            <p [hidden]="mobile2.valid" danger padding-left>
+                Дополнительный телефон указан неверно
+            </p>
+
+            <ion-item [hidden]="true">
+                <ion-input formControlName="photoURL" type="text"></ion-input>
+            </ion-item>
+
+            <div padding>
+                <button (click)="updateProfile()" primary block>
+                    <ion-icon name="person"></ion-icon>
+                    &nbsp;Обновить профайл
+                </button>
+            </div>
+        </form>
+    </ion-list>
+
+</ion-content>

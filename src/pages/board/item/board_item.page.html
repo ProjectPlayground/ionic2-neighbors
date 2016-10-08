@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle icon-only>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            {{chat.name}}
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content chat">
+    <ion-list>
+        <ion-list-header>
+            {{chat.name}}
+        </ion-list-header>
+        <ion-item *ngFor="let message of messages | async" (click)="openUser(message)">
+            <ion-avatar item-left>
+                <img *ngIf="message.user?.photoURL!=null" src="{{ message.user.photoURL }}">
+            </ion-avatar>
+            <h2 *ngIf="message.user?.displayName!=null">{{message.user.displayName}}</h2>
+            <p>{{message.text}}</p>
+        </ion-item>
+    </ion-list>
+</ion-content>
+<ion-footer>
+    <ion-toolbar position="bottom">
+        <ion-item no-lines>
+            <ion-input placeholder="Введите сообщение" clearInput [(ngModel)]="message"></ion-input>
+            <button ion-button outline clear item-right (click)="sendMessage(message);">
+                Отправить
+            </button>
+        </ion-item>
+    </ion-toolbar>
+</ion-footer>

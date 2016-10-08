@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle icon-only>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-segment [(ngModel)]="type">
+            <ion-segment-button value="rooms">
+                Групповые
+            </ion-segment-button>
+            <ion-segment-button value="private">
+                Личные
+            </ion-segment-button>
+        </ion-segment>
+
+        <ion-buttons end *ngIf="type=='private'">
+            <button ion-button icon-only (click)="createPrivateTopic()">
+                <ion-icon name="create"></ion-icon>
+            </button>
+        </ion-buttons>
+
+        <ion-buttons end *ngIf="user.isAdmin && type!=='private'">
+            <button ion-button icon-only (click)="createPublicTopic()">
+                <ion-icon name="create"></ion-icon>
+            </button>
+        </ion-buttons>
+
+    </ion-navbar>
+</ion-header>
+<ion-content class="outer-content">
+    <div [ngSwitch]="type">
+        <ion-list *ngSwitchCase="'rooms'">
+            <ion-item-sliding *ngFor="let room of rooms | async">
+                <button ion-item no-border (click)="openChatRoom(room)">
+                    <h2>{{ room.name }}</h2>
+                    <p *ngIf="room.lastMessage!=null">{{room.lastMessage.text}}</p>
+                </button>
+            </ion-item-sliding>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'private'">
+            <ion-item-sliding *ngFor="let pr of privateRooms | async">
+                <button ion-item no-border (click)="openPrivateRoom(pr)">
+                    <ion-avatar *ngIf="pr.user!=null" item-left>
+                        <img [src]="pr.user.photoURL">
+                    </ion-avatar>
+                    <h2>{{pr.name}}</h2>
+                    <p *ngIf="pr.lastMessage!=null">{{pr.lastMessage.text}}</p>
+                </button>
+            </ion-item-sliding>
+        </ion-list>
+    </div>
+
+</ion-content>

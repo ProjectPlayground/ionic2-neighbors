@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Neighbors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="img-src &apos;self&apos; * data:; default-src *; style-src &apos;self&apos; &apos;unsafe-inline&apos; *; script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos; *">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="build/main.css" rel="stylesheet">
+</head>
+<body>
+<!-- one signal app 7352c2da-f7e4-4741-8c4c-aa6794be02c3 -->
+<!-- this Ionic's root component and where the app will load -->
+<ion-app></ion-app>
+<!-- cordova.js required for cordova apps -->
+<script src="cordova.js"></script>
+<!-- Zone.js and Reflect-metadata  -->
+<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+<script>
+    var config = {
+        apiKey: "AIzaSyAIhfL23XJd7Pvq6KbDThNb_saFUwd9QmI",
+        authDomain: "neighbors-dev-747bb.firebaseapp.com",
+        databaseURL: "https://neighbors-dev-747bb.firebaseio.com",
+        storageBucket: "neighbors-dev-747bb.appspot.com"
+    };
+    firebase.initializeApp(config);
+</script>
+
+<!-- The polyfills js is generated during the build process -->
+<script src="build/polyfills.js"></script>
+
+<!-- The bundle js is generated during the build process -->
+<script src="build/main.js"></script>
+
+</body>
+</html>
