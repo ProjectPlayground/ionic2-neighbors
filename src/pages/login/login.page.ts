@@ -19,15 +19,15 @@ import {BasePage} from "../base.page";
     templateUrl: 'login.page.html'
 })
 export class LoginPage extends BasePage {
-    login:AbstractControl;
-    password:AbstractControl;
+    login: AbstractControl;
+    password: AbstractControl;
 
     loginForm = new FormGroup({
         login: new FormControl('test@test.com', Validators.compose([Validators.required, ValidationService.emailValidator])),
         password: new FormControl('123456', Validators.compose([Validators.required, Validators.minLength(8)]))
     });
 
-    constructor(private nav:NavController, private db:FirebaseService, private events:Events, toastCtrl:ToastController) {
+    constructor(private nav: NavController, private db: FirebaseService, private events: Events, toastCtrl: ToastController) {
         super(toastCtrl);
         this.login = this.loginForm.controls['login'];
         this.password = this.loginForm.controls['password'];
@@ -68,7 +68,7 @@ export class LoginPage extends BasePage {
 
     private facebookLogin() {
         return new Promise(function (resolve, reject) {
-            var browserRef = InAppBrowser.open("https://www.facebook.com/v2.0/dialog/oauth?client_id=245599175811882&redirect_uri=http://balynsky.su/callback&response_type=token&scope=email", "_blank", "location=no,clearsessioncache=yes,clearcache=yes");
+            var browserRef = cordova.InAppBrowser.open("https://www.facebook.com/v2.0/dialog/oauth?client_id=245599175811882&redirect_uri=http://balynsky.su/callback&response_type=token&scope=email", "_blank", "location=no,clearsessioncache=yes,clearcache=yes");
             browserRef.addEventListener("loadstart", (event) => {
                 if ((event.url).indexOf("http://balynsky.su/callback") === 0) {
                     browserRef.removeEventListener("exit", (event) => {

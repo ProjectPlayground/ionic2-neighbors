@@ -4,11 +4,10 @@
   <description>Neighbors app</description>
   <author email="mail@balynsky.su" href="http://balynsky.su/">Neighbors app</author>
   <hook src="hooks/after_prepare/010_add_platform_class.js" type="after_prepare"/>
-  <hook src="hooks/after_prepare/011_add_fcm_to_platform.js" type="after_prepare"/>
   <content src="index.html"/>
   <allow-havigation href="*://*.appspot.com/*"/>
   <access origin="*"/>
-  <access origin="tel:*" launch-external="yes"/>
+  <access launch-external="yes" origin="tel:*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
   <allow-intent href="tel:*"/>
@@ -86,8 +85,9 @@
   <preference name="StatusBarOverlaysWebView" value="true"/>
   <preference name="InAppBrowserStorageEnabled" value="true"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="AutoHideSplashScreen" value="false"/>
   <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
+  <preference name="SplashScreenDelay" value="3000"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
@@ -99,7 +99,6 @@
   <plugin name="cordova-plugin-whitelist" spec="~1.2.2"/>
   <plugin name="cordova-plugin-splashscreen" spec="~3.2.2"/>
   <plugin name="cordova-plugin-statusbar" spec="~2.1.3"/>
-  <plugin name="cordova-plugin-inappbrowser" spec="~1.3.0"/>
   <plugin name="cordova-plugin-facebook4" spec="~1.7.1">
     <variable name="APP_ID" value="245599175811882"/>
     <variable name="APP_NAME" value="neighbors"/>
@@ -108,5 +107,6 @@
     <variable name="SENDER_ID" value="182008884806"/>
   </plugin>
   <plugin name="cordova-plugin-keyboard" spec="~1.1.4"/>
+  <plugin name="cordova-plugin-inappbrowser" spec="~1.5.0"/>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>
