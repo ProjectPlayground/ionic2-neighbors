@@ -1,6 +1,6 @@
 import {ViewChild, Component} from "@angular/core";
 import {Nav, Events, Platform, MenuController, ToastController} from "ionic-angular";
-import {StatusBar} from "ionic-native";
+import {StatusBar, Splashscreen, Keyboard} from "ionic-native";
 import {FirebaseService} from "../services/firebase.service";
 import {UserService} from "../services/user.service";
 import {LogService} from "../services/log.service";
@@ -36,15 +36,14 @@ export class MyApp extends BasePage {
         super(toastCtrl);
         this.tabs = TabsPage;
         platform.ready().then(() => {
-            if (window.cordova && window.cordova.plugins.Keyboard) {
-                window.cordova.plugins.Keyboard.disableScroll(true);
-                window.cordova.plugins.Keyboard.shrinkView(true);
-                window.cordova.plugins.Keyboard.disableScrollingInShrinkView(true);
-
-            }
+            Splashscreen.hide();
+            cordova.plugins.Keyboard.disableScroll(true);
+            cordova.plugins.Keyboard.shrinkView(true);
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+            cordova.plugins.Keyboard.disableScrollingInShrinkView(true);
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
-            StatusBar.styleDefault();
+            cordova.plugins.StatusBar.styleDefault();
             if (this.db.isLogged()) {
                 this.rootPage = TabsPage;
                 this.enableMenu(true);
