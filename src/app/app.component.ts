@@ -1,6 +1,6 @@
 import {ViewChild, Component} from "@angular/core";
 import {Nav, Events, Platform, MenuController, ToastController} from "ionic-angular";
-import {StatusBar, Splashscreen, Keyboard} from "ionic-native";
+import {StatusBar, Splashscreen, CallNumber} from "ionic-native";
 import {FirebaseService} from "../services/firebase.service";
 import {UserService} from "../services/user.service";
 import {LogService} from "../services/log.service";
@@ -90,6 +90,12 @@ export class MyApp extends BasePage {
     private enableMenu(loggedIn) {
         this.menu.enable(loggedIn, "loggedInMenu");
         this.menu.enable(!loggedIn, "loggedOutMenu");
+    }
+
+    private openDoor() {
+        this.presentToast("Before call")
+        CallNumber.callNumber('380630000000', true)
+            .then(() => this.presentToast('Launched dialer!'))
     }
 
     openPage(page) {

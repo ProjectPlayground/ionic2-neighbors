@@ -9,13 +9,13 @@ import {BaseService} from "./base.service";
 //https://webcake.co/using-firebase-3-in-angular-2-and-ionic-2/
 @Injectable()
 export class UserService extends BaseService {
-    public static user:IUser = null;
+    public static user: IUser = null;
 
-    constructor(public events:Events, public fs:FirebaseService) {
+    constructor(public events: Events, public fs: FirebaseService) {
         super(events);
     }
 
-    public loadUserData():void {
+    loadUserData(): void {
         this.fs.db.ref("users/" + this.fs.auth.currentUser.uid).once('value').then((snapshot)=> {
                 if (snapshot.exists()) {
                     UserService.user = UserService.mapUser(snapshot.val());
@@ -39,15 +39,15 @@ export class UserService extends BaseService {
         )
     }
 
-    public static getCurrentUser():IUser {
+    static getCurrentUser(): IUser {
         return UserService.user;
     }
 
-    public getUser(user_id):Observable < any > {
+    getUser(user_id): Observable < any > {
         return this.observableFirebaseObject(this.fs.db.ref("users/" + user_id));
     }
 
-    public static mapUser(snapshot:any):IUser {
+    static mapUser(snapshot: any): IUser {
         let user = new User(snapshot.auto, snapshot.member_of, snapshot.displayName);
         if (typeof snapshot.auto2 !== 'undefined')
             user.auto2 = snapshot.auto2;
@@ -67,12 +67,18 @@ export class UserService extends BaseService {
         return user;
     }
 
-    public updateUser(user:IUser, callback) {
+    updatePhoto(token: string, url: string) {
+        this.fs.db.ref("users/" + token).update({
+            'photoURL': url
+        });
+    }
+
+    updateUser(user: IUser, callback) {
         LogService.logMessage("updateUser " + user.$key);
         this.fs.db.ref("users/" + this.fs.auth.currentUser.uid).update({
                 'displayName': user.displayName,
                 'auto': user.auto,
-                'auto2':user.auto2,
+                'auto2': user.auto2,
                 'flatNumber': user.flatNumber,
                 'houseNumber': user.houseNumber,
                 'mail': user.mail,
@@ -83,25 +89,25 @@ export class UserService extends BaseService {
             callback);
     }
 
-    getInvites():Observable<IUser[]> {
+    getInvites(): Observable < IUser[] > {
         var fs = this.fs;
-        return Observable.create(function (observer:any) {
+        return Observable.create(function (observer: any) {
             // Looking for how to type this well.
-            let arr:any[] = [];
+            let arr: any[] = [];
             const keyFieldName = "$key";
             // Start out empty, until data arrives
             observer.next(arr.slice()); // Safe copy
 
-            function findInArray<T>(list:T[], predicate:Function) {
+            function findInArray<T>(list: T[], predicate: Function) {
                 for (var i = 0; i < list.length; i++) {
-                    const value:T = list[i];
+                    const value: T = list[i];
                     if (predicate.call(this, value, i, list)) {
                         return value;
                     }
                 }
             }
 
-            function child_added(skey:any, snapshot:any) {
+            function child_added(skey: any, snapshot: any) {
                 LogService.logMessage("Events child_added");
                 let child = snapshot;
                 child[keyFieldName] = skey;
@@ -130,7 +136,7 @@ export class UserService extends BaseService {
         });
     }
 
-    public updateUserGroup(user:IUser, group:string, callback) {
+    updateUserGroup(user: IUser, group: string, callback) {
         LogService.logMessage("updateUserGroup " + user.$key);
         this.fs.db.ref("users/" + user.$key).update({'member_of': group}, callback);
         this.fs.db.ref("groups/" + group + "/members/" + user.$key).set('true', callback);

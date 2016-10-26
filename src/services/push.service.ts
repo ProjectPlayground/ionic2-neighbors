@@ -4,21 +4,24 @@ import {Platform, Events} from 'ionic-angular';
 import {LogService} from "./log.service";
 import {Push} from 'ionic-native';
 import {UserService} from "./user.service";
+import {GroupsService} from "./groups.service";
 
 @Injectable()
 export class PushService {
     private static CLIENT_ID = '6d5f7534f7e4251bb16edce579ffda89';
-    private static token:string = null;
-    private push:any;
+    private static token: string = null;
+    private push: any;
     private static host = "https://neighbors-dev-747bb.appspot.com";
     //private static host = "http://localhost:8080";
     private static deviceUrl = PushService.host + "/neighbors/device";
     private static messageUrl = PushService.host + "/neighbors/message";
 
-    constructor(private platform:Platform, private http:Http, private events:Events) {
+    constructor(private platform: Platform, private http: Http, private events: Events, private gs: GroupsService) {
         this.events.subscribe('user:loaded', () => {
             LogService.logMessage(" listenToLoginEvents on PushService user:loaded");
-            let currentUser = UserService.getCurrentUser();
+            gs.getPushClientId((id)=> {
+                PushService.CLIENT_ID = id;
+            });
             this.init();
         });
 
@@ -39,7 +42,7 @@ export class PushService {
         });
     }
 
-    public init():void {
+    public init(): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
             LogService.logMessage("current platfom is mobile ios/android");
             this.push = Push.init({
@@ -96,7 +99,7 @@ export class PushService {
         }
     }
 
-    public registerDevice(token:string, userId:string, groupId:string):void {
+    public registerDevice(token: string, userId: string, groupId: string): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
             let device_type = this.platform.is("ios") ? 'ios' : 'android';
             PushService.token = token;
@@ -117,7 +120,7 @@ export class PushService {
         }
     }
 
-    public unregisterDevice():void {
+    public unregisterDevice(): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
             let device_type = this.platform.is("ios") ? 'ios' : 'android';
             var headers = new Headers();
@@ -135,7 +138,7 @@ export class PushService {
         }
     }
 
-    public sendMessageToUser(message:string, userId:string):void {
+    public sendMessageToUser(message: string, userId: string): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
             var body = 'message=' + message + '&user_id=' + userId;
             this.sendMessage(body);
@@ -144,7 +147,7 @@ export class PushService {
         }
     }
 
-    public sendMessageToGroup(message:string, groupId:string):void {
+    public sendMessageToGroup(message: string, groupId: string): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
             var body = 'message=' + message + '&group_id=' + groupId;
             this.sendMessage(body);
@@ -153,7 +156,7 @@ export class PushService {
         }
     }
 
-    private sendMessage(body:any):void {
+    private sendMessage(body: any): void {
         var headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         headers.append('CLIENT_ID', PushService.CLIENT_ID);

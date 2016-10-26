@@ -12,6 +12,7 @@ import {ValidationService} from "../../services/validator.service";
 import {LogService} from "../../services/log.service";
 import {InAppBrowser} from 'ionic-native';
 import {BasePage} from "../base.page";
+import {UserService} from "../../services/user.service";
 
 
 @Component({
@@ -27,7 +28,7 @@ export class LoginPage extends BasePage {
         password: new FormControl('123456', Validators.compose([Validators.required, Validators.minLength(8)]))
     });
 
-    constructor(private nav: NavController, private db: FirebaseService, private events: Events, toastCtrl: ToastController) {
+    constructor(private nav: NavController, private db: FirebaseService, private events: Events, toastCtrl: ToastController, private us: UserService) {
         super(toastCtrl);
         this.login = this.loginForm.controls['login'];
         this.password = this.loginForm.controls['password'];
@@ -46,7 +47,7 @@ export class LoginPage extends BasePage {
     private registerUserWithFacebook() {
         if (window.cordova) {
             this.facebookLogin().then((success) => {
-                LogService.logMessage(success.access_token);
+                LogService.logMessage(success);
                 this.db.loginWithFacebookAccessToken(success);
             }, (error) => {
                 this.presentToast(error);
@@ -57,7 +58,6 @@ export class LoginPage extends BasePage {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 var token = result.credential.accessToken;
                 var user = result.user;
-                // ...
                 LogService.logMessage("Facebook user ", user);
             }).catch((error) => {
                 this.events.publish("user:logout");
