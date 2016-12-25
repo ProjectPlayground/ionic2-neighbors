@@ -1,5 +1,5 @@
-import {NavController, ToastController} from 'ionic-angular';
-import {Component} from '@angular/core';
+import {NavController, ToastController} from "ionic-angular";
+import {Component} from "@angular/core";
 import {IUser} from "../../../model/user";
 import {UserService} from "../../../services/user.service";
 import {LogService} from "../../../services/log.service";
@@ -26,7 +26,7 @@ export class InvitesPage extends BasePage {
 
     }
 
-    private getItems() {
+    public getItems() {
         let q = this.searchQuery;
         this.users = this.sourceUsers.filter((v) => {
             return (v.displayName.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1);
@@ -34,7 +34,7 @@ export class InvitesPage extends BasePage {
         })
     }
 
-    private acceptInvite(user) {
+    public acceptInvite(user) {
         LogService.logMessage("acceptInvite user: ", user);
         this.us.updateUserGroup(user, UserService.getCurrentUser().memberOf, (error)=> {
             if (error) {

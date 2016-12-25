@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Events} from 'ionic-angular';
+import {Events} from "ionic-angular";
 import {FirebaseService} from "./firebase.service";
 import {Observable} from "rxjs/Observable";
 import {IRoom, Room} from "../model/room";
@@ -18,11 +18,8 @@ export class ChatService extends BaseService {
 
 
     getRooms(rooms_name:string, message_name:string):Observable<IRoom[]> {
-        this.showLoading("Загрузка комнат");
-        let flag = true;
         LogService.logMessage("!!!! getRooms " + rooms_name);
         let fs = this.fs;
-        let clazz = this;
         return Observable.create(function (observer:any) {
             // Looking for how to type this well.
             let arr:any[] = [];
@@ -41,10 +38,6 @@ export class ChatService extends BaseService {
 
             function child_added(skey:any, snapshot:any, prevChildKey:string) {
                 LogService.logMessage("Events child_added");
-                if (flag) {
-                    clazz.hideLoading();
-                    flag = false;
-                }
                 let child = snapshot;
                 child[keyFieldName] = skey;
                 let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);
@@ -56,7 +49,6 @@ export class ChatService extends BaseService {
                 LogService.logMessage("Events child_changed");
                 let key = skey;
                 let child = snapshot;
-                // TODO replace object rather than mutate it?
                 let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
                 if (x) {
                     for (var k in child) x[k] = child[k];
@@ -67,7 +59,6 @@ export class ChatService extends BaseService {
             function child_removed(skey:any, snapshot:any) {
                 LogService.logMessage("Events child_removed");
                 let key = skey;
-                let child = snapshot;
                 let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
                 if (x) {
                     arr.splice(arr.indexOf(x), 1);
@@ -176,7 +167,6 @@ export class ChatService extends BaseService {
             function child_removed(skey:any, snapshot:any) {
                 LogService.logMessage("[Messages] Events child_removed");
                 let key = skey;
-                let child = snapshot;
                 let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
                 if (x) {
                     arr.splice(arr.indexOf(x), 1);
@@ -263,7 +253,7 @@ export class ChatService extends BaseService {
 
     addPrivateRoom(user:IUser, callback, success) {
         let room = new Room(user.displayName);
-        let key = this.generateKey(UserService.getCurrentUser().uid, user.$key);
+        let key = ChatService.generateKey(UserService.getCurrentUser().uid, user.$key);
         room.user = null;
         room.user_id = user.$key;
         this.fs.db.ref("private_rooms/" + UserService.getCurrentUser().memberOf + "/" + UserService.getCurrentUser().uid + "/" + key).set(room, callback);
@@ -292,15 +282,15 @@ export class ChatService extends BaseService {
         });
     }
 
-    private generateKey(uid1:string, uid2:string) {
-        if (this.strcmp(uid1, uid2) === 1) {
+    private static generateKey(uid1:string, uid2:string) {
+        if (ChatService.strcmp(uid1, uid2) === 1) {
             return uid1.concat(uid2);
         } else {
             return uid2.concat(uid1);
         }
     }
 
-    private strcmp(a:string, b:string) {
+    private static strcmp(a:string, b:string) {
         a = a.toString(), b = b.toString();
         for (var i = 0, n = Math.max(a.length, b.length); i < n && a.charAt(i) === b.charAt(i); ++i);
         if (i === n) return 0;

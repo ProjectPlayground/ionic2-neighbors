@@ -1,7 +1,7 @@
-import {Platform, NavController, ToastController} from 'ionic-angular';
-import {Component} from '@angular/core';
-import {RoomItemPage} from  '../chat/room_item/room_item.page';
-import {PrivateItemPage} from  '../chat/private_item/private_item.page';
+import {Platform, NavController, ToastController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {RoomItemPage} from "../chat/room_item/room_item.page";
+import {PrivateItemPage} from "../chat/private_item/private_item.page";
 import {ChatService} from "../../services/chat.service";
 import {IRoom} from "../../model/room";
 import {Observable} from "rxjs/Observable";
@@ -29,22 +29,22 @@ export class ChatPage extends BasePage {
         this.privateRooms = cs.getRooms("private_rooms/" + this.user.memberOf + "/" + this.user.uid + "/", "private_messages/");
     }
 
-    private openChatRoom(id) {
+    public openChatRoom(id) {
         LogService.logMessage("openChatRoom id=",id);
         this.nav.push(RoomItemPage, {chatId: id});
     }
 
-    private openPrivateRoom(id) {
+    public openPrivateRoom(id) {
         LogService.logMessage("openPrivateRoom id=",id);
         this.nav.push(PrivateItemPage, {chatId: id});
     }
 
-    private createPrivateTopic() {
+    public createPrivateTopic() {
         LogService.logMessage("createPrivateTopic");
         this.presentToast("Кнопка будет активна в след. версии приложения. Написать сообщение можно через список соседей")
     }
 
-    private createPublicTopic() {
+    public createPublicTopic() {
         this.nav.push(AddRoomPage);
     }
 

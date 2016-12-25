@@ -1,11 +1,6 @@
-import {ToastController, NavController, Events} from 'ionic-angular';
-import {Component} from '@angular/core';
-import {
-    FormControl,
-    FormGroup,
-    Validators,
-    AbstractControl
-} from '@angular/forms';
+import {ToastController, NavController, Events} from "ionic-angular";
+import {Component} from "@angular/core";
+import {FormControl, FormGroup, Validators, AbstractControl} from "@angular/forms";
 import {ValidationService} from "../../services/validator.service";
 import {BasePage} from "../base.page";
 import {UserService} from "../../services/user.service";
@@ -67,7 +62,7 @@ export class ProfilePage extends BasePage {
 
     }
 
-    private updateProfile() {
+    public updateProfile() {
         this.user.displayName = this.displayName.value;
         this.user.auto = this.auto.value;
         this.user.auto2 = this.auto2.value;
@@ -87,7 +82,7 @@ export class ProfilePage extends BasePage {
         });
     }
 
-    private changePhoto() {
+    public changePhoto() {
         this.presentToast("changePhoto ");
     }
 

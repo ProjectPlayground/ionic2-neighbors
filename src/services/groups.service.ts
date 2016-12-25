@@ -1,11 +1,10 @@
 import {Injectable} from "@angular/core";
-
-import {FirebaseService} from './firebase.service';
-import {Events} from 'ionic-angular';
+import {FirebaseService} from "./firebase.service";
+import {Events} from "ionic-angular";
 import {LogService} from "./log.service";
-import {UserService} from './user.service';
-import {Observable} from 'rxjs/Observable';
-import {IUser} from '../model/user'
+import {UserService} from "./user.service";
+import {Observable} from "rxjs/Observable";
+import {IUser} from "../model/user";
 import {IGroup, Group} from "../model/group";
 import {BaseService} from "./base.service";
 

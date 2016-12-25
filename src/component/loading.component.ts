@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {IONIC_DIRECTIVES} from 'ionic-angular';
+import {Component} from "@angular/core";
 
 @Component({
     selector: 'loading-modal',
@@ -9,8 +8,7 @@ import {IONIC_DIRECTIVES} from 'ionic-angular';
             <ion-spinner></ion-spinner>
             <div class="content" style="visibility: hidden">{{content}}</div>
         </div>
-`,
-    directives: [IONIC_DIRECTIVES]
+`
 })
 export class LoadingModal {
     private isBusy;

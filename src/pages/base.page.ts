@@ -1,7 +1,7 @@
 import {ToastController} from "ionic-angular";
 export class BasePage {
 
-    constructor(private toastCtrl: ToastController) {
+    constructor(protected toastCtrl: ToastController) {
 
     };
 

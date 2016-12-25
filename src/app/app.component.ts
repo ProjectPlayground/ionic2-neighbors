@@ -1,12 +1,11 @@
 import {ViewChild, Component} from "@angular/core";
 import {Nav, Events, Platform, MenuController, ToastController} from "ionic-angular";
-import {StatusBar, Splashscreen, CallNumber} from "ionic-native";
+import {StatusBar, Splashscreen, CallNumber, Keyboard} from "ionic-native";
 import {FirebaseService} from "../services/firebase.service";
 import {UserService} from "../services/user.service";
 import {LogService} from "../services/log.service";
 import {TabsPage} from "../pages/apptabs/apptabs";
 import {LoginPage} from "../pages/login/login.page";
-import {AvatarComponent} from "../component/avatar.component";
 import {GroupsPage} from "../pages/groups/groups.page";
 import {ProfilePage} from "../pages/profile/profile.page";
 import {IUser} from "../model/user";
@@ -18,8 +17,7 @@ import {BoardPage} from "../pages/board/board.page";
 
 
 @Component({
-    templateUrl: 'app.component.html',
-    directives: [AvatarComponent, LoadingModal]
+    templateUrl: 'app.component.html'
 })
 export class MyApp extends BasePage {
     @ViewChild(Nav) nav: Nav;
@@ -28,22 +26,21 @@ export class MyApp extends BasePage {
     loggedInPages;
     loggedOutPages;
     currentUser: IUser;
-    tabs: TabsPage;
+    tabs: any;
     static token;
 
     constructor(public events: Events, platform: Platform, public menu: MenuController, public db: FirebaseService, public userService: UserService,
-                private toastCtrl: ToastController, private push: PushService) {
+                protected toastCtrl: ToastController, private push: PushService) {
         super(toastCtrl);
         this.tabs = TabsPage;
         platform.ready().then(() => {
             Splashscreen.hide();
-            cordova.plugins.Keyboard.disableScroll(true);
-            cordova.plugins.Keyboard.shrinkView(true);
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            cordova.plugins.Keyboard.disableScrollingInShrinkView(true);
+
+            Keyboard.disableScroll(true);
+            Keyboard.hideKeyboardAccessoryBar(true);
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
-            cordova.plugins.StatusBar.styleDefault();
+            StatusBar.styleDefault();
             if (this.db.isLogged()) {
                 this.rootPage = TabsPage;
                 this.enableMenu(true);
@@ -51,10 +48,6 @@ export class MyApp extends BasePage {
                 this.rootPage = LoginPage;
                 this.enableMenu(false);
             }
-            //cordova.plugins.Keyboard.disableScroll(true);
-            window.addEventListener('keyboardDidShow', MyApp.onShowKeyboard);
-            window.addEventListener('keyboardDidHide', MyApp.onHideKeyboard);
-
         });
         this.loggedOutPages = [
             {title: 'Login', component: LoginPage, icon: 'log-in'}
@@ -92,8 +85,7 @@ export class MyApp extends BasePage {
         this.menu.enable(!loggedIn, "loggedOutMenu");
     }
 
-    private openDoor() {
-        this.presentToast("Before call")
+    public openDoor() {
         CallNumber.callNumber('380630000000', true)
             .then(() => this.presentToast('Launched dialer!'))
     }

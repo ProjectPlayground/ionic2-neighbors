@@ -1,8 +1,6 @@
-import {Component} from '@angular/core';
-import {ViewController, ToastController} from 'ionic-angular';
-import {FormControl, FormGroup,Validators,AbstractControl} from '@angular/forms';
-
-
+import {Component} from "@angular/core";
+import {ViewController, ToastController} from "ionic-angular";
+import {FormControl, FormGroup, Validators, AbstractControl} from "@angular/forms";
 import {BasePage} from "../../../base.page";
 import {ChatService} from "../../../../services/chat.service";
 import {LogService} from "../../../../services/log.service";
@@ -26,7 +24,7 @@ export class AddRoomPage extends BasePage {
         this.viewCtrl.dismiss();
     }
 
-    private addRoom($event) {
+    public addRoom($event) {
         LogService.logMessage("addRoom " + this.name.value);
         this.data.addPublicRoom(this.name.value, (error)=> {
             if (error) {

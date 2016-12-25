@@ -1,7 +1,6 @@
-import {NgModule} from '@angular/core';
-import {IonicApp, IonicModule} from 'ionic-angular';
-import {MyApp} from './app.component';
-
+import {NgModule} from "@angular/core";
+import {IonicApp, IonicModule} from "ionic-angular";
+import {MyApp} from "./app.component";
 import {NeighborsService} from "../services/neighbors.service";
 import {ChatService} from "../services/chat.service";
 import {FirebaseService} from "../services/firebase.service";
@@ -32,6 +31,7 @@ import {StartPage} from "../pages/start/start.page";
 import {UtilitiesPage} from "../pages/utilities/utilities.page";
 import {AvatarComponent} from "../component/avatar.component";
 import {LoadingModal} from "../component/loading.component";
+import {KeyboardAttachDirective} from "../component/keyboard-attach.directive";
 
 @NgModule({
     declarations: [
@@ -56,7 +56,8 @@ import {LoadingModal} from "../component/loading.component";
         StartPage,
         UtilitiesPage,
         AvatarComponent,
-        LoadingModal
+        LoadingModal,
+        KeyboardAttachDirective
     ],
     imports: [
         IonicModule.forRoot(MyApp, {
@@ -67,6 +68,9 @@ import {LoadingModal} from "../component/loading.component";
                 }
             }
         })
+    ],
+    exports: [
+        KeyboardAttachDirective
     ],
     bootstrap: [IonicApp],
     entryComponents: [

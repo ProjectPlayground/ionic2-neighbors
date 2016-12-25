@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Events} from 'ionic-angular';
+import {Events} from "ionic-angular";
 import {Observable} from "rxjs/Observable";
 
 @Injectable()
@@ -30,19 +30,12 @@ export class BaseService {
     }
 
     protected observableFirebaseArray<T>(ref:any, convert):Observable<T[]> {
-        this.showLoading("Загрузка данных");
-        let flag = true;
-        let clazz = this;
         return Observable.create(function (observer:any) {
             // Looking for how to type this well.
             let arr:T[] = [];
             const keyFieldName = "$key";
 
             function child_added(snapshot:any, prevChildKey:string) {
-                if (flag) {
-                    flag = false;
-                    clazz.hideLoading();
-                }
                 let child = convert(snapshot.val());
                 child[keyFieldName] = snapshot.key;
                 let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);
@@ -63,7 +56,6 @@ export class BaseService {
 
             function child_removed(snapshot:any) {
                 let key = snapshot.key;
-                let child = convert(snapshot.val());
                 let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
                 if (x) {
                     arr.splice(arr.indexOf(x), 1);

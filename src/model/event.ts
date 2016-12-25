@@ -1,4 +1,4 @@
-import {IUser, User} from './user'
+import {IUser, User} from "./user";
 
 export interface IEvent {
     $key?:string;

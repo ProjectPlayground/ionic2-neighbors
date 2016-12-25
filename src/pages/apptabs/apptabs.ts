@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {NavParams} from 'ionic-angular';
-import {EventsPage} from '../events/events.page';
-import {ChatPage} from '../chat/chat.page';
-import {NeighborsPage} from '../neighbors/neighbors.page';
+import {Component} from "@angular/core";
+import {NavParams} from "ionic-angular";
+import {EventsPage} from "../events/events.page";
+import {ChatPage} from "../chat/chat.page";
+import {NeighborsPage} from "../neighbors/neighbors.page";
 import {StartPage} from "../start/start.page";
 
 @Component({

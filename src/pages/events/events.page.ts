@@ -1,13 +1,10 @@
-import {ModalController, NavController} from 'ionic-angular';
-import {Component} from '@angular/core';
-
-import {EventsService} from '../../services/events.service';
-import {UserService} from '../../services/user.service';
-import {Observable} from 'rxjs/Observable';
-
-import {IUser} from '../../model/user';
-
-import {AddEventPage} from './add_event/add_event.page'
+import {ModalController, NavController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {EventsService} from "../../services/events.service";
+import {UserService} from "../../services/user.service";
+import {Observable} from "rxjs/Observable";
+import {IUser} from "../../model/user";
+import {AddEventPage} from "./add_event/add_event.page";
 
 
 @Component({
@@ -22,7 +19,7 @@ export class EventsPage {
         this.us = UserService.getCurrentUser();
     }
 
-    private createEvent() {
+    public createEvent() {
         let modal = this.modalCtrl.create(AddEventPage, {charNum: 1});
         modal.present();
     }

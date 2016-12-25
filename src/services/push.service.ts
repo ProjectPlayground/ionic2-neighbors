@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
-import {Http, Headers} from '@angular/http';
-import {Platform, Events} from 'ionic-angular';
+import {Http, Headers} from "@angular/http";
+import {Platform, Events} from "ionic-angular";
 import {LogService} from "./log.service";
-import {Push} from 'ionic-native';
 import {UserService} from "./user.service";
 import {GroupsService} from "./groups.service";
 
@@ -10,7 +9,6 @@ import {GroupsService} from "./groups.service";
 export class PushService {
     private static CLIENT_ID = '6d5f7534f7e4251bb16edce579ffda89';
     private static token: string = null;
-    private push: any;
     private static host = "https://neighbors-dev-747bb.appspot.com";
     //private static host = "http://localhost:8080";
     private static deviceUrl = PushService.host + "/neighbors/device";
@@ -22,7 +20,7 @@ export class PushService {
             gs.getPushClientId((id)=> {
                 PushService.CLIENT_ID = id;
             });
-            this.init();
+            //this.init();
         });
 
         this.events.subscribe('user:logout', () => {
@@ -42,10 +40,10 @@ export class PushService {
         });
     }
 
-    public init(): void {
+    /*public init(): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
-            LogService.logMessage("current platfom is mobile ios/android");
-            this.push = Push.init({
+            LogService.logMessage("current platfom is mobile ios/android 2");
+            this.push = PushNotification.init({
                 android: {
                     senderID: "182008884806"
                 },
@@ -70,7 +68,7 @@ export class PushService {
                     //if user using app and push notification comes
                     if (data.additionalData.foreground) {
                         // if application open, show popup
-                        /*let confirmAlert = Alert.create({
+                        /!*let confirmAlert = Alert.create({
                          title: 'New Notification',
                          message: data.message,
                          buttons: [{
@@ -83,7 +81,7 @@ export class PushService {
                          //self.nav.push(DetailsPage, {message: data.message});
                          }
                          }]
-                         });*/
+                         });*!/
                         //self.nav.present(confirmAlert);
                     } else {
                         //if user NOT using app and push notification comes
@@ -97,7 +95,7 @@ export class PushService {
                 });
             }
         }
-    }
+    }*/
 
     public registerDevice(token: string, userId: string, groupId: string): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
@@ -122,7 +120,6 @@ export class PushService {
 
     public unregisterDevice(): void {
         if (this.platform.is("ios") || this.platform.is("android")) {
-            let device_type = this.platform.is("ios") ? 'ios' : 'android';
             var headers = new Headers();
             headers.append('Content-Type', 'application/x-www-form-urlencoded');
             headers.append('CLIENT_ID', PushService.CLIENT_ID);

@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
-import {ViewController, ToastController} from 'ionic-angular';
-import {FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
+import {Component} from "@angular/core";
+import {ViewController, ToastController} from "ionic-angular";
+import {FormControl, FormGroup, Validators, AbstractControl} from "@angular/forms";
 import {ChatService} from "../../../services/chat.service";
 import {BasePage} from "../../base.page";
 import {LogService} from "../../../services/log.service";
@@ -20,11 +20,11 @@ export class AddBoardPage extends BasePage {
         this.name = this.form.controls['name'];
     }
 
-    private dismiss() {
+    public dismiss() {
         this.viewCtrl.dismiss();
     }
 
-    private addRoom($event) {
+    public addRoom($event) {
         LogService.logMessage("addRoom " + this.name.value);
         this.data.addBoardRoom(this.name.value, (error)=> {
             if (error) {

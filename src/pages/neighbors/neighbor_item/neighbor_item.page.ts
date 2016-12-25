@@ -1,5 +1,5 @@
-import {ToastController, NavParams, NavController} from 'ionic-angular'
-import {Component} from '@angular/core';
+import {ToastController, NavParams, NavController} from "ionic-angular";
+import {Component} from "@angular/core";
 import {IUser} from "../../../model/user";
 import {ChatService} from "../../../services/chat.service";
 import {BasePage} from "../../base.page";
@@ -20,7 +20,7 @@ export class NeighborItemPage extends BasePage {
         this.user = UserService.getCurrentUser();
     }
 
-    private addPrivateChat() {
+    public addPrivateChat() {
         this.data.addPrivateRoom(this.neighbor, (error)=> {
             if (error) {
                 this.presentToast("Error: " + error);

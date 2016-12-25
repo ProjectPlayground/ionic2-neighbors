@@ -26,7 +26,7 @@ export class SignupPage extends BasePage {
         this.password = this.form.controls['password'];
     }
 
-    private onSignup(event) {
+    public onSignup(event) {
         this.db.auth.createUserWithEmailAndPassword(this.login.value, this.password.value).catch(function (error) {
             if (error) {
                 switch (error.code) {

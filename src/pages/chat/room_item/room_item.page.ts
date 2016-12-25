@@ -1,17 +1,17 @@
-import {NavParams} from 'ionic-angular';
-import {Component} from '@angular/core';
-import {ChatService} from '../../../services/chat.service';
+import {NavParams} from "ionic-angular";
+import {Keyboard} from "ionic-native";
+import {Component} from "@angular/core";
+import {ChatService} from "../../../services/chat.service";
 import {IRoom} from "../../../model/room";
 import {Observable} from "rxjs/Observable";
 import {IMessage} from "../../../model/message";
 import {UserService} from "../../../services/user.service";
 import {IUser} from "../../../model/user";
 import {LogService} from "../../../services/log.service";
-import {Keyboard} from "ionic-native/dist/index";
 
 @Component({
     selector: 'room-item-page',
-    templateUrl: 'room_item.page.html',
+    templateUrl: 'room_item.page.html'
 })
 export class RoomItemPage {
     private chat: IRoom;
@@ -25,15 +25,14 @@ export class RoomItemPage {
         this.messages = data.getMessages("public_messages", this.chat.$key);
     }
 
-    private sendMessage(message: string) {
+    public sendMessage(message: string) {
         LogService.logMessage("RoomItemPage sendMessage ", message);
         this.data.saveMessage("public_messages", this.chat.$key, message, null, ()=> {
             LogService.logMessage("RoomItemPage sendMessage success saved");
             this.message = '';
         });
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            window.cordova.plugins.Keyboard.close();
-        }
+        Keyboard.close();
+
     }
 
 }

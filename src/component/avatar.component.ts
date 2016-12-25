@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input} from "@angular/core";
 import {App} from "ionic-angular/index";
 import {ProfilePage} from "../pages/profile/profile.page";
 

@@ -1,5 +1,5 @@
-import {NavController, ToastController} from 'ionic-angular';
-import {Component} from '@angular/core';
+import {NavController, ToastController} from "ionic-angular";
+import {Component} from "@angular/core";
 import {ChatService} from "../../services/chat.service";
 import {IRoom} from "../../model/room";
 import {Observable} from "rxjs/Observable";
@@ -23,12 +23,12 @@ export class BoardPage extends BasePage {
         this.rooms = cs.getRooms("board_rooms/" + this.user.memberOf, "board_messages/");
     }
 
-    private openRoom(id) {
+    public openRoom(id) {
         LogService.logMessage("openBoardRoom id=", id);
         this.nav.push(BoardItemPage, {chatId: id});
     }
 
-    private createTopic() {
+    public createTopic() {
         this.nav.push(AddBoardPage);
     }
 

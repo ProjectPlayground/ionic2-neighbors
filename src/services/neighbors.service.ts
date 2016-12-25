@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Events} from 'ionic-angular';
+import {Events} from "ionic-angular";
 import {Observable} from "rxjs/Observable";
 import {IUser} from "../model/user";
 import {UserService} from "./user.service";

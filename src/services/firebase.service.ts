@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
-import {Events} from 'ionic-angular';
+import {Events} from "ionic-angular";
 import {LogService} from "./log.service";
 
+declare var firebase: any;
 
 //https://webcake.co/using-firebase-3-in-angular-2-and-ionic-2/
 @Injectable()
@@ -10,6 +11,13 @@ export class FirebaseService {
     public auth: any;
 
     constructor(private events: Events) {
+        var config = {
+            apiKey: "AIzaSyAIhfL23XJd7Pvq6KbDThNb_saFUwd9QmI",
+            authDomain: "neighbors-dev-747bb.firebaseapp.com",
+            databaseURL: "https://neighbors-dev-747bb.firebaseio.com",
+            storageBucket: "neighbors-dev-747bb.appspot.com"
+        };
+        firebase.initializeApp(config);
         // still pointing to the base,
         // so that I can access other parts of my tree
         //noinspection TypeScriptUnresolvedVariable
@@ -64,10 +72,6 @@ export class FirebaseService {
                 'photoURL': user.photoURL
             });
         }).catch(function (error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            var email = error.email;
-            var credential = error.credential;
             LogService.logMessage("Error: ", error);
         });
     }

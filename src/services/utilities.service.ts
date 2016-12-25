@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {Events} from 'ionic-angular';
+import {Events} from "ionic-angular";
 import {UserService} from "./user.service";
 import {FirebaseService} from "./firebase.service";
 import {BaseService} from "./base.service";

@@ -1,6 +1,6 @@
-import {NavParams, NavController} from 'ionic-angular';
-import {Component} from '@angular/core';
-import {ChatService} from '../../../services/chat.service';
+import {NavParams, NavController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {ChatService} from "../../../services/chat.service";
 import {IRoom} from "../../../model/room";
 import {Observable} from "rxjs/Observable";
 import {IMessage} from "../../../model/message";
@@ -8,6 +8,7 @@ import {UserService} from "../../../services/user.service";
 import {IUser} from "../../../model/user";
 import {LogService} from "../../../services/log.service";
 import {NeighborItemPage} from "../../neighbors/neighbor_item/neighbor_item.page";
+import {Keyboard} from "ionic-native";
 
 @Component({
     selector: 'board-item-page',
@@ -25,18 +26,17 @@ export class BoardItemPage {
         this.messages = data.getMessages("board_messages", this.chat.$key);
     }
 
-    private sendMessage(message: string) {
+    public sendMessage(message: string) {
         LogService.logMessage("BoardItemPage sendMessage " + this.chat.$key + " ", message);
         this.data.saveMessage("board_messages", this.chat.$key, message, null, ()=> {
             LogService.logMessage("BoardItemPage sendMessage success saved");
             this.message = '';
         }, false);
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            window.cordova.plugins.Keyboard.close();
-        }
+        Keyboard.close();
+
     }
 
-    private openUser(message: IMessage) {
+    public openUser(message: IMessage) {
         LogService.logMessage("openUser ", message.user.$key);
         this.nav.push(NeighborItemPage, {"item": message.user});
     }

@@ -1,72 +1,64 @@
 import {Injectable} from "@angular/core";
-import {Events} from 'ionic-angular';
-
-import {FirebaseService} from './firebase.service';
+import {Events} from "ionic-angular";
+import {FirebaseService} from "./firebase.service";
 import {LogService} from "./log.service";
-import {UserService} from './user.service';
-import {Observable} from 'rxjs/Observable';
-import {Event} from '../model/event'
+import {UserService} from "./user.service";
+import {Observable} from "rxjs/Observable";
+import {Event} from "../model/event";
 import {BaseService} from "./base.service";
 
 @Injectable()
 export class EventsService extends BaseService {
 
-    constructor(public fs:FirebaseService, public us:UserService, events:Events) {
+    constructor(public fs: FirebaseService, public us: UserService, events: Events) {
         super(events);
     }
 
-    public getEvents():Observable<any> {
-        this.showLoading("Загрузка объявлений");
-        let flag = true;
+    public getEvents(): Observable<any> {
+        //this.showLoading("Загрузка объявлений");
+        //let flag = true;
         let fs = this.fs;
-        let us = this.us;
-        let clazz = this;
-        return Observable.create(function (observer:any) {
+        return Observable.create(observer=> {
             // Looking for how to type this well.
-            let arr:any[] = [];
+            let arr: any[] = [];
             const keyFieldName = "$key";
             // Start out empty, until data arrives
             observer.next(arr.slice()); // Safe copy
 
-            function findInArray<T>(list:T[], predicate:Function) {
+            function findInArray<T>(list: T[], predicate: Function) {
                 for (var i = 0; i < list.length; i++) {
-                    const value:T = list[i];
+                    const value: T = list[i];
                     if (predicate.call(this, value, i, list)) {
                         return value;
                     }
                 }
             }
 
-            function child_added(skey:any, snapshot:any, prevChildKey:string) {
-                if (flag) {
-                    flag = false;
-                    clazz.hideLoading();
-                }
+            function child_added(skey: any, snapshot: any, prevChildKey: string) {
                 LogService.logMessage("Events child_added");
                 let child = snapshot;
                 child[keyFieldName] = skey;
-                let prevEntry = findInArray(arr, (y:any) => y[keyFieldName] === prevChildKey);
+                let prevEntry = findInArray(arr, (y: any) => y[keyFieldName] === prevChildKey);
                 arr.splice(arr.indexOf(prevEntry) + 1, 0, child);
                 observer.next(arr.slice()); // Safe copy
             }
 
-            function child_changed(skey:any, snapshot:any) {
+            function child_changed(skey: any, snapshot: any) {
                 LogService.logMessage("Events child_changed");
                 let key = skey;
                 let child = snapshot;
                 // TODO replace object rather than mutate it?
-                let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
+                let x = findInArray(arr, (y: any) => y[keyFieldName] === key);
                 if (x) {
                     for (var k in child) x[k] = child[k];
                 }
                 observer.next(arr.slice()); // Safe copy
             }
 
-            function child_removed(skey:any, snapshot:any) {
+            function child_removed(skey: any, snapshot: any) {
                 LogService.logMessage("Events child_removed");
                 let key = skey;
-                let child = snapshot;
-                let x = findInArray(arr, (y:any) => y[keyFieldName] === key);
+                let x = findInArray(arr, (y: any) => y[keyFieldName] === key);
                 if (x) {
                     arr.splice(arr.indexOf(x), 1);
                 }
@@ -98,7 +90,7 @@ export class EventsService extends BaseService {
         })
     }
 
-    public addEvent(name:string, text:string, img:string, callback) {
+    public addEvent(name: string, text: string, img: string, callback) {
         let event = new Event(name, text, img);
         event.user = null;
         event.user_id = UserService.getCurrentUser().uid;

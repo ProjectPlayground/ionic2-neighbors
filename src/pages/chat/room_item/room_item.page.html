@@ -9,7 +9,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="outer-content chat">
+<ion-content class="outer-content chat" #content>
     <div class="history">
         <div class="wrapper">
             <div class="msg" *ngFor="let message of messages | async" [ngClass]="(message.type == 'in') ? 'in' : 'out'">
@@ -23,7 +23,7 @@
         </div>
     </div>
 </ion-content>
-<ion-footer>
+<ion-footer [keyboardAttach]="content">
     <ion-toolbar position="bottom">
         <ion-item no-lines>
             <ion-input placeholder="Введите сообщение" clearInput [(ngModel)]="message"></ion-input>

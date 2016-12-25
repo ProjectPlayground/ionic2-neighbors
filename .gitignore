@@ -17,6 +17,9 @@ npm-debug.log*
 .tmp/
 .versions/
 coverage/
+resources/android
+resources/ios
+resources/wp8
 dist/
 node_modules/
 tmp/

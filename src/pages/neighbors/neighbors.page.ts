@@ -1,7 +1,7 @@
-import {ToastController, NavController} from 'ionic-angular';
-import {Component} from '@angular/core';
-import {NeighborItemPage} from '../neighbors/neighbor_item/neighbor_item.page';
-import {NeighborsService} from '../../services/neighbors.service';
+import {ToastController, NavController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {NeighborItemPage} from "../neighbors/neighbor_item/neighbor_item.page";
+import {NeighborsService} from "../../services/neighbors.service";
 import {IUser} from "../../model/user";
 import {UserService} from "../../services/user.service";
 import {InvitesPage} from "./invites/invites.page";
@@ -21,16 +21,13 @@ export class NeighborsPage extends BasePage {
         super(toastCtrl);
         this.us = UserService.getCurrentUser();
         this.searchQuery = '';
-    }
-
-    ionViewDidEnter() {
         this.data.getMembersOfCurrentGroup().subscribe(data=> {
             this.sourceNeighbors = this.neighbors = data;
             this.getItems();
         });
     }
 
-    private clearFilter(){
+    public clearFilter(){
         this.neighbors = this.sourceNeighbors;
     }
 
@@ -56,11 +53,11 @@ export class NeighborsPage extends BasePage {
         })
     }
 
-    private openDetail(item) {
+    public openDetail(item) {
         this.nav.push(NeighborItemPage, {"item": item})
     }
 
-    private showInvites() {
+    public showInvites() {
         this.nav.push(InvitesPage);
     }
 }

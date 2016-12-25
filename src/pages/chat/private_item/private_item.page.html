@@ -19,7 +19,7 @@
     </div>
     <div class="history">
         <div class="wrapper">
-            <div class="msg" *ngFor="let message of messages |async" [ngClass]="(message.type == 'in') ? 'in' : 'out'">
+            <div class="msg" *ngFor="let message of messages | async" [ngClass]="(message.type == 'in') ? 'in' : 'out'">
                 <div class="text">{{ message.text }}</div>
                 <div class="avatar">
                     <img src="{{ user.photoURL }}" *ngIf="(message.type === 'in') && user?.photoURL!=null"/>

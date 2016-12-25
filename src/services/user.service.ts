@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import {Events} from 'ionic-angular';
-import {FirebaseService} from './firebase.service'
+import {Events} from "ionic-angular";
+import {FirebaseService} from "./firebase.service";
 import {LogService} from "../services/log.service";
-import {Observable} from 'rxjs/Observable';
-import {IUser, User} from '../model/user'
+import {Observable} from "rxjs/Observable";
+import {IUser, User} from "../model/user";
 import {BaseService} from "./base.service";
 
 //https://webcake.co/using-firebase-3-in-angular-2-and-ionic-2/
@@ -97,15 +97,6 @@ export class UserService extends BaseService {
             const keyFieldName = "$key";
             // Start out empty, until data arrives
             observer.next(arr.slice()); // Safe copy
-
-            function findInArray<T>(list: T[], predicate: Function) {
-                for (var i = 0; i < list.length; i++) {
-                    const value: T = list[i];
-                    if (predicate.call(this, value, i, list)) {
-                        return value;
-                    }
-                }
-            }
 
             function child_added(skey: any, snapshot: any) {
                 LogService.logMessage("Events child_added");

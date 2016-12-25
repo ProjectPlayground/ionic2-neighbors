@@ -1,6 +1,6 @@
-import {NavController, ToastController} from 'ionic-angular';
-import {Component} from '@angular/core';
-import {GroupsService} from '../../services/groups.service';
+import {NavController, ToastController} from "ionic-angular";
+import {Component} from "@angular/core";
+import {GroupsService} from "../../services/groups.service";
 import {LogService} from "../../services/log.service";
 import {IGroup} from "../../model/group";
 import {FirebaseService} from "../../services/firebase.service";
@@ -29,14 +29,14 @@ export class GroupsPage extends BasePage {
         });
     }
 
-    private getItems() {
+    public getItems() {
         let q = this.searchQuery;
         this.groups = this.sourceGroups.filter((v) => {
             return (v.name != null && v.name.split(' ').join('').toLowerCase().indexOf(q.split(' ').join('').toLowerCase()) > -1);
         })
     }
 
-    private doAction(item) {
+    public doAction(item) {
         LogService.logMessage("doAction in GroupPage");
         if (this.activeItem === item) {
             this.data.removeInvite(item, UserService.getCurrentUser(), ()=> {
@@ -51,7 +51,7 @@ export class GroupsPage extends BasePage {
         }
     }
 
-    private logout() {
+    public logout() {
         this.fs.logout();
     }
 
