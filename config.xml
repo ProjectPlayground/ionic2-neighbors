@@ -88,14 +88,15 @@
   <preference name="AutoHideSplashScreen" value="false"/>
   <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
   <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="HideKeyboardFormAccessoryBar" value="true"/>
+  <preference name="KeyboardShrinksView" value="false"/>
+  <preference name="DisallowOverscroll" value="true"/>
+  <preference name="EnableViewportScale" value="true"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
   <feature name="InAppBrowser">
     <param name="ios-package" value="CDVInAppBrowser"/>
-  </feature>
-  <feature name="Keyboard">
-    <param name="ios-package" value="CDVKeyboard" onload="true"/>
   </feature>
   <plugin name="cordova-plugin-device" spec="~1.1.2"/>
   <plugin name="cordova-plugin-console" spec="~1.0.3"/>
@@ -111,6 +112,7 @@
   <plugin name="phonegap-plugin-push" spec="https://github.com/phonegap/phonegap-plugin-push">
     <variable name="SENDER_ID" value="182008884806"/>
   </plugin>
-  <plugin name="cordova-plugin-keyboard" spec="https://github.com/cjpearson/cordova-plugin-keyboard"/>
+  <plugin name="ionic-plugin-keyboard" spec="~2.2.1"/>
+  <plugin name="cordova-plugin-x-toast" spec="~2.5.2"/>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>

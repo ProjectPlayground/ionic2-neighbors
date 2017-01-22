@@ -22,8 +22,13 @@
             </div>
         </div>
     </div>
+    <ion-fab right bottom>
+        <button ion-fab mini (click)="presentModal()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
 </ion-content>
-<ion-footer [keyboardAttach]="content">
+<!--ion-footer [keyboardAttach]="content">
     <ion-toolbar position="bottom">
         <ion-item no-lines>
             <ion-input placeholder="Введите сообщение" clearInput [(ngModel)]="message"></ion-input>
@@ -32,4 +37,4 @@
             </button>
         </ion-item>
     </ion-toolbar>
-</ion-footer>
+</ion-footer-->

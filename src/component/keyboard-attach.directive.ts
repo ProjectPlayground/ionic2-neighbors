@@ -44,9 +44,11 @@ export class KeyboardAttachDirective {
 
     constructor(private elementRef: ElementRef,
                 private platform: Platform) {
+        Toast.show('KeyboardAttachDirective cons','short','center');
         if (this.platform.is('cordova') && this.platform.is('ios')) {
-            window.addEventListener('keyboardDidShow', this.onShow);
-            window.addEventListener('keyboardDidHide', this.onHide);
+            Toast.show('KeyboardAttachDirective ios','short','center');
+            window.addEventListener('native.keyboardshow', this.onShow);
+            window.addEventListener('native.keyboardhide', this.onHide);
             //this.onShowSubscription = cordova.plugins.Keyboard.onKeyboardShow().subscribe(e => this.onShow(e));
             //this.onHideSubscription = cordova.plugins.Keyboard.onKeyboardHide().subscribe(() => this.onHide());
         }

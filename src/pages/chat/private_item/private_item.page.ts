@@ -1,5 +1,5 @@
 import {Component, ViewChild} from "@angular/core";
-import {NavParams} from "ionic-angular";
+import {NavParams, ModalController} from "ionic-angular";
 import {ChatService} from "../../../services/chat.service";
 import {UserService} from "../../../services/user.service";
 import {IRoom} from "../../../model/room";
@@ -9,6 +9,7 @@ import {IUser} from "../../../model/user";
 import {IMessage} from "../../../model/message";
 import {LogService} from "../../../services/log.service";
 import {Keyboard} from "ionic-native";
+import {ModalContentPage} from "../../../component/message.modal";
 
 @Component({
     selector: 'private-item-page',
@@ -23,7 +24,7 @@ export class PrivateItemPage {
     private user: IUser;
     private message;
 
-    constructor(private data: ChatService, params: NavParams) {
+    constructor(private data: ChatService, public modalCtrl: ModalController, params: NavParams) {
         this.chat = params.get("chatId");
         LogService.logMessage("PrivateItemPage chat: ", this.chat);
         this.user = UserService.getCurrentUser();
@@ -39,4 +40,15 @@ export class PrivateItemPage {
         });
         Keyboard.close();
     }
+
+    presentModal() {
+        let modal = this.modalCtrl.create(ModalContentPage);
+        modal.onDidDismiss(data => {
+            if (data != null) {
+                this.sendMessage(data);
+            }
+        });
+        modal.present();
+    }
+
 }

@@ -32,10 +32,12 @@ import {UtilitiesPage} from "../pages/utilities/utilities.page";
 import {AvatarComponent} from "../component/avatar.component";
 import {LoadingModal} from "../component/loading.component";
 import {KeyboardAttachDirective} from "../component/keyboard-attach.directive";
+import {ModalContentPage} from "../component/message.modal";
 
 @NgModule({
     declarations: [
         MyApp,
+        ModalContentPage,
         TabsPage,
         AddBoardPage,
         BoardItemPage,
@@ -75,6 +77,7 @@ import {KeyboardAttachDirective} from "../component/keyboard-attach.directive";
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
+        ModalContentPage,
         TabsPage,
         AddBoardPage,
         BoardItemPage,
