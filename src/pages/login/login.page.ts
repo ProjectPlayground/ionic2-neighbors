@@ -7,7 +7,7 @@ import {ValidationService} from "../../services/validator.service";
 import {LogService} from "../../services/log.service";
 import {BasePage} from "../base.page";
 import {UserService} from "../../services/user.service";
-
+declare var cordova:any;
 
 @Component({
     selector: 'login-page',
@@ -62,7 +62,7 @@ export class LoginPage extends BasePage {
 
     private facebookLogin() {
         return new Promise(function (resolve, reject) {
-            var browserRef = (<any>window).plugins.InAppBrowser.open("https://www.facebook.com/v2.0/dialog/oauth?client_id=245599175811882&redirect_uri=http://balynsky.su/callback&response_type=token&scope=email", "_blank", "location=no,clearsessioncache=yes,clearcache=yes");
+            var browserRef = (<any>cordova).InAppBrowser.open("https://www.facebook.com/v2.0/dialog/oauth?client_id=245599175811882&redirect_uri=http://balynsky.su/callback&response_type=token&scope=email", "_blank", "location=no,clearsessioncache=yes,clearcache=yes");
             browserRef.addEventListener("loadstart", (event) => {
                 if ((event.url).indexOf("http://balynsky.su/callback") === 0) {
                     browserRef.removeEventListener("exit", (event) => {

@@ -33,6 +33,7 @@ import {AvatarComponent} from "../component/avatar.component";
 import {LoadingModal} from "../component/loading.component";
 import {KeyboardAttachDirective} from "../component/keyboard-attach.directive";
 import {ModalContentPage} from "../component/message.modal";
+import {InAppBrowser} from "ionic-native";
 
 @NgModule({
     declarations: [
@@ -100,7 +101,7 @@ import {ModalContentPage} from "../component/message.modal";
         AvatarComponent,
         LoadingModal
     ],
-    providers: [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService, PushService, UtilitiesService]
+    providers: [InAppBrowser, NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService, PushService, UtilitiesService]
 })
 export class AppModule {
 }
