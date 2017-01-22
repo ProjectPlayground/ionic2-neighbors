@@ -101,7 +101,7 @@ import {InAppBrowser} from "ionic-native";
         AvatarComponent,
         LoadingModal
     ],
-    providers: [InAppBrowser, NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService, PushService, UtilitiesService]
+    providers: [NeighborsService, ChatService, FirebaseService, UserService, EventsService, LogService, GroupsService, PushService, UtilitiesService]
 })
 export class AppModule {
 }

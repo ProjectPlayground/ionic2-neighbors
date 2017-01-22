@@ -39,14 +39,14 @@ export class LoginPage extends BasePage {
     }
 
     public registerUserWithFacebook() {
-        //if (window.cordova) {
+        if (typeof cordova != 'undefined') {
             this.facebookLogin().then((success) => {
                 LogService.logMessage(success);
                 this.db.loginWithFacebookAccessToken(success);
             }, (error) => {
                 this.presentToast(error);
             });
-        /*} else {
+        } else {
             var provider = this.db.getFacebookProvider();
             this.db.auth.signInWithPopup(provider).then((result) => {
                 // This gives you a Facebook Access Token. You can use it to access the Facebook API.
@@ -57,7 +57,7 @@ export class LoginPage extends BasePage {
                 this.events.publish("user:logout");
                 this.presentToast(error);
             });
-        }*/
+        }
     }
 
     private facebookLogin() {
